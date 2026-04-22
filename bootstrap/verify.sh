@@ -11,7 +11,7 @@
 set -uo pipefail
 
 # ─── Config ───────────────────────────────────────────────────────────
-HELLO_URL="${HELLO_URL:-https://hello.leayeh.dev}"
+HELLO_URL="${HELLO_URL:-https://hello.lyeh.dev}"
 HELLO_NAMESPACE="${HELLO_NAMESPACE:-hello}"
 CERT_MANAGER_NAMESPACE="${CERT_MANAGER_NAMESPACE:-cert-manager}"
 CLUSTER_ISSUER_NAME="${CLUSTER_ISSUER_NAME:-letsencrypt-prod}"
