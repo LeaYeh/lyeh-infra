@@ -1,0 +1,8 @@
+# apps/hello/namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hello
+  labels:
+    app.kubernetes.io/managed-by: kustomize
+    platform.lyeh.dev/layer: app
