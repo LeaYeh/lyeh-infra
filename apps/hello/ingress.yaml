@@ -11,10 +11,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - lyeh.dev
-      secretName: lyeh-dev-tls
+        - hello.lyeh.dev
+      secretName: hello-lyeh-dev-tls
   rules:
-    - host: lyeh.dev
+    - host: hello.lyeh.dev
       http:
         paths:
           - path: /
