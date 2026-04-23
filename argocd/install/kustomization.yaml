@@ -5,10 +5,11 @@ resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/v2.13.0/manifests/install.yaml
 patches:
   # Run in HTTP mode; Traefik terminates TLS at the ingress layer
+  # Must include binary name because args overrides Docker CMD (tini execs it directly)
   - patch: |-
       - op: add
         path: /spec/template/spec/containers/0/args
-        value: ["--insecure"]
+        value: ["argocd-server", "--insecure"]
     target:
       kind: Deployment
       name: argocd-server
