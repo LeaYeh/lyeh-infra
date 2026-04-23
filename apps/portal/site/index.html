@@ -109,35 +109,106 @@
   </div>
 
   <script>
+    function createTag(text) {
+      const tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.textContent = text;
+      return tag;
+    }
+
+    function createExternalLink(href, label) {
+      const link = document.createElement('a');
+      link.href = href;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = label;
+      return link;
+    }
+
+    function createProjectCard(p) {
+      const card = document.createElement('div');
+      card.className = 'project-card';
+
+      if (p.image) {
+        const img = document.createElement('img');
+        img.className = 'project-img';
+        img.src = p.image;
+        img.alt = p.name;
+        img.loading = 'lazy';
+        card.appendChild(img);
+      } else {
+        const placeholder = document.createElement('div');
+        placeholder.className = 'project-img-placeholder';
+
+        const initial = document.createElement('span');
+        initial.textContent = p.name.charAt(0).toUpperCase();
+        placeholder.appendChild(initial);
+
+        card.appendChild(placeholder);
+      }
+
+      const name = document.createElement('div');
+      name.className = 'project-name';
+      name.textContent = p.name;
+      card.appendChild(name);
+
+      const description = document.createElement('div');
+      description.className = 'project-desc';
+      description.textContent = p.description;
+      card.appendChild(description);
+
+      const tech = document.createElement('div');
+      tech.className = 'project-tech';
+      (p.tech || []).forEach(t => {
+        tech.appendChild(createTag(t));
+      });
+      card.appendChild(tech);
+
+      const links = document.createElement('div');
+      links.className = 'project-links';
+
+      if (p.github) {
+        links.appendChild(createExternalLink(p.github, 'GitHub ↗'));
+      }
+
+      if (p.demo) {
+        links.appendChild(createExternalLink(p.demo, 'Demo ↗'));
+      }
+
+      card.appendChild(links);
+      return card;
+    }
+
+    function createSkillGroup(group, items) {
+      const wrapper = document.createElement('div');
+
+      const title = document.createElement('div');
+      title.className = 'skill-group-title';
+      title.textContent = group;
+      wrapper.appendChild(title);
+
+      const tags = document.createElement('div');
+      tags.className = 'skill-tags';
+      items.forEach(s => {
+        tags.appendChild(createTag(s));
+      });
+      wrapper.appendChild(tags);
+
+      return wrapper;
+    }
+
     async function renderProjects() {
       const res = await fetch('/data/projects.json');
       const projects = await res.json();
-      document.getElementById('projects-grid').innerHTML = projects.map(p => `
-        <div class="project-card">
-          ${p.image
-              ? `<img class="project-img" src="${p.image}" alt="${p.name}" loading="lazy">`
-              : `<div class="project-img-placeholder"><span>${p.name.charAt(0).toUpperCase()}</span></div>`
-            }
-          <div class="project-name">${p.name}</div>
-          <div class="project-desc">${p.description}</div>
-          <div class="project-tech">${(p.tech || []).map(t => `<span class="tag">${t}</span>`).join('')}</div>
-          <div class="project-links">
-            ${p.github ? `<a href="${p.github}" target="_blank" rel="noopener">GitHub &#x2197;</a>` : ''}
-            ${p.demo ? `<a href="${p.demo}" target="_blank" rel="noopener">Demo &#x2197;</a>` : ''}
-          </div>
-        </div>
-      `).join('');
+      const projectsGrid = document.getElementById('projects-grid');
+      projectsGrid.replaceChildren(...projects.map(p => createProjectCard(p)));
     }
 
     async function renderSkills() {
       const res = await fetch('/data/skills.json');
       const skills = await res.json();
-      document.getElementById('skills-grid').innerHTML = Object.entries(skills).map(([group, items]) => `
-        <div>
-          <div class="skill-group-title">${group}</div>
-          <div class="skill-tags">${items.map(s => `<span class="tag">${s}</span>`).join('')}</div>
-        </div>
-      `).join('');
+      const skillsGrid = document.getElementById('skills-grid');
+      skillsGrid.replaceChildren(...Object.entries(skills).map(([group, items]) => createSkillGroup(group, items)));
     }
 
     renderProjects().catch(() => {
