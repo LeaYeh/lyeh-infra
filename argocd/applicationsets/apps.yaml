@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: lyeh-apps
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: git@github.com:LeaYeh/lyeh-infra.git
+        revision: main
+        directories:
+          - path: apps/*
+          - path: apps/_template
+            exclude: true
+  template:
+    metadata:
+      name: '{{path.basename}}'
+    spec:
+      project: lyeh-dev
+      source:
+        repoURL: git@github.com:LeaYeh/lyeh-infra.git
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{path.basename}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jd-explorer
+  namespace: jd-explorer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jd-explorer
+  template:
+    metadata:
+      labels:
+        app: jd-explorer
+    spec:
+      containers:
+        - name: jd-explorer
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
