@@ -1,0 +1,6 @@
+{
+  "Backend": ["Python", "Go", "C++", "FastAPI", "PostgreSQL", "Redis"],
+  "LLM Platform": ["OpenAI API", "LangChain", "RAG", "Prompt Engineering"],
+  "Infrastructure": ["Kubernetes", "Docker", "ArgoCD", "Traefik", "Linux"],
+  "Data": ["Databricks", "Apache Spark", "SQL"]
+}

@@ -1,0 +1,8 @@
+# apps/portal/namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: portal
+  labels:
+    app.kubernetes.io/managed-by: kustomize
+    platform.lyeh.dev/layer: app

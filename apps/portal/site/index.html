@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lea Yeh</title>
+  <meta name="description" content="Lea Yeh — Backend and LLM Platform engineer.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: #fafafa;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+    a { color: #0066cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+    header { padding: 72px 0 52px; border-bottom: 1px solid #e8e8e8; }
+    .hero-name { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.025em; }
+    .hero-title { margin-top: 8px; font-size: 1rem; color: #666; }
+    .hero-bio { margin-top: 16px; font-size: 0.9375rem; color: #444; max-width: 520px; }
+    .hero-links { margin-top: 24px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .hero-links a {
+      font-size: 0.8125rem; font-weight: 500; color: #333;
+      border: 1px solid #d0d0d0; padding: 5px 14px; border-radius: 6px; background: #fff;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .hero-links a:hover {
+      border-color: #0066cc; color: #0066cc; background: #f0f6ff; text-decoration: none;
+    }
+
+    section { padding: 52px 0; border-bottom: 1px solid #e8e8e8; }
+    section:last-of-type { border-bottom: none; }
+    .section-label {
+      font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #999; margin-bottom: 28px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .project-card {
+      background: #fff; border: 1px solid #e8e8e8; border-radius: 10px;
+      padding: 20px; display: flex; flex-direction: column;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .project-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); border-color: #d0d0d0; }
+    .project-img {
+      width: 100%; height: 140px; object-fit: cover;
+      border-radius: 6px; margin-bottom: 14px; background: #f2f2f2;
+    }
+    .project-img-placeholder {
+      width: 100%; height: 140px; border-radius: 6px; margin-bottom: 14px;
+      background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .project-img-placeholder span {
+      font-size: 2rem; font-weight: 700; color: #ccc; letter-spacing: -0.02em;
+    }
+    .project-name { font-size: 0.9375rem; font-weight: 600; }
+    .project-desc { margin-top: 6px; font-size: 0.8125rem; color: #666; line-height: 1.55; flex: 1; }
+    .project-tech { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag {
+      font-size: 0.6875rem; font-weight: 500;
+      background: #f2f2f2; color: #555; padding: 2px 8px; border-radius: 4px;
+    }
+    .project-links { margin-top: 14px; display: flex; gap: 14px; }
+    .project-links a { font-size: 0.8125rem; font-weight: 500; }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 28px;
+    }
+    .skill-group-title { font-size: 0.8125rem; font-weight: 600; color: #333; margin-bottom: 10px; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    footer { padding: 36px 0; font-size: 0.75rem; color: #bbb; }
+    .loading { color: #bbb; font-size: 0.875rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="hero-name">Lea Yeh</div>
+      <div class="hero-title">Backend &middot; LLM Platform &middot; Infrastructure</div>
+      <div class="hero-bio">Building backend systems and LLM platforms. Focused on distributed systems, ML infrastructure, and developer tooling.</div>
+      <div class="hero-links">
+        <a href="https://github.com/LeaYeh" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/leayeh" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-label">Projects</div>
+      <div class="projects-grid" id="projects-grid"><div class="loading">Loading...</div></div>
+    </section>
+
+    <section>
+      <div class="section-label">Skills</div>
+      <div class="skills-grid" id="skills-grid"><div class="loading">Loading...</div></div>
+    </section>
+
+    <footer>lyeh.dev</footer>
+  </div>
+
+  <script>
+    async function renderProjects() {
+      const res = await fetch('/data/projects.json');
+      const projects = await res.json();
+      document.getElementById('projects-grid').innerHTML = projects.map(p => `
+        <div class="project-card">
+          ${p.image
+              ? `<img class="project-img" src="${p.image}" alt="${p.name}" loading="lazy">`
+              : `<div class="project-img-placeholder"><span>${p.name.charAt(0).toUpperCase()}</span></div>`
+            }
+          <div class="project-name">${p.name}</div>
+          <div class="project-desc">${p.description}</div>
+          <div class="project-tech">${(p.tech || []).map(t => `<span class="tag">${t}</span>`).join('')}</div>
+          <div class="project-links">
+            ${p.github ? `<a href="${p.github}" target="_blank" rel="noopener">GitHub &#x2197;</a>` : ''}
+            ${p.demo ? `<a href="${p.demo}" target="_blank" rel="noopener">Demo &#x2197;</a>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function renderSkills() {
+      const res = await fetch('/data/skills.json');
+      const skills = await res.json();
+      document.getElementById('skills-grid').innerHTML = Object.entries(skills).map(([group, items]) => `
+        <div>
+          <div class="skill-group-title">${group}</div>
+          <div class="skill-tags">${items.map(s => `<span class="tag">${s}</span>`).join('')}</div>
+        </div>
+      `).join('');
+    }
+
+    renderProjects().catch(() => {
+      document.getElementById('projects-grid').innerHTML = '<div class="loading">Failed to load projects.</div>';
+    });
+    renderSkills().catch(() => {
+      document.getElementById('skills-grid').innerHTML = '<div class="loading">Failed to load skills.</div>';
+    });
+  </script>
+</body>
+</html>

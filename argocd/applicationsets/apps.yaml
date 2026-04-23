@@ -12,6 +12,8 @@ spec:
           - path: apps/*
           - path: apps/_template
             exclude: true
+          - path: apps/assets
+            exclude: true
   template:
     metadata:
       name: '{{path.basename}}'

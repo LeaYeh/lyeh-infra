@@ -1,0 +1,18 @@
+[
+  {
+    "name": "lyeh-infra",
+    "description": "Personal brand infrastructure on Hetzner CX23. k3s cluster with ArgoCD GitOps, Traefik ingress, cert-manager TLS, and multi-app deployment via ApplicationSet.",
+    "image": "https://raw.githubusercontent.com/LeaYeh/lyeh-infra/main/apps/assets/lyeh-infra.png",
+    "tech": ["Kubernetes", "k3s", "ArgoCD", "Traefik", "cert-manager", "Hetzner"],
+    "github": "https://github.com/LeaYeh/lyeh-infra",
+    "demo": null
+  },
+  {
+    "name": "jd-explorer",
+    "description": "Job description exploration tool — work in progress.",
+    "image": null,
+    "tech": [],
+    "github": null,
+    "demo": "https://jd.lyeh.dev"
+  }
+]
