@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lea Yeh</title>
+  <meta name="description" content="Lea Yeh — Backend and LLM Platform engineer.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: #fafafa;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+    a { color: #0066cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+    header { padding: 72px 0 52px; border-bottom: 1px solid #e8e8e8; }
+    .hero-name { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.025em; }
+    .hero-title { margin-top: 8px; font-size: 1rem; color: #666; }
+    .hero-bio { margin-top: 16px; font-size: 0.9375rem; color: #444; max-width: 520px; }
+    .hero-links { margin-top: 24px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .hero-links a {
+      font-size: 0.8125rem; font-weight: 500; color: #333;
+      border: 1px solid #d0d0d0; padding: 5px 14px; border-radius: 6px; background: #fff;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .hero-links a:hover {
+      border-color: #0066cc; color: #0066cc; background: #f0f6ff; text-decoration: none;
+    }
+
+    section { padding: 52px 0; border-bottom: 1px solid #e8e8e8; }
+    section:last-of-type { border-bottom: none; }
+    .section-label {
+      font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #999; margin-bottom: 28px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .project-card {
+      background: #fff; border: 1px solid #e8e8e8; border-radius: 10px;
+      padding: 20px; display: flex; flex-direction: column;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .project-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); border-color: #d0d0d0; }
+    .project-img {
+      width: 100%; height: 140px; object-fit: cover;
+      border-radius: 6px; margin-bottom: 14px; background: #f2f2f2;
+    }
+    .project-img-placeholder {
+      width: 100%; height: 140px; border-radius: 6px; margin-bottom: 14px;
+      background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .project-img-placeholder span {
+      font-size: 2rem; font-weight: 700; color: #ccc; letter-spacing: -0.02em;
+    }
+    .project-name { font-size: 0.9375rem; font-weight: 600; }
+    .project-desc { margin-top: 6px; font-size: 0.8125rem; color: #666; line-height: 1.55; flex: 1; }
+    .project-tech { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag {
+      font-size: 0.6875rem; font-weight: 500;
+      background: #f2f2f2; color: #555; padding: 2px 8px; border-radius: 4px;
+    }
+    .project-links { margin-top: 14px; display: flex; gap: 14px; }
+    .project-links a { font-size: 0.8125rem; font-weight: 500; }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 28px;
+    }
+    .skill-group-title { font-size: 0.8125rem; font-weight: 600; color: #333; margin-bottom: 10px; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    footer { padding: 36px 0; font-size: 0.75rem; color: #bbb; }
+    .loading { color: #bbb; font-size: 0.875rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="hero-name">Lea Yeh</div>
+      <div class="hero-title">Backend &middot; LLM Platform &middot; Infrastructure</div>
+      <div class="hero-bio">Building backend systems and LLM platforms. Focused on distributed systems, ML infrastructure, and developer tooling.</div>
+      <div class="hero-links">
+        <a href="https://github.com/LeaYeh" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/leayeh" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-label">Projects</div>
+      <div class="projects-grid" id="projects-grid"><div class="loading">Loading...</div></div>
+    </section>
+
+    <section>
+      <div class="section-label">Skills</div>
+      <div class="skills-grid" id="skills-grid"><div class="loading">Loading...</div></div>
+    </section>
+
+    <footer>lyeh.dev</footer>
+  </div>
+
+  <script>
+    function createTag(text) {
+      const tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.textContent = text;
+      return tag;
+    }
+
+    function createExternalLink(href, label) {
+      const link = document.createElement('a');
+      link.href = href;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = label;
+      return link;
+    }
+
+    function createProjectCard(p) {
+      const card = document.createElement('div');
+      card.className = 'project-card';
+
+      if (p.image) {
+        const img = document.createElement('img');
+        img.className = 'project-img';
+        img.src = p.image;
+        img.alt = p.name;
+        img.loading = 'lazy';
+        card.appendChild(img);
+      } else {
+        const placeholder = document.createElement('div');
+        placeholder.className = 'project-img-placeholder';
+
+        const initial = document.createElement('span');
+        initial.textContent = p.name.charAt(0).toUpperCase();
+        placeholder.appendChild(initial);
+
+        card.appendChild(placeholder);
+      }
+
+      const name = document.createElement('div');
+      name.className = 'project-name';
+      name.textContent = p.name;
+      card.appendChild(name);
+
+      const description = document.createElement('div');
+      description.className = 'project-desc';
+      description.textContent = p.description;
+      card.appendChild(description);
+
+      const tech = document.createElement('div');
+      tech.className = 'project-tech';
+      (p.tech || []).forEach(t => {
+        tech.appendChild(createTag(t));
+      });
+      card.appendChild(tech);
+
+      const links = document.createElement('div');
+      links.className = 'project-links';
+
+      if (p.github) {
+        links.appendChild(createExternalLink(p.github, 'GitHub ↗'));
+      }
+
+      if (p.demo) {
+        links.appendChild(createExternalLink(p.demo, 'Demo ↗'));
+      }
+
+      card.appendChild(links);
+      return card;
+    }
+
+    function createSkillGroup(group, items) {
+      const wrapper = document.createElement('div');
+
+      const title = document.createElement('div');
+      title.className = 'skill-group-title';
+      title.textContent = group;
+      wrapper.appendChild(title);
+
+      const tags = document.createElement('div');
+      tags.className = 'skill-tags';
+      items.forEach(s => {
+        tags.appendChild(createTag(s));
+      });
+      wrapper.appendChild(tags);
+
+      return wrapper;
+    }
+
+    async function renderProjects() {
+      const res = await fetch('/data/projects.json');
+      const projects = await res.json();
+      const projectsGrid = document.getElementById('projects-grid');
+      projectsGrid.replaceChildren(...projects.map(p => createProjectCard(p)));
+    }
+
+    async function renderSkills() {
+      const res = await fetch('/data/skills.json');
+      const skills = await res.json();
+      const skillsGrid = document.getElementById('skills-grid');
+      skillsGrid.replaceChildren(...Object.entries(skills).map(([group, items]) => createSkillGroup(group, items)));
+    }
+
+    renderProjects().catch(() => {
+      document.getElementById('projects-grid').innerHTML = '<div class="loading">Failed to load projects.</div>';
+    });
+    renderSkills().catch(() => {
+      document.getElementById('skills-grid').innerHTML = '<div class="loading">Failed to load skills.</div>';
+    });
+  </script>
+</body>
+</html>

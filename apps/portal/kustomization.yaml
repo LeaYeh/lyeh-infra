@@ -1,0 +1,18 @@
+# apps/portal/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: portal
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+
+configMapGenerator:
+  - name: portal-site
+    files:
+      - site/index.html
+  - name: portal-data
+    files:
+      - data/projects.json
+      - data/skills.json

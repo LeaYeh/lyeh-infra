@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portal
+  namespace: portal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portal
+  template:
+    metadata:
+      labels:
+        app: portal
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "32Mi"
+            limits:
+              cpu: "200m"
+              memory: "64Mi"
+          volumeMounts:
+            - name: site
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
+            - name: data
+              mountPath: /usr/share/nginx/html/data
+      volumes:
+        - name: site
+          configMap:
+            name: portal-site
+        - name: data
+          configMap:
+            name: portal-data
