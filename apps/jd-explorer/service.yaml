@@ -9,4 +9,4 @@ spec:
     app: jd-explorer
   ports:
     - port: 80
-      targetPort: 80
+      targetPort: 8000

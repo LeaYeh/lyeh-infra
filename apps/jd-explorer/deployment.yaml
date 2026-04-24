@@ -15,9 +15,15 @@ spec:
     spec:
       containers:
         - name: jd-explorer
-          image: nginx:alpine
+          image: ghcr.io/leayeh/jd-explorer:latest
           ports:
-            - containerPort: 80
+            - containerPort: 8000
+          env:
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jd-explorer-secrets
+                  key: ANTHROPIC_API_KEY
           resources:
             requests:
               cpu: "100m"
