@@ -1,0 +1,129 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards-provider
+  namespace: monitoring
+data:
+  dashboard-provider.yaml: |
+    apiVersion: 1
+    providers:
+      - name: default
+        folder: ''
+        type: file
+        options:
+          path: /var/lib/grafana/dashboards
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-llm
+  namespace: monitoring
+data:
+  llm-platform.json: |
+    {
+      "title": "LLM Platform — jd-explorer",
+      "uid": "llm-platform",
+      "schemaVersion": 39,
+      "version": 1,
+      "refresh": "30s",
+      "time": { "from": "now-1h", "to": "now" },
+      "panels": [
+        {
+          "id": 1,
+          "type": "timeseries",
+          "title": "Request Rate (req/min)",
+          "gridPos": { "x": 0, "y": 0, "w": 8, "h": 8 },
+          "targets": [
+            {
+              "expr": "rate(jd_explorer_http_requests_total[5m]) * 60",
+              "legendFormat": "{{method}} {{path}} {{status_code}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "reqpm", "custom": { "lineWidth": 2 } }
+          }
+        },
+        {
+          "id": 2,
+          "type": "timeseries",
+          "title": "LLM API Latency",
+          "gridPos": { "x": 8, "y": 0, "w": 8, "h": 8 },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.50, rate(jd_explorer_llm_api_duration_seconds_bucket[5m]))",
+              "legendFormat": "p50 {{endpoint}}"
+            },
+            {
+              "expr": "histogram_quantile(0.99, rate(jd_explorer_llm_api_duration_seconds_bucket[5m]))",
+              "legendFormat": "p99 {{endpoint}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "s", "custom": { "lineWidth": 2 } }
+          }
+        },
+        {
+          "id": 3,
+          "type": "stat",
+          "title": "Total LLM Errors",
+          "gridPos": { "x": 16, "y": 0, "w": 8, "h": 8 },
+          "targets": [
+            {
+              "expr": "sum(jd_explorer_llm_errors_total)",
+              "legendFormat": "errors"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 1 },
+                  { "color": "red", "value": 10 }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "id": 4,
+          "type": "timeseries",
+          "title": "Token Burn Rate (tokens/min)",
+          "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 },
+          "targets": [
+            {
+              "expr": "rate(jd_explorer_llm_tokens_input_total[5m]) * 60",
+              "legendFormat": "input — {{endpoint}}"
+            },
+            {
+              "expr": "rate(jd_explorer_llm_tokens_output_total[5m]) * 60",
+              "legendFormat": "output — {{endpoint}}"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": { "unit": "short", "custom": { "lineWidth": 2 } }
+          }
+        },
+        {
+          "id": 5,
+          "type": "timeseries",
+          "title": "Estimated Cost (USD/hour)",
+          "description": "claude-sonnet-4-6: $3/M input, $15/M output",
+          "gridPos": { "x": 12, "y": 8, "w": 12, "h": 8 },
+          "targets": [
+            {
+              "expr": "(rate(jd_explorer_llm_tokens_input_total[5m]) * 0.000003 + rate(jd_explorer_llm_tokens_output_total[5m]) * 0.000015) * 3600",
+              "legendFormat": "cost USD/hr"
+            }
+          ],
+          "fieldConfig": {
+            "defaults": {
+              "unit": "currencyUSD",
+              "custom": { "lineWidth": 2 },
+              "color": { "mode": "fixed", "fixedColor": "orange" }
+            }
+          }
+        }
+      ]
+    }
