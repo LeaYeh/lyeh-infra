@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: jd-explorer
-          image: ghcr.io/leayeh/jd-explorer:sha-67c4d9ca714f2cad72db407df119eca9e4bceb5b
+          image: ghcr.io/leayeh/jd-explorer:sha-0323a59792570b00a149580e2d9bddadc68c1f83
           ports:
             - containerPort: 8000
           env:
