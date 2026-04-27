@@ -20,6 +20,16 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.160.1"
+          extended: true
+
+      - name: Build Hugo site
+        run: hugo --minify
+        working-directory: apps/portal/src
+
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
