@@ -1,0 +1,26 @@
+[[main]]
+  name = "About"
+  pageRef = "about"
+  weight = 10
+
+[[main]]
+  name = "Projects"
+  pageRef = "projects"
+  weight = 20
+
+[[main]]
+  name = "Blog"
+  pageRef = "posts"
+  weight = 30
+
+[[main]]
+  identifier = "github"
+  pre = "github"
+  url = "https://github.com/LeaYeh"
+  weight = 100
+
+[[main]]
+  identifier = "linkedin"
+  pre = "linkedin"
+  url = "https://linkedin.com/in/leayeh"
+  weight = 110

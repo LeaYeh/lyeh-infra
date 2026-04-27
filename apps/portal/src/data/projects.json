@@ -6,13 +6,5 @@
     "tech": ["Kubernetes", "k3s", "ArgoCD", "Traefik", "cert-manager", "Hetzner"],
     "github": "https://github.com/LeaYeh/lyeh-infra",
     "demo": null
-  },
-  {
-    "name": "jd-explorer",
-    "description": "Job description exploration tool — work in progress.",
-    "image": null,
-    "tech": [],
-    "github": null,
-    "demo": "https://jd.lyeh.dev"
   }
 ]

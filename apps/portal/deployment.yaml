@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: nginx:alpine
+          image: ghcr.io/leayeh/portal:sha-initial
           ports:
             - containerPort: 80
           resources:
@@ -25,16 +25,3 @@ spec:
             limits:
               cpu: "200m"
               memory: "64Mi"
-          volumeMounts:
-            - name: site
-              mountPath: /usr/share/nginx/html/index.html
-              subPath: index.html
-            - name: data
-              mountPath: /usr/share/nginx/html/data
-      volumes:
-        - name: site
-          configMap:
-            name: portal-site
-        - name: data
-          configMap:
-            name: portal-data

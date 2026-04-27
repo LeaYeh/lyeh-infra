@@ -1,0 +1,44 @@
+colorScheme = "ocean"
+defaultAppearance = "dark"
+autoSwitchAppearance = true
+
+enableSearch = true
+enableCodeCopy = true
+
+mainSections = ["posts", "projects"]
+
+[header]
+  layout = "fixed"
+
+[footer]
+  showMenu = false
+  showCopyright = true
+  showThemeAttribution = false
+  showAppearanceSwitcher = true
+  showScrollToTop = true
+
+[homepage]
+  layout = "profile"
+  showRecent = true
+  showRecentItems = 5
+  showMoreLink = true
+  showMoreLinkDest = "posts"
+  cardView = true
+
+[article]
+  showDate = true
+  showAuthor = false
+  showHero = false
+  showBreadcrumbs = true
+  showReadingTime = true
+  showTableOfContents = true
+  showTaxonomies = true
+  sharingLinks = []
+
+[list]
+  showHero = false
+  showBreadcrumbs = true
+  showSummary = true
+  showCards = true
+  cardView = true
+  groupByYear = false

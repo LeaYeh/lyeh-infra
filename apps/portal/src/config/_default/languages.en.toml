@@ -1,0 +1,22 @@
+locale = "en"
+label = "English"
+weight = 1
+title = "Lea Yeh"
+
+[params]
+  displayName = "English"
+  isoCode = "en"
+  rtl = false
+  dateFormat = "2 January 2006"
+  description = "Sr. Software Engineer · Data Engineer · MLOps · Systems Architecture"
+
+[params.author]
+  name = "Lea (Mei Ling) Yeh"
+  email = "lea.yeh.ml@gmail.com"
+  image = "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156"
+  headline = "Sr. Software Engineer · Data Engineer · MLOps · Systems Architecture"
+  bio = "8+ years across Data Engineering, Data Science, and Software Engineering. Currently a Software/Solution Architect at c-sense GmbH. Transitioning into AI Platform and MLOps engineering roles."
+  links = [
+    { github = "https://github.com/LeaYeh" },
+    { linkedin = "https://www.linkedin.com/in/lea-yeh-60296b74/" },
+  ]

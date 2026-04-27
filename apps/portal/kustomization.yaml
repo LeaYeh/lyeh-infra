@@ -8,11 +8,3 @@ resources:
   - service.yaml
   - ingress.yaml
 
-configMapGenerator:
-  - name: portal-site
-    files:
-      - site/index.html
-  - name: portal-data
-    files:
-      - data/projects.json
-      - data/skills.json
