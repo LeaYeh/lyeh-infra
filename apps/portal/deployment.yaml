@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: ghcr.io/leayeh/portal:sha-bc246461475358c12041a8c02a538cdca572031b
+          image: ghcr.io/leayeh/portal:sha-7f4281af055d4243e4d702ee29c49ff6a49d4401
           ports:
             - containerPort: 80
           resources:
