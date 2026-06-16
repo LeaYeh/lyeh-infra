@@ -3,9 +3,7 @@
 # dependencies = ["anthropic", "requests"]
 # ///
 
-import json
 import os
-import re
 from pathlib import Path
 
 
@@ -18,7 +16,8 @@ def load_env(env_file: Path | None = None) -> None:
         line = line.strip()
         if line and not line.startswith("#") and "=" in line:
             key, val = line.split("=", 1)
-            os.environ.setdefault(key.strip(), val.strip())
+            val = val.strip().strip('"').strip("'")
+            os.environ.setdefault(key.strip(), val)
 
 
 def load_content(content_dir: Path | None = None) -> str:

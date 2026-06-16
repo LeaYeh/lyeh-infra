@@ -1,7 +1,5 @@
-import json
+import os
 from pathlib import Path
-import pytest
-from unittest.mock import patch
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -29,19 +27,25 @@ def test_load_content_collects_markdown(tmp_path):
     assert "_index.md" not in result
 
 
-def test_load_env_sets_missing_vars(tmp_path):
+def test_load_env_sets_missing_vars(tmp_path, monkeypatch):
     env_file = tmp_path / "cv-sync.env"
     env_file.write_text("GIST_ID=abc123\nGITHUB_TOKEN=tok\n")
-    import os
-    os.environ.pop("GIST_ID", None)
+    monkeypatch.delenv("GIST_ID", raising=False)
     load_env(env_file)
     assert os.environ["GIST_ID"] == "abc123"
 
 
-def test_load_env_does_not_override_existing(tmp_path):
+def test_load_env_does_not_override_existing(tmp_path, monkeypatch):
     env_file = tmp_path / "cv-sync.env"
     env_file.write_text("GIST_ID=from_file\n")
-    import os
-    os.environ["GIST_ID"] = "from_shell"
+    monkeypatch.setenv("GIST_ID", "from_shell")
     load_env(env_file)
     assert os.environ["GIST_ID"] == "from_shell"
+
+
+def test_load_env_strips_quoted_values(tmp_path, monkeypatch):
+    env_file = tmp_path / "cv-sync.env"
+    env_file.write_text('GIST_ID="abc123"\n')
+    monkeypatch.delenv("GIST_ID", raising=False)
+    load_env(env_file)
+    assert os.environ["GIST_ID"] == "abc123"
