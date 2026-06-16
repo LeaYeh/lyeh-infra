@@ -219,3 +219,18 @@ def test_interactive_loop_edit_applies_custom_value():
 
     assert resume["work"][0]["highlights"] == ["custom highlight"]
     assert accepted[0]["value"] == "custom highlight"
+
+
+def test_interactive_loop_handles_bad_path_gracefully():
+    resume = {"basics": {}}
+    suggestions = [{
+        "field": "work[0].highlights",  # work key doesn't exist
+        "reason": "reason",
+        "action": "append",
+        "value": "new"
+    }]
+    with patch("builtins.input", return_value="y"):
+        accepted = interactive_loop(suggestions, resume)
+
+    assert accepted == []
+    assert resume == {"basics": {}}  # resume unchanged

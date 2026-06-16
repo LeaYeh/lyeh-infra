@@ -134,8 +134,11 @@ def interactive_loop(suggestions: list[dict], resume: dict) -> list[dict]:
         while True:
             choice = input("  → [y] accept / [n] skip / [e] edit: ").strip().lower()
             if choice == "y":
-                apply_patch(resume, s["field"], s["action"], s["value"])
-                accepted.append(s)
+                try:
+                    apply_patch(resume, s["field"], s["action"], s["value"])
+                    accepted.append(s)
+                except (KeyError, IndexError, AttributeError) as exc:
+                    print(f"  ✗ Could not apply patch ({exc}). Skipping.")
                 break
             elif choice == "n":
                 break
@@ -145,8 +148,11 @@ def interactive_loop(suggestions: list[dict], resume: dict) -> list[dict]:
                     value = json.loads(raw)
                 except json.JSONDecodeError:
                     value = raw
-                apply_patch(resume, s["field"], s["action"], value)
-                accepted.append({**s, "value": value})
+                try:
+                    apply_patch(resume, s["field"], s["action"], value)
+                    accepted.append({**s, "value": value})
+                except (KeyError, IndexError, AttributeError) as exc:
+                    print(f"  ✗ Could not apply patch ({exc}). Skipping.")
                 break
     return accepted
 
