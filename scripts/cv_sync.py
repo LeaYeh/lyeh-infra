@@ -5,6 +5,7 @@
 
 import json
 import os
+import re
 from pathlib import Path
 
 import requests
@@ -58,3 +59,28 @@ def update_gist(gist_id: str, token: str, filename: str, resume: dict) -> None:
         json={"files": {filename: {"content": json.dumps(resume, indent=2, ensure_ascii=False)}}},
     )
     resp.raise_for_status()
+
+
+def _parse_path(path: str) -> list[str | int]:
+    """Parse 'work[0].highlights' → ['work', 0, 'highlights']."""
+    tokens: list[str | int] = []
+    for part in path.split("."):
+        m = re.match(r"^(\w+)\[(\d+)\]$", part)
+        if m:
+            tokens.append(m.group(1))
+            tokens.append(int(m.group(2)))
+        else:
+            tokens.append(part)
+    return tokens
+
+
+def apply_patch(resume: dict, field: str, action: str, value) -> None:
+    tokens = _parse_path(field)
+    obj = resume
+    for token in tokens[:-1]:
+        obj = obj[token]
+    last = tokens[-1]
+    if action == "append":
+        obj[last].append(value)
+    else:
+        obj[last] = value

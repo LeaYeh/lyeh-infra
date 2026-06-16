@@ -98,3 +98,31 @@ def test_update_gist_patches_correct_endpoint():
         headers={"Authorization": "token token456", "Accept": "application/vnd.github.v3+json"},
         json={"files": {"resume.json": {"content": json.dumps(resume, indent=2, ensure_ascii=False)}}},
     )
+
+
+from cv_sync import apply_patch
+
+
+def test_apply_patch_replace_string_field():
+    resume = {"basics": {"summary": "old summary"}}
+    apply_patch(resume, "basics.summary", "replace", "new summary")
+    assert resume["basics"]["summary"] == "new summary"
+
+
+def test_apply_patch_append_to_array():
+    resume = {"work": [{"highlights": ["existing"]}]}
+    apply_patch(resume, "work[0].highlights", "append", "new highlight")
+    assert resume["work"][0]["highlights"] == ["existing", "new highlight"]
+
+
+def test_apply_patch_replace_array_element():
+    resume = {"skills": [{"keywords": ["Python"]}]}
+    apply_patch(resume, "skills[0].keywords", "replace", ["Python", "Go"])
+    assert resume["skills"][0]["keywords"] == ["Python", "Go"]
+
+
+def test_apply_patch_append_to_top_level_array():
+    resume = {"work": [{"name": "Acme"}]}
+    apply_patch(resume, "work", "append", {"name": "NewCo"})
+    assert len(resume["work"]) == 2
+    assert resume["work"][1]["name"] == "NewCo"
