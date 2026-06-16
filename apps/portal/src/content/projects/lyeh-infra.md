@@ -12,7 +12,6 @@ Personal cloud infrastructure for running self-hosted services. Everything is de
 **Live services:**
 - `lyeh.dev` — this portfolio site (Hugo + nginx)
 - `argocd.lyeh.dev` — ArgoCD UI
-- `jd.lyeh.dev` — JD Explorer
 - `monitoring.lyeh.dev` — Grafana dashboards (Prometheus stack)
 
 ## Architecture
