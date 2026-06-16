@@ -3,8 +3,11 @@
 # dependencies = ["anthropic", "requests"]
 # ///
 
+import json
 import os
 from pathlib import Path
+
+import requests
 
 
 def load_env(env_file: Path | None = None) -> None:
@@ -34,3 +37,24 @@ def load_content(content_dir: Path | None = None) -> str:
             continue
         parts.append(f"--- {f.relative_to(content_dir)} ---\n{f.read_text()}")
     return "\n\n".join(parts)
+
+
+def fetch_gist(gist_id: str, token: str) -> tuple[dict, str]:
+    resp = requests.get(
+        f"https://api.github.com/gists/{gist_id}",
+        headers={"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"},
+    )
+    resp.raise_for_status()
+    for filename, file_data in resp.json()["files"].items():
+        if filename.endswith(".json"):
+            return json.loads(file_data["content"]), filename
+    raise ValueError(f"No JSON file found in gist {gist_id}")
+
+
+def update_gist(gist_id: str, token: str, filename: str, resume: dict) -> None:
+    resp = requests.patch(
+        f"https://api.github.com/gists/{gist_id}",
+        headers={"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"},
+        json={"files": {filename: {"content": json.dumps(resume, indent=2, ensure_ascii=False)}}},
+    )
+    resp.raise_for_status()

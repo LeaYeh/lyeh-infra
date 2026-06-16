@@ -1,9 +1,12 @@
+import json
 import os
 from pathlib import Path
 import sys
+import pytest
+from unittest.mock import patch, MagicMock
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from cv_sync import load_content, load_env
+from cv_sync import load_content, load_env, fetch_gist, update_gist
 
 
 def test_load_content_collects_markdown(tmp_path):
@@ -49,3 +52,49 @@ def test_load_env_strips_quoted_values(tmp_path, monkeypatch):
     monkeypatch.delenv("GIST_ID", raising=False)
     load_env(env_file)
     assert os.environ["GIST_ID"] == "abc123"
+
+
+def test_fetch_gist_returns_resume_and_filename():
+    resume = {"basics": {"name": "Lea Yeh"}}
+    mock_resp = MagicMock()
+    mock_resp.json.return_value = {
+        "files": {
+            "resume.json": {"content": json.dumps(resume)}
+        }
+    }
+    mock_resp.raise_for_status = MagicMock()
+
+    with patch("cv_sync.requests.get", return_value=mock_resp) as mock_get:
+        result, filename = fetch_gist("gist123", "token456")
+
+    mock_get.assert_called_once_with(
+        "https://api.github.com/gists/gist123",
+        headers={"Authorization": "token token456", "Accept": "application/vnd.github.v3+json"},
+    )
+    assert result == resume
+    assert filename == "resume.json"
+
+
+def test_fetch_gist_raises_when_no_json_file():
+    mock_resp = MagicMock()
+    mock_resp.json.return_value = {"files": {"notes.txt": {"content": "hi"}}}
+    mock_resp.raise_for_status = MagicMock()
+
+    with patch("cv_sync.requests.get", return_value=mock_resp):
+        with pytest.raises(ValueError, match="No JSON file"):
+            fetch_gist("gist123", "token456")
+
+
+def test_update_gist_patches_correct_endpoint():
+    resume = {"basics": {"name": "Lea Yeh"}}
+    mock_resp = MagicMock()
+    mock_resp.raise_for_status = MagicMock()
+
+    with patch("cv_sync.requests.patch", return_value=mock_resp) as mock_patch:
+        update_gist("gist123", "token456", "resume.json", resume)
+
+    mock_patch.assert_called_once_with(
+        "https://api.github.com/gists/gist123",
+        headers={"Authorization": "token token456", "Accept": "application/vnd.github.v3+json"},
+        json={"files": {"resume.json": {"content": json.dumps(resume, indent=2, ensure_ascii=False)}}},
+    )
