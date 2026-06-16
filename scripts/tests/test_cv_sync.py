@@ -171,3 +171,51 @@ def test_get_suggestions_returns_empty_on_no_tool_block():
         result = get_suggestions("content", {}, "api-key")
 
     assert result == []
+
+
+from cv_sync import interactive_loop
+
+
+def test_interactive_loop_accept_applies_patch():
+    resume = {"basics": {"summary": "old"}}
+    suggestions = [{
+        "field": "basics.summary",
+        "reason": "Updated summary available",
+        "action": "replace",
+        "value": "new summary"
+    }]
+    with patch("builtins.input", return_value="y"):
+        accepted = interactive_loop(suggestions, resume)
+
+    assert resume["basics"]["summary"] == "new summary"
+    assert len(accepted) == 1
+
+
+def test_interactive_loop_skip_does_not_apply():
+    resume = {"basics": {"summary": "old"}}
+    suggestions = [{
+        "field": "basics.summary",
+        "reason": "reason",
+        "action": "replace",
+        "value": "new"
+    }]
+    with patch("builtins.input", return_value="n"):
+        accepted = interactive_loop(suggestions, resume)
+
+    assert resume["basics"]["summary"] == "old"
+    assert accepted == []
+
+
+def test_interactive_loop_edit_applies_custom_value():
+    resume = {"work": [{"highlights": []}]}
+    suggestions = [{
+        "field": "work[0].highlights",
+        "reason": "reason",
+        "action": "append",
+        "value": "original"
+    }]
+    with patch("builtins.input", side_effect=["e", "custom highlight"]):
+        accepted = interactive_loop(suggestions, resume)
+
+    assert resume["work"][0]["highlights"] == ["custom highlight"]
+    assert accepted[0]["value"] == "custom highlight"

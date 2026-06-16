@@ -124,6 +124,33 @@ _SYSTEM = (
 )
 
 
+def interactive_loop(suggestions: list[dict], resume: dict) -> list[dict]:
+    accepted = []
+    total = len(suggestions)
+    for i, s in enumerate(suggestions, 1):
+        print(f"\n[{i}/{total}] {s['field']} — {s['action']}")
+        print(f"  Reason : {s['reason']}")
+        print(f"  Value  : {json.dumps(s['value'], ensure_ascii=False)}")
+        while True:
+            choice = input("  → [y] accept / [n] skip / [e] edit: ").strip().lower()
+            if choice == "y":
+                apply_patch(resume, s["field"], s["action"], s["value"])
+                accepted.append(s)
+                break
+            elif choice == "n":
+                break
+            elif choice == "e":
+                raw = input("  New value: ").strip()
+                try:
+                    value = json.loads(raw)
+                except json.JSONDecodeError:
+                    value = raw
+                apply_patch(resume, s["field"], s["action"], value)
+                accepted.append({**s, "value": value})
+                break
+    return accepted
+
+
 def get_suggestions(content: str, resume: dict, api_key: str) -> list[dict]:
     client = anthropic.Anthropic(api_key=api_key)
     response = client.messages.create(
