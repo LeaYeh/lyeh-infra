@@ -171,3 +171,44 @@ def get_suggestions(content: str, resume: dict, api_key: str) -> list[dict]:
         if block.type == "tool_use" and block.name == "suggest_cv_updates":
             return block.input["suggestions"]
     return []
+
+
+def main() -> None:
+    load_env()
+
+    gist_id = os.environ.get("GIST_ID")
+    github_token = os.environ.get("GITHUB_TOKEN")
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+
+    missing = [k for k, v in {"GIST_ID": gist_id, "GITHUB_TOKEN": github_token, "ANTHROPIC_API_KEY": api_key}.items() if not v]
+    if missing:
+        print(f"Error: missing environment variables: {', '.join(missing)}")
+        print("Set them in your shell or in scripts/cv-sync.env (for GIST_ID)")
+        raise SystemExit(1)
+
+    print("Reading portal content...")
+    content = load_content()
+
+    print("Fetching JSON Resume from gist...")
+    resume, filename = fetch_gist(gist_id, github_token)
+
+    print("Asking Claude for suggestions...")
+    suggestions = get_suggestions(content, resume, api_key)
+
+    if not suggestions:
+        print("No suggestions — CV looks up to date.")
+        return
+
+    print(f"\nFound {len(suggestions)} suggestion(s).\n")
+    accepted = interactive_loop(suggestions, resume)
+
+    if accepted:
+        print(f"\nUpdating gist ({len(accepted)}/{len(suggestions)} accepted)...")
+        update_gist(gist_id, github_token, filename, resume)
+        print("✓ Gist updated.")
+    else:
+        print("\nNo changes applied.")
+
+
+if __name__ == "__main__":
+    main()
