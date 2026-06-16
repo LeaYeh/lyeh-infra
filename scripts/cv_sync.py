@@ -8,6 +8,7 @@ import os
 import re
 from pathlib import Path
 
+import anthropic
 import requests
 
 
@@ -84,3 +85,62 @@ def apply_patch(resume: dict, field: str, action: str, value) -> None:
         obj[last].append(value)
     else:
         obj[last] = value
+
+
+SUGGEST_TOOL = {
+    "name": "suggest_cv_updates",
+    "description": "Return CV update suggestions based on comparing portal content with the JSON Resume",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "suggestions": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "field": {
+                            "type": "string",
+                            "description": "dot-path to the JSON Resume field, e.g. 'work[0].highlights' or 'basics.summary'",
+                        },
+                        "reason": {"type": "string"},
+                        "action": {"type": "string", "enum": ["append", "replace"]},
+                        "value": {"description": "string to append, or replacement value"},
+                    },
+                    "required": ["field", "reason", "action", "value"],
+                },
+            }
+        },
+        "required": ["suggestions"],
+    },
+}
+
+_SYSTEM = (
+    "You are a CV assistant. Given portal content (markdown) and a JSON Resume, "
+    "identify information present in the portal but missing or outdated in the CV. "
+    "Focus on: work experience highlights, skills, project descriptions, professional summary. "
+    "Return suggestions using the suggest_cv_updates tool. "
+    "Only suggest changes that would genuinely improve the CV. "
+    "Reference existing JSON Resume fields by dot-path."
+)
+
+
+def get_suggestions(content: str, resume: dict, api_key: str) -> list[dict]:
+    client = anthropic.Anthropic(api_key=api_key)
+    response = client.messages.create(
+        model="claude-sonnet-4-6",
+        max_tokens=2048,
+        system=_SYSTEM,
+        tools=[SUGGEST_TOOL],
+        tool_choice={"type": "tool", "name": "suggest_cv_updates"},
+        messages=[{
+            "role": "user",
+            "content": (
+                f"Portal content:\n\n{content}\n\n"
+                f"Current JSON Resume:\n\n{json.dumps(resume, indent=2)}"
+            ),
+        }],
+    )
+    for block in response.content:
+        if block.type == "tool_use" and block.name == "suggest_cv_updates":
+            return block.input["suggestions"]
+    return []

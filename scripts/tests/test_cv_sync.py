@@ -126,3 +126,48 @@ def test_apply_patch_append_to_top_level_array():
     apply_patch(resume, "work", "append", {"name": "NewCo"})
     assert len(resume["work"]) == 2
     assert resume["work"][1]["name"] == "NewCo"
+
+
+from cv_sync import get_suggestions
+
+
+def test_get_suggestions_returns_list_from_tool_use():
+    expected = [{
+        "field": "basics.summary",
+        "reason": "AI initiative not in CV",
+        "action": "replace",
+        "value": "Updated summary"
+    }]
+    mock_block = MagicMock()
+    mock_block.type = "tool_use"
+    mock_block.name = "suggest_cv_updates"
+    mock_block.input = {"suggestions": expected}
+
+    mock_response = MagicMock()
+    mock_response.content = [mock_block]
+
+    mock_client = MagicMock()
+    mock_client.messages.create.return_value = mock_response
+
+    with patch("cv_sync.anthropic.Anthropic", return_value=mock_client):
+        result = get_suggestions("portal content", {"basics": {}}, "api-key")
+
+    assert result == expected
+    call_kwargs = mock_client.messages.create.call_args[1]
+    assert call_kwargs["tool_choice"] == {"type": "tool", "name": "suggest_cv_updates"}
+
+
+def test_get_suggestions_returns_empty_on_no_tool_block():
+    mock_block = MagicMock()
+    mock_block.type = "text"
+
+    mock_response = MagicMock()
+    mock_response.content = [mock_block]
+
+    mock_client = MagicMock()
+    mock_client.messages.create.return_value = mock_response
+
+    with patch("cv_sync.anthropic.Anthropic", return_value=mock_client):
+        result = get_suggestions("content", {}, "api-key")
+
+    assert result == []
