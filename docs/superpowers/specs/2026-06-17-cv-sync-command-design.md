@@ -18,19 +18,19 @@ A project-local Claude Code slash command (`/cv-sync`) that reads lyeh-infra por
 ## Prerequisites
 
 - `scripts/cv-sync.env` with `GIST_ID=<id>`
-- `GITHUB_TOKEN` in shell environment (gist read+write scope)
+- `gh` CLI logged in (`gh auth status` passes; gist read+write scope)
 
 ## Flow
 
 ```
 /cv-sync
   1. Read scripts/cv-sync.env → extract GIST_ID
-  2. Verify GITHUB_TOKEN in env (fail fast if missing)
+  2. Verify gh auth: run `gh auth status` (fail fast if not logged in)
   3. Read all portal content via Read tool:
        apps/portal/src/content/about.md
        apps/portal/src/content/posts/*.md   (skip _index.md)
        apps/portal/src/content/projects/*.md (skip _index.md)
-  4. curl GET https://api.github.com/gists/$GIST_ID → extract JSON Resume
+  4. gh api /gists/$GIST_ID → extract JSON Resume
   5. Claude analyzes both → generates numbered suggestion list:
        [1] field: basics.summary | action: replace | reason + proposed value
        [2] field: work[0].highlights | action: append | reason + proposed value
@@ -38,7 +38,7 @@ A project-local Claude Code slash command (`/cv-sync`) that reads lyeh-infra por
   6. Wait for user natural-language response
        ("接受 1、3，把 2 改成更簡短的版本")
   7. Claude applies accepted/edited suggestions to in-memory JSON
-  8. curl PATCH gist with updated JSON
+  8. gh api -X PATCH /gists/$GIST_ID with updated JSON
   9. Confirm: "✓ Gist updated — N suggestions applied."
 ```
 
@@ -63,14 +63,14 @@ A project-local Claude Code slash command (`/cv-sync`) that reads lyeh-infra por
 |-----------|-----------|
 | `scripts/cv-sync.env` 不存在 | 印出設定步驟後停止 |
 | `GIST_ID` 未設或空 | 提示填寫 cv-sync.env 後停止 |
-| `GITHUB_TOKEN` 未設 | 提示設定 shell env 後停止 |
+| `gh` 未登入 | 提示執行 `gh auth login` 後停止 |
 | gist 無 `.json` 檔 | 報錯：找不到 JSON Resume |
-| curl HTTP error | 印出 HTTP status 後停止 |
+| `gh api` 回傳錯誤 | 印出錯誤訊息後停止 |
 | 無建議 | 回報「CV 目前是最新狀態」 |
 
 ## Applying Changes
 
-Claude manipulates the JSON Resume in memory (no jq dependency). After user confirms selections, Claude writes the complete updated JSON and sends a single curl PATCH request. The gist always receives the full file content (not a diff).
+Claude manipulates the JSON Resume in memory (no jq dependency). After user confirms selections, Claude writes the complete updated JSON and sends a single `gh api -X PATCH` request. The gist always receives the full file content (not a diff).
 
 ## Out of Scope
 
