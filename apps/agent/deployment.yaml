@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: claudecodeui
+  namespace: agent
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: claudecodeui
+  template:
+    metadata:
+      labels:
+        app: claudecodeui
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: claudecodeui
+          # Image is built/pushed separately (deferred); retag from :latest to a dated tag once built.
+          image: ghcr.io/leayeh/claudecodeui:latest
+          ports:
+            - containerPort: 3008
+          env:
+            - name: HOME
+              value: /data
+            - name: PORT
+              value: "3008"
+            - name: GIT_SSH_COMMAND
+              value: "ssh -i /etc/git-ssh/id_ed25519 -o StrictHostKeyChecking=accept-new"
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: git-ssh
+              mountPath: /etc/git-ssh
+              readOnly: true
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: agent-data
+        - name: git-ssh
+          secret:
+            secretName: agent-git-ssh
+            defaultMode: 0400
