@@ -25,6 +25,15 @@ spec:
           port: 53
         - protocol: TCP
           port: 53
+    # Allow cloudflared → claudecodeui within the namespace (intra-namespace pod
+    # traffic is otherwise blocked by the private-range except in the public rule below).
+    - to:
+        - podSelector:
+            matchLabels:
+              app: claudecodeui
+      ports:
+        - protocol: TCP
+          port: 3008
     # Public internet (Anthropic API, GitHub, Cloudflare edge) — exclude private ranges
     # so cross-namespace ClusterIPs and pod IPs are unreachable.
     - to:

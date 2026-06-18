@@ -20,12 +20,19 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: claudecodeui
           # Image is built/pushed separately (deferred); retag from :latest to a dated tag once built.
           image: ghcr.io/leayeh/claudecodeui:latest
           ports:
             - containerPort: 3008
+          readinessProbe:
+            tcpSocket:
+              port: 3008
+            initialDelaySeconds: 5
+            periodSeconds: 10
           env:
             - name: HOME
               value: /data
@@ -57,4 +64,4 @@ spec:
         - name: git-ssh
           secret:
             secretName: agent-git-ssh
-            defaultMode: 0400
+            defaultMode: 0440
