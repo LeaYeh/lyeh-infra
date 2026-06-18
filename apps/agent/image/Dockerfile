@@ -17,8 +17,9 @@ RUN git clone --depth 1 https://github.com/siteboon/claudecodeui . \
     && npm run build
 
 ENV HOME=/data \
-    PORT=3008
-EXPOSE 3008
+    SERVER_PORT=3001 \
+    HOST=0.0.0.0
+EXPOSE 3001
 
-# NOTE: confirm the production start script in upstream package.json before building.
+# Production start script (confirmed from upstream package.json): serves built client + API.
 CMD ["npm", "run", "server"]

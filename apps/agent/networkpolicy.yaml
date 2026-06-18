@@ -33,7 +33,7 @@ spec:
               app: claudecodeui
       ports:
         - protocol: TCP
-          port: 3008
+          port: 3001
     # Public internet (Anthropic API, GitHub, Cloudflare edge) — exclude private ranges
     # so cross-namespace ClusterIPs and pod IPs are unreachable.
     - to:

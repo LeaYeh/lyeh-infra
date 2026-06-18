@@ -8,4 +8,4 @@ spec:
     app: claudecodeui
   ports:
     - port: 80
-      targetPort: 3008
+      targetPort: 3001

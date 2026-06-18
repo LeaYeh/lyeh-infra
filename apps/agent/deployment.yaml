@@ -27,17 +27,17 @@ spec:
           # Image is built/pushed separately (deferred); retag from :latest to a dated tag once built.
           image: ghcr.io/leayeh/claudecodeui:latest
           ports:
-            - containerPort: 3008
+            - containerPort: 3001
           readinessProbe:
             tcpSocket:
-              port: 3008
+              port: 3001
             initialDelaySeconds: 5
             periodSeconds: 10
           env:
             - name: HOME
               value: /data
-            - name: PORT
-              value: "3008"
+            - name: SERVER_PORT
+              value: "3001"
             - name: GIT_SSH_COMMAND
               value: "ssh -i /etc/git-ssh/id_ed25519 -o StrictHostKeyChecking=accept-new"
           volumeMounts:
