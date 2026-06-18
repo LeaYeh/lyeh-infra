@@ -24,8 +24,8 @@ spec:
           type: RuntimeDefault
       containers:
         - name: claudecodeui
-          # Image is built/pushed separately (deferred); retag from :latest to a dated tag once built.
-          image: ghcr.io/leayeh/claudecodeui:latest
+          # Image built & tag bumped by .github/workflows/agent-deploy.yml on push to main.
+          image: ghcr.io/leayeh/claudecodeui:sha-bootstrap
           ports:
             - containerPort: 3001
           readinessProbe:
