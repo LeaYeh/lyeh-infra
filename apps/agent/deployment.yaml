@@ -25,7 +25,7 @@ spec:
       containers:
         - name: claudecodeui
           # Image built & tag bumped by .github/workflows/agent-deploy.yml on push to main.
-          image: ghcr.io/leayeh/claudecodeui:sha-bootstrap
+          image: ghcr.io/leayeh/claudecodeui:sha-c5269f3936f4002d83ae3b827a137592891a672a
           ports:
             - containerPort: 3001
           readinessProbe:
