@@ -55,7 +55,20 @@ apply_secret() { kubectl create secret generic "$@" --dry-run=client -o yaml | k
 # ─── Pre-flight ───────────────────────────────────────────────────────
 step "Pre-flight"
 command -v kubectl >/dev/null || die "kubectl not found in PATH"
-kubectl version --request-timeout=5s >/dev/null 2>&1 || die "kubectl cannot reach the cluster (check kubeconfig/context)"
+
+# A script is a non-interactive shell, so ~/.bashrc is NOT sourced and KUBECONFIG
+# may be unset. The k3s-bundled kubectl then defaults to the root-only
+# /etc/rancher/k3s/k3s.yaml (permission denied). Fall back to readable kubeconfigs.
+if ! kubectl version --request-timeout=5s >/dev/null 2>&1; then
+  for kc in "${KUBECONFIG:-}" "$HOME/.kube/config" /etc/rancher/k3s/k3s.yaml; do
+    [[ -n "$kc" && -r "$kc" ]] || continue
+    if KUBECONFIG="$kc" kubectl version --request-timeout=5s >/dev/null 2>&1; then
+      export KUBECONFIG="$kc"; warn "using KUBECONFIG=$kc"; break
+    fi
+  done
+fi
+kubectl version --request-timeout=5s >/dev/null 2>&1 \
+  || die "kubectl cannot reach the cluster (tried \$KUBECONFIG, ~/.kube/config, /etc/rancher/k3s/k3s.yaml). On the k3s VM run: export KUBECONFIG=\$HOME/.kube/config"
 ok "kubectl reachable — context: $(kubectl config current-context 2>/dev/null || echo unknown)"
 
 if kubectl get namespace "$NS" >/dev/null 2>&1; then
