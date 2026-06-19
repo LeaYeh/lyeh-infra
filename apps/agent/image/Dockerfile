@@ -3,10 +3,23 @@
 FROM node:22-bookworm-slim
 
 # Tools the agent needs at runtime: git + ssh client for clone/push, zsh as the
-# interactive shell, less/vim/tree for editing & browsing, plus the Claude Code CLI.
+# interactive shell, less/vim/tree for editing & browsing, jq/ripgrep/fzf/unzip
+# as common dev utilities, plus the Claude Code CLI.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         git openssh-client ca-certificates curl zsh less vim tree \
+        jq ripgrep fzf unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# GitHub CLI (gh) — not in Debian; install from the official apt repo.
+RUN mkdir -p -m 755 /etc/apt/keyrings \
+    && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+        -o /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+    && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+        > /etc/apt/sources.list.d/github-cli.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends gh \
     && rm -rf /var/lib/apt/lists/*
 
 # Claude Code CLI on PATH (used by claudecodeui to spawn sessions).
