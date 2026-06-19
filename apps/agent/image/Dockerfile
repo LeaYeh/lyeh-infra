@@ -2,9 +2,10 @@
 # Build/push (ghcr.io/leayeh/claudecodeui) is performed separately; not built here.
 FROM node:22-bookworm-slim
 
-# Tools the agent needs at runtime: git + ssh client for clone/push, plus the Claude Code CLI.
+# Tools the agent needs at runtime: git + ssh client for clone/push, zsh as the
+# interactive shell, plus the Claude Code CLI.
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends git openssh-client ca-certificates curl \
+    && apt-get install -y --no-install-recommends git openssh-client ca-certificates curl zsh \
     && rm -rf /var/lib/apt/lists/*
 
 # Claude Code CLI on PATH (used by claudecodeui to spawn sessions).
@@ -18,7 +19,8 @@ RUN git clone --depth 1 https://github.com/siteboon/claudecodeui . \
 
 ENV HOME=/data \
     SERVER_PORT=3001 \
-    HOST=0.0.0.0
+    HOST=0.0.0.0 \
+    SHELL=/usr/bin/zsh
 EXPOSE 3001
 
 # Production start script (confirmed from upstream package.json): serves built client + API.
