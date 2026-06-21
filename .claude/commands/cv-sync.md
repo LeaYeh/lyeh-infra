@@ -1,110 +1,60 @@
-Sync your JSON Resume (GitHub Gist) with lyeh-infra portal content.
+Fold new experiences from portal/blog content into the comprehensive CV (`docs/resume/cv.json`).
 Run from the lyeh-infra repo root.
 
 **Language:** Traditional Chinese (zh-TW) for all user-facing output.
 
-## Step 1 — Load config
+This is **Flow 1 (intake)** of the resume SSOT system (see `docs/resume_ssot_spec.md`):
+`portal content → cv.json`. cv.json is the comprehensive intake pool ("包山包海"); tailored
+resumes are derived from it separately via `/cv-tailor`. Publishing cv.json → Gist is a
+separate step (`make cv-publish`). This command does NOT touch the Gist.
 
-Run:
+## Step 1 — Read portal content
+
+List then read (skip any `_index.md`):
 ```bash
-cat scripts/cv-sync.env 2>/dev/null
+ls apps/portal/src/content/about.md \
+   apps/portal/src/content/posts/*.md \
+   apps/portal/src/content/projects/*.md 2>/dev/null
 ```
+Hold all content in context.
 
-Parse `GIST_ID` from the output (strip surrounding quotes and whitespace).
-If the file is missing or GIST_ID is empty, print:
+## Step 2 — Read the current CV
 
-> `scripts/cv-sync.env` 不存在或 GIST_ID 未設定。
-> 請建立檔案並填入：`GIST_ID=your-gist-id-here`
+Read `docs/resume/cv.json` (JSON Resume schema). This is what you are extending.
 
-Then stop.
+## Step 3 — Analyze: what is in portal content but not yet in the CV?
 
-## Step 2 — Verify gh auth
+Compare. Look for experiences worth folding in:
+- New **projects** described in `projects/*.md` or posts that are absent from `cv.json.projects`.
+- New **skills / technologies** mentioned in `about.md` ("Current" / "Exploring") missing from `cv.json.skills`.
+- New **achievements or work facets** (e.g. the c-sense AI-initiative track in `about.md`) not yet in the relevant `work[*].highlights`.
 
-Run:
-```bash
-gh auth status 2>&1
-```
+## Step 4 — Propose (numbered, then STOP)
 
-If the exit code is non-zero, print:
-
-> `gh` 未登入，請執行 `gh auth login` 後再試。
-
-Then stop.
-
-## Step 3 — Read portal content
-
-List available files:
-```bash
-ls apps/portal/src/content/posts/*.md \
-   apps/portal/src/content/projects/*.md \
-   apps/portal/src/content/about.md 2>/dev/null
-```
-
-Use the Read tool to read each file returned, **skipping any named `_index.md`**.
-Hold all content in context for analysis.
-
-## Step 4 — Fetch JSON Resume from Gist
-
-Run (replace `$GIST_ID` with the value from Step 1):
-```bash
-gh api /gists/$GIST_ID
-```
-
-From the JSON response, locate the key inside `.files` whose name ends in `.json`.
-Extract its `.content` field — that is the full JSON Resume text.
-Parse it as JSON and hold in context.
-
-If no `.json` file exists in the Gist, print an error and stop.
-
-## Step 5 — Analyze and generate suggestions
-
-Compare portal content with the JSON Resume. Check:
-- `basics.summary` — does it reflect current role, focus, and recent work?
-- `work[*].highlights` — are key achievements or projects from the portal missing?
-- `skills[*].keywords` — are new technologies or skills mentioned in portal absent from CV?
-- `projects[*]` — does the CV projects section align with portal project pages?
-
-Present a numbered list in conversation:
+Present a numbered list, each with reason + proposed value:
 
 ```
-找到 N 條建議：
+找到 N 條可折入 cv.json 的內容：
 
-**[1] basics.summary — replace**
-理由：about.md 描述了 AI initiative，但 CV summary 未反映。
-建議值：「...（完整建議內容）...」
+**[1] projects — add "JD Analyzer"**
+理由：projects/ 有此專案頁，cv.json.projects 尚無。
+建議值：{ "name": "...", "description": "...", "url": "..." }
 
-**[2] work[0].highlights — append**
-理由：...
+**[2] work[0] (c-sense) highlights — append**
+理由：about.md 描述 AI initiative，cv.json 未反映。
 建議值：「...」
-
-請告訴我要接受哪些（例如「接受 1、3，把 2 改成更簡短的版本」），或說「全部接受」。
 ```
 
-If no suggestions, print `CV 目前已是最新狀態，不需要更新。` and stop.
+Then **stop and wait** for the user's natural-language reply (e.g. 「接受 1、3」/「全部接受」).
 
-## Step 6 — Wait for user response
+## Step 5 — Apply (additive only)
 
-**Stop here.** Do not modify anything. Wait for the user's natural-language reply.
+Based on the reply, build the updated `cv.json`:
+- **ADDITIVE ONLY** — never delete or reword existing content.
+- **Never touch invariant fields**: basics contact, work employer/position/dates/location, education, languages.
+- Ground every addition in the portal source; **invent nothing**. Mark in-progress work `(in-progress)`.
+- Keep JSON Resume schema valid; match existing style (indent 2, non-ASCII preserved).
 
-## Step 7 — Apply changes and update Gist
-
-Based on the user's response, build the complete updated JSON Resume.
-
-Write it to `/tmp/cv-sync-update.json` using the Write tool.
-
-Then run (replace `$GIST_ID` and `$GIST_FILE` with actual values from Step 1 and Step 4):
-```bash
-GIST_FILE=resume.json
-python3 -c "
-import json, sys
-with open('/tmp/cv-sync-update.json') as f:
-    content = f.read()
-payload = json.dumps({'files': {'$GIST_FILE': {'content': content}}})
-sys.stdout.write(payload)
-" | gh api -X PATCH /gists/$GIST_ID --input -
-
-rm -f /tmp/cv-sync-update.json
-```
-
-If successful, print: `✓ Gist 已更新，套用了 N 條建議。`
-If user skipped all suggestions: `未做任何變更。`
+Write `docs/resume/cv.json`, then run `make cv-lint` and report its result.
+Remind the user that `/cv-tailor <facet>` re-derives the resumes and `make cv-publish` publishes the CV.
+If no new content was found, print `cv.json 已涵蓋 portal 內容，無需更新。` and stop.
