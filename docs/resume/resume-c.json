@@ -1,0 +1,341 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "Lea (Mei Ling) Yeh",
+    "label": "MLOps Engineer | AI Platform & Observability | ML Infrastructure",
+    "image": "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156",
+    "email": "lea.yeh.ml@gmail.com",
+    "phone": "",
+    "summary": "MLOps and platform engineer with 8+ years across Data Engineering, Data Science, and Software Engineering, and a Master's in Computer Science. I build the infrastructure layer that keeps ML systems observable and reliable in production — model monitoring (MLflow + Grafana), data-drift tracking, and metrics/logging/alerting stacks (Prometheus, Grafana, ELK) — backed by hands-on ML internals: I built a neural-network framework, autograd, and a hyperparameter tuner from scratch, so I understand models beyond calling an API.\n\nCurrently a Software/Solution Architect at c-sense GmbH and continuing system-level depth at 42 Vienna (Linux internals, Kubernetes/K3s, GitOps). I am actively landing applied LLM systems — RAG, GraphRAG, and LLM observability work is in progress — to move from the AI-platform/MLOps layer toward operating LLM workloads end to end.",
+    "location": {
+      "countryCode": "AT",
+      "address": "Austria, Vienna",
+      "postalCode": "1190",
+      "city": "Vienna"
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "Lea Yeh",
+        "url": "https://www.linkedin.com/in/lea-yeh-60296b74/"
+      },
+      {
+        "network": "GitHub",
+        "username": "LeaYeh",
+        "url": "https://github.com/LeaYeh"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "c-sense GmbH",
+      "position": "Senior Software Engineer",
+      "startDate": "2024-08-01",
+      "endDate": "",
+      "location": "Vienna, Austria",
+      "url": "https://www.c-sense.at/",
+      "summary": "c-sense develops nanoscale sensor technology and AFM/SPM instruments for scientific and industrial applications.",
+      "highlights": [
+        "Architected a modular, layered software framework for SPM instrument control, separating hardware-vendor, orchestration, and application layers for long-term extensibility and reuse",
+        "Defined cross-layer interface contracts and async command-routing patterns, isolating failure domains and enabling parallel hardware/software development",
+        "Delivered automated measurement workflows (spatial sampling, real-time safety management) that let researchers focus on experimental outcomes rather than instrument operation"
+      ]
+    },
+    {
+      "name": "MediaTek",
+      "position": "Data Scientist",
+      "startDate": "2022-09-01",
+      "endDate": "2023-09-01",
+      "highlights": [
+        "Implemented model-monitoring solutions using AWS and Streamlit, ensuring high availability and performance consistency for production ML models",
+        "Developed ML models to enhance mobile temperature control mechanisms, achieving temperature errors below 1°C",
+        "Collaborated with chip developers to reduce power consumption by 20%, resulting in a 14K Antutu score improvement in mobile performance"
+      ],
+      "summary": "Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.",
+      "url": "https://www.linkedin.com/company/17763",
+      "location": "Taipei, Taiwan"
+    },
+    {
+      "name": "MediaTek",
+      "position": "Data Engineer",
+      "startDate": "2019-07-01",
+      "endDate": "2022-09-01",
+      "highlights": [
+        "Built ML model-monitoring infrastructure using MLflow and Grafana dashboards to track model performance and data drift in production",
+        "Implemented real-time data-quality monitoring and alerting, reducing data missing rates from 50% to <1% and lowering monthly labor costs by 7.5 man-days",
+        "Established automated data pipelines for structured and unstructured data; designed PB-level ETL processes using Airflow, NiFi, Dataflow, and BigQuery on GCP",
+        "Managed EDA License and Computing Farm costs via interactive BI Dashboard (Splunk + Grafana), aiding procurement decisions and reducing costs by 25%"
+      ],
+      "summary": "Built data infrastructure and analytics platforms for one of the world's largest IC design companies.",
+      "url": "https://www.linkedin.com/company/17763",
+      "location": "Taipei, Taiwan"
+    },
+    {
+      "name": "MediaTek",
+      "position": "Software Engineer",
+      "startDate": "2016-09-01",
+      "endDate": "2019-06-01",
+      "highlights": [
+        "Developed an automated ICD DMS using Python and Jenkins to enforce documentation standards",
+        "Developed debugging and analysis tools for Modem Logs"
+      ],
+      "summary": "",
+      "url": "https://www.linkedin.com/company/17763",
+      "location": "Taipei, Taiwan"
+    }
+  ],
+  "education": [
+    {
+      "institution": "42 Vienna",
+      "area": "Computer Science — Software Architecture, Linux Kernel & DevOps",
+      "studyType": "Ongoing Professional Development",
+      "startDate": "2023-09-01",
+      "endDate": "",
+      "url": "https://www.42vienna.com/about/",
+      "score": "",
+      "courses": [
+        "Software Architecture — SOLID principles, hexagonal architecture, ADR-driven design (libftpp)",
+        "Linux Kernel Internals — built Linux from scratch: toolchain, kernel compilation, bootloader, init (ft_linux)",
+        "DevOps & Container Orchestration — K3s, Kubernetes, Vagrant, GitOps/ArgoCD (Inception-of-Things)",
+        "System Programming — HTTP server, shell interpreter in C/C++ (webserver, minishell)",
+        "AI Framework Internals — neural net framework, hyperparameter tuner, ML toolkit from scratch (litetorch, litetune, sklite)"
+      ]
+    },
+    {
+      "institution": "National Chiao Tung University",
+      "area": "Computer Science",
+      "studyType": "Master of Data Mining",
+      "url": "https://www.nycu.edu.tw/nycu/en/",
+      "startDate": "2014-09-01",
+      "endDate": "2016-06-01",
+      "score": "",
+      "courses": [
+        "Data Mining",
+        "High-dimensional Clustering"
+      ]
+    },
+    {
+      "institution": "Tatung University",
+      "area": "Computer Science",
+      "studyType": "Bachelor",
+      "url": "https://ao.ttu.edu.tw/",
+      "startDate": "2010-09-01",
+      "endDate": "2014-06-01",
+      "score": "",
+      "courses": [
+        "Computer Vision",
+        "Algorithm"
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "title": "IT Annual Award",
+      "date": "2020-12-01",
+      "awarder": "MediaTek",
+      "summary": "Recognized for impact on data infrastructure and cost reduction initiatives."
+    }
+  ],
+  "certificates": [
+    {
+      "name": "ISTQB Certified Tester Foundation Level (CTFL) v4.0",
+      "date": "2026-04-04",
+      "issuer": "ISTQB / GASQ",
+      "url": "https://app.skillsclub.com/credential/293353-28e36a6435ba059718f6ef53a2b8cf79f593a6d16221c0bd0d9483b06a51c5c3"
+    },
+    {
+      "name": "Microsoft Azure Databricks for Data Engineering",
+      "date": "2024-04-01",
+      "issuer": "Microsoft",
+      "url": "https://www.coursera.org/account/accomplishments/verify/QCEEXZ8HWETC"
+    }
+  ],
+  "publications": [
+    {
+      "name": "Clustering using Radius-Weighted Means and Analytical Radius-Preserved Formula",
+      "publisher": "NCTU",
+      "releaseDate": "2016-06-01"
+    }
+  ],
+  "skills": [
+    {
+      "name": "MLOps & Model Operations",
+      "level": "Advanced",
+      "keywords": [
+        "MLflow",
+        "Model monitoring",
+        "Model deployment",
+        "Data drift tracking",
+        "Prometheus",
+        "Grafana",
+        "ELK stack (Elasticsearch, Logstash, Kibana)",
+        "Splunk",
+        "CI/CD",
+        "Docker",
+        "GitHub Actions"
+      ]
+    },
+    {
+      "name": "Machine Learning & ML Internals",
+      "level": "Advanced",
+      "keywords": [
+        "PyTorch",
+        "Deep Learning",
+        "Model Evaluation",
+        "Autograd / backpropagation (from scratch)",
+        "Hyperparameter tuning",
+        "Explainable AI",
+        "Streamlit"
+      ]
+    },
+    {
+      "name": "Platform & Orchestration",
+      "level": "Advanced",
+      "keywords": [
+        "Kubernetes (K3s)",
+        "Docker",
+        "GitOps / ArgoCD",
+        "Vagrant / VM provisioning",
+        "Helm",
+        "CI/CD",
+        "Git Flow"
+      ]
+    },
+    {
+      "name": "Data Engineering",
+      "level": "Master",
+      "keywords": [
+        "Big data pipeline",
+        "ETL",
+        "Data Warehouse",
+        "Data Quality Monitoring",
+        "Google Cloud Platform (GCP)",
+        "Apache Airflow",
+        "NiFi",
+        "BigQuery",
+        "Dataflow",
+        "Databricks"
+      ]
+    },
+    {
+      "name": "Programming",
+      "level": "Master",
+      "keywords": [
+        "Python",
+        "OOP",
+        "Pandas",
+        "SQL",
+        "C/C++"
+      ]
+    },
+    {
+      "name": "LLM / Applied AI (in-progress)",
+      "level": "Foundation",
+      "keywords": [
+        "LLM application development (in-progress)",
+        "RAG (in-progress)",
+        "GraphRAG (in-progress)",
+        "LangGraph (in-progress)",
+        "LLM observability (in-progress)"
+      ]
+    },
+    {
+      "name": "Systems Architecture",
+      "level": "Advanced",
+      "keywords": [
+        "Event-driven architecture",
+        "Layered system design",
+        "SOLID principles",
+        "Hardware abstraction",
+        "Interface design",
+        "Design Patterns"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "language": "Chinese",
+      "fluency": "Native Speaker"
+    },
+    {
+      "language": "Taiwanese",
+      "fluency": "Native Speaker"
+    },
+    {
+      "language": "English",
+      "fluency": "Professional Working Proficiency"
+    },
+    {
+      "language": "German",
+      "fluency": "Beginner"
+    }
+  ],
+  "interests": [],
+  "references": [],
+  "projects": [
+    {
+      "name": "litetorch + litetune + sklite — AI Framework Toolkit",
+      "description": "A trio of educational ML infrastructure projects: litetorch (neural network framework built from scratch inspired by PyTorch), litetune (hyperparameter tuner inspired by Ray Tune), and sklite (ML preprocessing toolkit inspired by scikit-learn). Demonstrates understanding of ML internals beyond API usage.",
+      "startDate": "2025-03-01",
+      "endDate": "2025-06-01",
+      "highlights": [
+        "Implemented forward/backpropagation, autograd, and layer abstractions from scratch in litetorch",
+        "Built a hyperparameter search and experiment tracking system in litetune, mirroring Ray Tune's trial management model",
+        "Designed preprocessing pipelines and utility functions in sklite for educational clarity and extensibility"
+      ],
+      "url": "https://github.com/42-CC-RNCP",
+      "roles": [
+        "Author"
+      ]
+    },
+    {
+      "name": "ft_transcendence — Full-Stack Platform with Observability Stack",
+      "description": "Contributed the DevOps module for a full-stack multiplayer web platform (42 Vienna capstone project). Responsible for designing and deploying the complete observability infrastructure covering metrics, logging, and alerting.",
+      "startDate": "2025-10-01",
+      "endDate": "2026-03-01",
+      "highlights": [
+        "Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds",
+        "Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform",
+        "Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services",
+        "Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity"
+      ],
+      "url": "https://github.com/anastasiiap42/ft_transcendence/tree/main/devops",
+      "roles": [
+        "DevOps Engineer"
+      ]
+    },
+    {
+      "name": "Inception-of-Things — K3s Kubernetes Cluster",
+      "description": "Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster using Vagrant and VirtualBox, covering cluster networking, ingress, and GitOps-style deployment workflows — the deployment substrate for running model/inference workloads.",
+      "startDate": "2025-06-01",
+      "endDate": "2025-10-01",
+      "highlights": [
+        "Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup",
+        "Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes",
+        "Applied GitOps principles with ArgoCD for continuous deployment in the bonus track"
+      ],
+      "url": "https://github.com/42-CC-RNCP/Inception-of-Things",
+      "roles": [
+        "Developer"
+      ]
+    },
+    {
+      "name": "GraphRAG Proof-of-Concept (POC3) — in-progress",
+      "description": "In-progress proof-of-concept exploring GraphRAG and retrieval-augmented LLM workflows on observable infrastructure. Work is ongoing; RAG/GraphRAG/LangGraph components and LLM observability are not yet completed.",
+      "startDate": "2026-01-01",
+      "endDate": "",
+      "highlights": [
+        "Prototyping a GraphRAG retrieval pipeline and LLM evaluation approach (in-progress)",
+        "Designing LLM observability and data-governance/access-control considerations into the system (in-progress)"
+      ],
+      "url": "https://github.com/LeaYeh",
+      "roles": [
+        "Author"
+      ]
+    }
+  ],
+  "meta": {
+    "version": "v1.0.0",
+    "canonical": "https://github.com/jsonresume/resume-schema/blob/v1.0.0/schema.json"
+  }
+}
