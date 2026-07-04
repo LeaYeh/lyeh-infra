@@ -6,7 +6,7 @@
     "image": "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156",
     "email": "lea.yeh.ml@gmail.com",
     "phone": "",
-    "summary": "Data Engineer with a Master's in Computer Science and 8+ years building data infrastructure, most notably PB-scale ETL pipelines and the first data-warehouse layer at MediaTek (one of the world's largest IC design companies). I specialize in pipeline reliability and data-quality monitoring — cutting missing-data rates from 50% to under 1% — using Airflow, NiFi, Dataflow, and BigQuery on GCP.\n\nMy distributed-data experience is GCP-native (Beam/Dataflow); I am Azure Databricks certified (Microsoft) and currently building hands-on Spark/Delta Lake skills to apply this transferable foundation to the Databricks/PySpark stack. I am honest about this transition: deep on distributed ETL and data quality, growing on Spark.",
+    "summary": "Data Engineer with PB-scale ETL and data-quality depth: built MediaTek's first data-warehouse layer with Airflow/NiFi/Dataflow/BigQuery on GCP, cutting missing-data rates from 50% to under 1%. Azure Databricks certified; actively building Spark/Delta Lake hands-on.",
     "location": {
       "countryCode": "AT",
       "address": "Austria, Vienna",

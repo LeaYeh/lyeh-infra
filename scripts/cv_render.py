@@ -310,7 +310,7 @@ def build_html(resume, mode):
     right = []
     summary = basics.get("summary")
     if summary:
-        text = summary if mode == "cv" else first_paragraph(summary, limit=240)
+        text = summary if mode == "cv" else first_paragraph(summary, limit=320)
         text_html = "".join(f"<p>{esc(par)}</p>" for par in text.split("\n\n"))
         right.append(f'<section class="sec summary">{text_html}</section>')
     right.append(render_work(resume.get("work"), mode))

@@ -6,7 +6,7 @@
     "image": "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156",
     "email": "lea.yeh.ml@gmail.com",
     "phone": "",
-    "summary": "Senior engineer who both designs production systems and runs the infrastructure under them. At c-sense GmbH I architect a modular, layered instrument-control framework — defining cross-layer interface contracts, async command routing, and hardware-abstraction boundaries for long-term extensibility. Alongside that, I operate observable production infrastructure hands-on: GitOps with ArgoCD on K3s/Kubernetes, Helm-based IaC, Docker, GitHub Actions CI/CD, and full observability stacks (Prometheus, Grafana, ELK) — including a personal Hetzner cluster running live.\n\nMy background spans 8+ years across software engineering and large-scale data infrastructure, with a Master's in Computer Science. At 42 Vienna I continue deepening Linux internals, container orchestration, and system architecture, building toward platform and SRE engineering roles.",
+    "summary": "Platform engineer who designs and operates the same infrastructure. Production K3s + ArgoCD/GitOps, Prometheus/Grafana/ELK, GitHub Actions CI/CD — alongside software architecture (async routing, hardware-abstraction layers, interface contracts) at c-sense GmbH. Running a personal Hetzner K3s cluster live.",
     "location": {
       "countryCode": "AT",
       "address": "Austria, Vienna",

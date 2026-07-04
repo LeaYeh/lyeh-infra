@@ -6,7 +6,7 @@
     "image": "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156",
     "email": "lea.yeh.ml@gmail.com",
     "phone": "",
-    "summary": "MLOps and platform engineer with 8+ years across Data Engineering, Data Science, and Software Engineering, and a Master's in Computer Science. I build the infrastructure layer that keeps ML systems observable and reliable in production — model monitoring (MLflow + Grafana), data-drift tracking, and metrics/logging/alerting stacks (Prometheus, Grafana, ELK) — backed by hands-on ML internals: I built a neural-network framework, autograd, and a hyperparameter tuner from scratch, so I understand models beyond calling an API.\n\nCurrently a Software/Solution Architect at c-sense GmbH and continuing system-level depth at 42 Vienna (Linux internals, Kubernetes/K3s, GitOps). I am actively landing applied LLM systems — RAG, GraphRAG, and LLM observability work is in progress — to move from the AI-platform/MLOps layer toward operating LLM workloads end to end.",
+    "summary": "MLOps engineer bridging the platform layer (model monitoring, data-drift, Prometheus/Grafana/MLflow, K3s/ArgoCD) and ML internals — built a neural-net framework, autograd, and hyperparameter tuner from scratch. Currently extending into LLM workloads: RAG/GraphRAG and LLM observability in progress.",
     "location": {
       "countryCode": "AT",
       "address": "Austria, Vienna",
