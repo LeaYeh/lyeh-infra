@@ -175,20 +175,6 @@
         "Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes",
         "Applied GitOps principles with ArgoCD for continuous deployment in the bonus track"
       ]
-    },
-    {
-      "name": "GraphRAG Proof-of-Concept (POC3) — in-progress",
-      "startDate": "2026-01-01",
-      "endDate": "",
-      "url": "https://github.com/LeaYeh",
-      "roles": [
-        "Author"
-      ],
-      "description": "In-progress proof-of-concept exploring GraphRAG and retrieval-augmented LLM workflows on observable infrastructure. Work is ongoing; RAG/GraphRAG/LangGraph components and LLM observability are not yet completed.",
-      "highlights": [
-        "Prototyping a GraphRAG retrieval pipeline and LLM evaluation approach (in-progress)",
-        "Designing LLM observability and data-governance/access-control considerations into the system (in-progress)"
-      ]
     }
   ],
   "skills": [

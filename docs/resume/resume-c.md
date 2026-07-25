@@ -179,20 +179,6 @@ Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster usi
 - Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes <!-- src: inception-of-things-h2 @b8a4 -->
 - Applied GitOps principles with ArgoCD for continuous deployment in the bonus track <!-- src: inception-of-things-h3 @2291 -->
 
-## GraphRAG Proof-of-Concept (POC3) — in-progress
-<!--meta
-id = "graphrag-poc3"
-start = "2026-01-01"
-end = ""
-url = "https://github.com/LeaYeh"
-roles = ["Author"]
--->
-
-In-progress proof-of-concept exploring GraphRAG and retrieval-augmented LLM workflows on observable infrastructure. Work is ongoing; RAG/GraphRAG/LangGraph components and LLM observability are not yet completed.
-
-- Prototyping a GraphRAG retrieval pipeline and LLM evaluation approach (in-progress)
-- Designing LLM observability and data-governance/access-control considerations into the system (in-progress)
-
 # Skills
 
 ## MLOps & Model Operations
