@@ -4,9 +4,16 @@
 Checks, in order:
   1. invariants  — contact / employer / dates / education / languages agree across all files
   2. provenance  — every facet bullet cites a live cv.md bullet ID with a current fingerprint
-  3. numbers     — every digit in a facet bullet exists in its source bullet
-  4. banned terms— docs/resume/rules.toml patterns
+  3. numbers     — every number in facet text is grounded in the cv.md text it derives from
+  4. banned terms— docs/resume/rules.toml patterns, over every published string
   5. freshness   — the committed JSON matches what the Markdown builds to
+
+Bullets are not the document. About half of what reaches the JSON is prose or
+frontmatter — ``# Summary`` prose becomes ``basics.summary``, entry prose
+becomes ``work[].summary`` / ``projects[].description``, and the frontmatter
+``label`` becomes ``basics.label``, the first line a reader sees. ``_all_texts``
+is therefore the single definition of "everything in this document a gate must
+look at"; the gates filter it rather than each re-deciding what a document is.
 """
 from __future__ import annotations
 
@@ -24,9 +31,22 @@ RESUME_DIR = Path(__file__).resolve().parent.parent / "docs" / "resume"
 CV_MD = RESUME_DIR / "cv.md"
 RULES_FILE = RESUME_DIR / "rules.toml"
 NUMBER_RE = re.compile(
-    r"(?<![A-Za-z0-9])\d+(?:[.,]\d+)*(?:[xX×]|[KkMmBb])?(?![A-Za-z0-9])"
+    r"(?<![A-Za-z0-9])\d+(?:[.,]\d+)*(?:[xX×]|[KkMmBb]|[A-Za-z]{2,3})?(?![A-Za-z0-9])"
 )
 URL_RE = re.compile(r"https?://\S+")
+
+# Magnitudes a regex cannot ground: "doubled throughput" is a claim with no
+# digit in it. These produce a non-fatal warning — the operator is told which
+# phrase to check by eye, not blocked.
+MAGNITUDE_WORDS = (
+    "doubled", "halved", "tripled", "quadrupled",
+    "thousand", "million", "billion",
+    "twofold", "two-fold", "threefold", "three-fold",
+    "order of magnitude",
+)
+MAGNITUDE_RE = re.compile(
+    r"\b(?:" + "|".join(re.escape(w) for w in MAGNITUDE_WORDS) + r")\b", re.IGNORECASE
+)
 
 BASICS_KEYS = ("name", "email", "phone", "location")
 WORK_KEYS = ("name", "position", "startDate", "endDate", "location")
@@ -106,8 +126,35 @@ def check_invariants(cv_md: Path, facet_mds: list[Path]) -> list[Problem]:
     return problems
 
 
-def _all_bullets(md_path: Path) -> tuple[list[tuple[str, Bullet]], Problem | None]:
-    """Return every bullet in the document, with its section title.
+FRONTMATTER_TEXT_KEYS = ("label", "summary")
+
+
+@dataclass(frozen=True)
+class Text:
+    """One checkable string in a document, with where it came from.
+
+    ``kind`` is one of ``frontmatter`` / ``section-prose`` / ``entry-prose`` /
+    ``bullet``. ``where`` names the location for a human; it prefixes the
+    message of any non-bullet finding, because a prose or frontmatter finding
+    is anchored to a heading line (or to line 1) rather than to the text
+    itself, and the line alone would be ambiguous.
+    """
+
+    kind: str
+    text: str
+    line: int
+    where: str
+    section: str | None = None
+    entry_id: str | None = None
+    bullet: Bullet | None = None
+
+    @property
+    def prefix(self) -> str:
+        return "" if self.kind == "bullet" else f"{self.where}: "
+
+
+def _all_texts(md_path: Path) -> tuple[list[Text], Problem | None]:
+    """Every string in the document that reaches the JSON, in source order.
 
     A malformed document is reported as a ``Problem`` instead of raised, so
     one bad file cannot abort the gates for every other file.
@@ -115,13 +162,42 @@ def _all_bullets(md_path: Path) -> tuple[list[tuple[str, Bullet]], Problem | Non
     doc, problem = _try_parse(md_path)
     if problem is not None:
         return [], problem
-    bullets = [
-        (section.title, bullet)
-        for section in doc.sections
-        for entry in section.entries
-        for bullet in entry.bullets
-    ]
-    return bullets, None
+
+    texts: list[Text] = []
+    for key in FRONTMATTER_TEXT_KEYS:
+        value = doc.frontmatter.get(key)
+        if isinstance(value, str) and value.strip():
+            # A frontmatter value has no line of its own: the parser hands
+            # back a TOML dict, not a position. Line 1 (the opening fence) is
+            # honest about that; a guessed line would send the operator to the
+            # wrong place.
+            texts.append(Text("frontmatter", value, 1, f"frontmatter '{key}'"))
+
+    for section in doc.sections:
+        if section.prose:
+            texts.append(Text(
+                "section-prose", section.prose, section.line,
+                f"'{section.title}' prose", section=section.title,
+            ))
+        for entry in section.entries:
+            entry_id = entry.meta.get("id")
+            if entry.prose:
+                texts.append(Text(
+                    "entry-prose", entry.prose, entry.line,
+                    f"'{entry.heading}' prose", section.title, entry_id,
+                ))
+            for bullet in entry.bullets:
+                texts.append(Text(
+                    "bullet", bullet.text, bullet.line, "bullet",
+                    section.title, entry_id, bullet,
+                ))
+    return texts, None
+
+
+def _all_bullets(md_path: Path) -> tuple[list[tuple[str, Bullet]], Problem | None]:
+    """Return every bullet in the document, with its section title."""
+    texts, problem = _all_texts(md_path)
+    return [(t.section, t.bullet) for t in texts if t.kind == "bullet"], problem
 
 
 def cv_index(cv_md: Path) -> tuple[dict[str, str], list[Problem]]:
@@ -182,59 +258,134 @@ def load_rules(path: Path = RULES_FILE) -> dict:
 
 
 def check_rules(mds: list[Path], rules: dict) -> list[Problem]:
-    """Banned terms are never allowed; qualified terms need their qualifier nearby."""
+    """Banned terms are never allowed; qualified terms need their qualifier nearby.
+
+    Applied to every published string — bullets, entry prose, section prose and
+    the frontmatter ``label`` / ``summary``. A claim the rules exist to forbid
+    is no less published for being a summary sentence.
+    """
     problems: list[Problem] = []
     for md in mds:
-        bullets, problem = _all_bullets(md)
+        texts, problem = _all_texts(md)
         if problem is not None:
             problems.append(problem)
             continue
-        for _, bullet in bullets:
+        for t in texts:
             for rule in rules["banned"]:
-                if re.search(rule["pattern"], bullet.text, re.IGNORECASE):
-                    problems.append(Problem(md.name, bullet.line, rule["message"]))
+                if re.search(rule["pattern"], t.text, re.IGNORECASE):
+                    problems.append(Problem(md.name, t.line, t.prefix + rule["message"]))
             for rule in rules["qualified"]:
-                if re.search(rule["pattern"], bullet.text, re.IGNORECASE) and not re.search(
-                    rule["requires"], bullet.text, re.IGNORECASE
+                if re.search(rule["pattern"], t.text, re.IGNORECASE) and not re.search(
+                    rule["requires"], t.text, re.IGNORECASE
                 ):
-                    problems.append(Problem(md.name, bullet.line, rule["message"]))
+                    problems.append(Problem(md.name, t.line, t.prefix + rule["message"]))
     return problems
 
 
 def _claimed_numbers(text: str) -> list[str]:
     """Standalone numeric tokens in ``text`` — the only things that count as claims.
 
-    A number glued to letters (``k3s``, ``CX23``) is part of an identifier, not
-    a measurement, and is excluded by the lookaround. URLs are stripped first
-    since a digit run inside one (a doc ID, a query param) is never a claim
-    either. ``5x`` / ``5×`` is kept as a claim — "reduced build time 5x" is a
-    real metric, not an identifier fragment. A single trailing magnitude
-    letter (``K``/``M``/``B``, either case) is also kept as part of the token
-    — "14K" is a claim, not an identifier — while any other trailing letter
-    (e.g. ``3D``) still excludes the digits from being a claim.
+    A number *preceded* by a letter or digit (``k3s``, ``CX23``, ``Python3``,
+    ``v1``) is part of an identifier, not a measurement, and is excluded by the
+    lookbehind — which is the lookaround that does the real work. URLs are
+    stripped first since a digit run inside one (a doc ID, a query param) is
+    never a claim either.
+
+    A number *followed* by a short letter run keeps that run inside the token,
+    so the token carries its unit: ``200ms``, ``30TB``, ``4GB``, ``3rd``, and
+    (via the magnitude branch) ``14K``. Those are the canonical platform and
+    SRE metrics; excluding them, as a bare trailing-letter veto did, hid
+    exactly the numbers a resume inflates. A single non-magnitude letter is
+    still not a unit — ``3D`` is a technique, not a measurement — so the run
+    must be at least two letters unless it is ``K``/``M``/``B`` or ``x``/``×``.
     """
     return NUMBER_RE.findall(URL_RE.sub("", text))
 
 
+def _magnitude_claims(text: str) -> list[str]:
+    """Spelled-out magnitudes ("doubled", "order of magnitude"), lowercased."""
+    seen: list[str] = []
+    for match in MAGNITUDE_RE.findall(text):
+        word = match.lower()
+        if word not in seen:
+            seen.append(word)
+    return seen
+
+
+def _cv_grounding(cv_md: Path) -> tuple[dict[str, str], dict[str, str], str]:
+    """Three views of cv.md, one per grounding rule.
+
+    Returns (bullet ID -> bullet text, entry ID -> that entry's prose and all
+    of its bullets, the whole document's text). Duplicate-ID problems are
+    check_provenance's job, so the first spelling of a bullet ID wins here.
+    """
+    texts, _ = _all_texts(cv_md)
+    bullets: dict[str, str] = {}
+    entries: dict[str, str] = {}
+    for t in texts:
+        if t.kind == "bullet" and t.bullet.id and t.bullet.id not in bullets:
+            bullets[t.bullet.id] = t.bullet.text
+        if t.entry_id:
+            entries[t.entry_id] = f"{entries.get(t.entry_id, '')} {t.text}".strip()
+    return bullets, entries, " ".join(t.text for t in texts)
+
+
+def _grounding(t: Text, bullets: dict[str, str], entries: dict[str, str],
+               whole_cv: str) -> tuple[str, str] | None:
+    """The cv.md text ``t`` must be grounded in, and how to name it.
+
+    None means "not this gate's business": a bullet with no live source anchor
+    is check_provenance's finding, not a number finding reported twice.
+    """
+    if t.kind == "bullet":
+        source = bullets.get(t.bullet.src or "")
+        return None if source is None else (source, f"cv.md '{t.bullet.src}'")
+    if t.kind == "entry-prose":
+        # Prose carries no anchor, so correspondence is by the entry's meta
+        # id — the same slug in every document. A missing entry grounds
+        # against nothing, which is the correct answer, not a reason to skip.
+        return entries.get(t.entry_id or "", ""), f"cv.md entry '{t.entry_id}'"
+    # Section prose and frontmatter are a facet-wide pitch with no single
+    # source entry: the whole of cv.md is what they must be true of.
+    return whole_cv, "cv.md"
+
+
 def check_numbers(cv_md: Path, facet_mds: list[Path]) -> list[Problem]:
-    """A facet bullet may not introduce a number its source bullet does not contain."""
-    index, _ = cv_index(cv_md)          # duplicate-ID problems are check_provenance's job
+    """A facet may not introduce a number the cv.md text it derives from lacks.
+
+    Only facets are checked: cv.md has nothing above it to be grounded
+    against. Comparison is case-insensitive ("14K" and "14k" are the same
+    claim) while the message keeps the spelling the facet actually used.
+    """
+    bullets, entries, whole_cv = _cv_grounding(cv_md)
     problems: list[Problem] = []
     for md in facet_mds:
-        bullets, problem = _all_bullets(md)
+        texts, problem = _all_texts(md)
         if problem is not None:
             problems.append(problem)
             continue
-        for _, bullet in bullets:
-            source = index.get(bullet.src or "")
-            if source is None:
-                continue                      # provenance gate already reported this
-            allowed = set(_claimed_numbers(source))
-            invented = [n for n in _claimed_numbers(bullet.text) if n not in allowed]
+        for t in texts:
+            ground = _grounding(t, bullets, entries, whole_cv)
+            if ground is None:
+                continue
+            source, where = ground
+
+            allowed = {n.lower() for n in _claimed_numbers(source)}
+            invented = [n for n in _claimed_numbers(t.text) if n.lower() not in allowed]
             if invented:
                 problems.append(Problem(
-                    md.name, bullet.line,
-                    f"number(s) {', '.join(invented)} do not appear in cv.md '{bullet.src}'",
+                    md.name, t.line,
+                    f"{t.prefix}number(s) {', '.join(invented)} do not appear in {where}",
+                ))
+
+            grounded_words = _magnitude_claims(source)
+            vague = [w for w in _magnitude_claims(t.text) if w not in grounded_words]
+            if vague:
+                problems.append(Problem(
+                    md.name, t.line,
+                    f"{t.prefix}'{', '.join(vague)}' has no counterpart in {where} — "
+                    f"a spelled-out magnitude cannot be checked mechanically; verify by eye",
+                    fatal=False,
                 ))
     return problems
 
