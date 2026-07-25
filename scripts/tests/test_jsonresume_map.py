@@ -94,6 +94,7 @@ def test_absent_sections_become_empty_lists():
 
 
 def test_schema_and_meta_constants_are_emitted():
+    """Pinned in full: Task 8's migration requires this to match the committed JSON exactly."""
     data, _ = to_jsonresume(parse(DOC))
     assert data["$schema"] == (
         "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json"
