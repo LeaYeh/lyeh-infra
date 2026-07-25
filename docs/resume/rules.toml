@@ -8,7 +8,7 @@ message = "MediaTek used Beam/Dataflow, never Spark/PySpark"
 
 [[banned]]
 pattern = '\bterraform\b'
-message = "IaC here is Helm + ArgoCD, never Terraform"
+message = "IaC here is Kustomize + ArgoCD, never Terraform"
 
 # Terms that may appear only when qualified as not-yet-mastered.
 #

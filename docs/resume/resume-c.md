@@ -223,7 +223,7 @@ level = "Advanced"
 - Docker
 - GitOps / ArgoCD
 - Vagrant / VM provisioning
-- Helm
+- Kustomize
 - CI/CD
 - Git Flow
 

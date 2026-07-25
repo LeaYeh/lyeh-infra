@@ -230,7 +230,7 @@ level = "Advanced"
 - Docker
 - CI/CD pipelines
 - Kubernetes (K3s)
-- IaC via Helm + ArgoCD
+- GitOps via ArgoCD
 
 ## Software Quality & Testing
 <!--meta

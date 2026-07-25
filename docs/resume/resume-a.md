@@ -236,11 +236,11 @@ level = "Advanced"
 
 - Kubernetes (K3s)
 - ArgoCD / GitOps
-- Helm
+- Kustomize
 - Docker
 - GitHub Actions
 - CI/CD
-- IaC via Helm + ArgoCD
+- GitOps via ArgoCD
 - Vagrant / VM provisioning
 
 ## Observability & SRE

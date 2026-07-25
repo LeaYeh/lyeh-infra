@@ -332,7 +332,7 @@ level = "Advanced"
 - DevOps & MLOps
 - Kubernetes (K8s / K3s)
 - Docker
-- Helm
+- Kustomize
 - Vagrant / VM provisioning
 - ArgoCD
 - Traefik ingress

@@ -276,7 +276,7 @@ Machine-checked by [`rules.toml`](rules.toml) via `make cv-lint`; the full human
 "不可宣稱" lists live in `raw/resume_split_blueprint.md` (local-only). Highlights:
 
 - MediaTek used **Beam/Dataflow, never Spark/PySpark** — `banned`.
-- IaC is **Helm + ArgoCD, never Terraform** — `banned`.
+- IaC is **Kustomize + ArgoCD, never Terraform** — `banned`.
 - RAG / LangGraph / agents must be marked **(in-progress)** — `qualified`.
 - German must be marked **beginner** (or A1/A2) — `qualified`.
 - AWS = **model-monitoring only**, not platform depth — *not machine-checked; judgement.*
