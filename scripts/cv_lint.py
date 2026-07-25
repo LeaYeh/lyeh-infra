@@ -22,7 +22,10 @@ from resume_md import fingerprint, parse
 RESUME_DIR = Path(__file__).resolve().parent.parent / "docs" / "resume"
 CV_MD = RESUME_DIR / "cv.md"
 RULES_FILE = RESUME_DIR / "rules.toml"
-NUMBER_RE = re.compile(r"\d+(?:[.,]\d+)*")
+NUMBER_RE = re.compile(
+    r"(?<![A-Za-z0-9])\d+(?:[.,]\d+)*(?:[xX×])?(?![A-Za-z0-9])"
+)
+URL_RE = re.compile(r"https?://\S+")
 
 BASICS_KEYS = ("name", "email", "phone", "location")
 WORK_KEYS = ("name", "position", "startDate", "endDate", "location")
@@ -147,6 +150,18 @@ def check_rules(mds: list[Path], rules: dict) -> list[Problem]:
     return problems
 
 
+def _claimed_numbers(text: str) -> list[str]:
+    """Standalone numeric tokens in ``text`` — the only things that count as claims.
+
+    A number glued to letters (``k3s``, ``CX23``) is part of an identifier, not
+    a measurement, and is excluded by the lookaround. URLs are stripped first
+    since a digit run inside one (a doc ID, a query param) is never a claim
+    either. ``5x`` / ``5×`` is kept as a claim — "reduced build time 5x" is a
+    real metric, not an identifier fragment.
+    """
+    return NUMBER_RE.findall(URL_RE.sub("", text))
+
+
 def check_numbers(cv_md: Path, facet_mds: list[Path]) -> list[Problem]:
     """A facet bullet may not introduce a number its source bullet does not contain."""
     index, _ = cv_index(cv_md)          # duplicate-ID problems are check_provenance's job
@@ -156,8 +171,8 @@ def check_numbers(cv_md: Path, facet_mds: list[Path]) -> list[Problem]:
             source = index.get(bullet.src or "")
             if source is None:
                 continue                      # provenance gate already reported this
-            allowed = set(NUMBER_RE.findall(source))
-            invented = [n for n in NUMBER_RE.findall(bullet.text) if n not in allowed]
+            allowed = set(_claimed_numbers(source))
+            invented = [n for n in _claimed_numbers(bullet.text) if n not in allowed]
             if invented:
                 problems.append(Problem(
                     md.name, bullet.line,

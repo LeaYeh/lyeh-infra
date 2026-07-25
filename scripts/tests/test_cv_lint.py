@@ -171,3 +171,53 @@ def test_number_present_in_source_passes(tmp_path):
     f = write(tmp_path, "resume-a",
               facet(f"- Migrated 12 services <!-- src: csense-h1 @{src_hash} -->"))
     assert check_numbers(cv, [f]) == []
+
+
+def test_digits_in_url_are_not_flagged(tmp_path):
+    # docs/resume/resume-a.md:104 — a Google Slides link whose opaque doc ID
+    # contains digit runs ('13', '3', '4') that are not metric claims.
+    cv = write(tmp_path, "cv", CV)
+    bullet = (
+        "- Hosted a Git Essentials workshop — 'Something You Should Know Before "
+        "Git Branch' — covering branching strategy, rebase, conflict resolution, "
+        "and collaborative workflows (slides: "
+        "https://docs.google.com/presentation/d/13InmNDRSfkeUnGWHNXWFiTr3QCAz4ecFL_wFz-NFdoI/edit?usp=sharing) "
+        f"<!-- src: csense-h1 @{fingerprint(SOURCE)} -->"
+    )
+    f = write(tmp_path, "resume-a", facet(bullet))
+    assert check_numbers(cv, [f]) == []
+
+
+def test_digits_in_identifiers_are_not_flagged(tmp_path):
+    # docs/resume/resume-a.md:164 — 'k3s' and 'CX23' are product names, not
+    # quantities; the source bullet mentions neither.
+    cv = write(tmp_path, "cv", CV)
+    bullet = (
+        "- Runs a k3s cluster on a Hetzner CX23 instance with ArgoCD "
+        "continuously reconciling application state from Git "
+        f"<!-- src: csense-h1 @{fingerprint(SOURCE)} -->"
+    )
+    f = write(tmp_path, "resume-a", facet(bullet))
+    assert check_numbers(cv, [f]) == []
+
+
+def test_percentage_claim_absent_from_source_is_still_fatal(tmp_path):
+    # The highest-value case the gate protects: a standalone percentage claim
+    # must still be caught even after narrowing what counts as a number.
+    cv = write(tmp_path, "cv", CV)
+    f = write(tmp_path, "resume-a",
+              facet(f"- Cut cost 25% <!-- src: csense-h1 @{fingerprint(SOURCE)} -->"))
+    problems = check_numbers(cv, [f])
+    assert problems and problems[0].fatal
+    assert "25" in problems[0].message
+
+
+def test_multiplier_claim_absent_from_source_is_still_fatal(tmp_path):
+    # '5x' / '5×' is a standalone claim ("reduced build time 5x"), not an
+    # identifier fragment — it must still be caught when unsupported.
+    cv = write(tmp_path, "cv", CV)
+    f = write(tmp_path, "resume-a",
+              facet(f"- Reduced build time 5x <!-- src: csense-h1 @{fingerprint(SOURCE)} -->"))
+    problems = check_numbers(cv, [f])
+    assert problems and problems[0].fatal
+    assert "5" in problems[0].message
