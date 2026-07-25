@@ -119,8 +119,8 @@
     },
     {
       "institution": "National Chiao Tung University",
-      "area": "Computer Science",
-      "studyType": "Master of Data Mining",
+      "area": "Computer Science — Data Mining",
+      "studyType": "Master of Science",
       "url": "https://www.nycu.edu.tw/nycu/en/",
       "startDate": "2014-09-01",
       "endDate": "2016-06-01",
@@ -132,7 +132,7 @@
     },
     {
       "institution": "Tatung University",
-      "area": "Computer Science",
+      "area": "Computer Science — Computer Vision & Algorithms",
       "studyType": "Bachelor",
       "url": "https://ao.ttu.edu.tw/",
       "startDate": "2010-09-01",
