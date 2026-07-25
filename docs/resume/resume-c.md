@@ -24,7 +24,7 @@ url = "https://github.com/LeaYeh"
 
 # Summary
 
-MLOps engineer bridging the platform layer (model monitoring, data-drift, Prometheus/Grafana/MLflow, K3s/ArgoCD) and ML internals — built a neural-net framework, autograd, and hyperparameter tuner from scratch. Currently extending into LLM workloads: RAG/GraphRAG and LLM observability in progress.
+MLOps engineer bridging the platform layer (model monitoring, data-drift, Prometheus/Grafana/MLflow, K3s/ArgoCD) and ML internals — built a neural-net framework, autograd, and hyperparameter tuner from scratch. Currently extending into LLM workloads: agentic RAG and LLM observability in progress.
 
 # Work
 
@@ -264,7 +264,7 @@ level = "Foundation"
 
 - LLM application development (in-progress)
 - RAG (in-progress)
-- GraphRAG (in-progress)
+- Agentic RAG (in-progress)
 - LangGraph (in-progress)
 - LLM observability (in-progress)
 
