@@ -1,4 +1,4 @@
-.PHONY: cv-sync cv-tailor cv-lint cv-publish cv-render
+.PHONY: cv-sync cv-tailor cv-lint cv-publish cv-render cv-build cv-test
 
 GIST_ID  := $(shell sed -n 's/^GIST_ID=//p' scripts/cv-sync.env 2>/dev/null | tr -d '"[:space:]')
 
@@ -45,3 +45,6 @@ cv-render: ## Render cv.json (detailed) + resume-*.json (1-page) to PDF via scri
 	  echo "  ✓ $$n.pdf ($$mode)"; \
 	done
 	@echo "✓ PDFs rendered into docs/resume/"
+
+cv-test: ## Run the resume tooling test suite
+	python3 -m pytest scripts/tests -q
