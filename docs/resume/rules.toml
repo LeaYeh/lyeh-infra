@@ -11,10 +11,17 @@ pattern = '\bterraform\b'
 message = "IaC here is Helm + ArgoCD, never Terraform"
 
 # Terms that may appear only when qualified as not-yet-mastered.
+#
+# The qualifier may be the literal (in-progress) marker used in skills lists, or
+# present-continuous framing in a work bullet — "currently architecting …",
+# "evaluating LLM tooling …" — which says the same thing in prose. Note the
+# widened forms are matched anywhere in the bullet, so they can satisfy the rule
+# for a term they do not actually qualify; the marker is the stricter choice when
+# a bullet could read as a proficiency claim.
 [[qualified]]
 pattern = '\b(graph)?rag\b|\blanggraph\b|\bagentic\b'
-requires = '\((in-progress|learning|exploring)\)'
-message = "RAG / LangGraph / agent work must be marked (in-progress)"
+requires = '\((in-progress|learning|exploring)\)|currently \w+ing|\bevaluating\b'
+message = "RAG / LangGraph / agent work must be marked (in-progress) or framed as current activity"
 
 [[qualified]]
 pattern = '\bgerman\b'

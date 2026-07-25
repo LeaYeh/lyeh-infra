@@ -457,7 +457,7 @@ level = "Intermediate"
 
 - LLM Application Development
 - Agentic RAG (in-progress)
-- LangChain / LangGraph
+- LangChain / LangGraph (in-progress)
 - Chroma (vector DB)
 
 ## Systems & Low-Level Programming
