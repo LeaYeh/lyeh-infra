@@ -41,7 +41,8 @@
         "Architected a modular, layered software framework for SPM instrument control — deliberately separating hardware vendor, orchestration, and application layers for long-term extensibility and reuse across future instrument variants",
         "Defined cross-layer interface contracts and async command routing patterns to enable parallel development by hardware and software teams, reducing integration risk during concurrent R&D cycles",
         "Led the design of a hardware abstraction strategy over a LabVIEW-based proprietary API, keeping the software stack agnostic to vendor-specific instrument changes",
-        "Delivered automated measurement capabilities (spatial sampling, real-time safety management) that allow researchers to focus on experimental outcomes rather than instrument operation"
+        "Delivered automated measurement capabilities (spatial sampling, real-time safety management) that allow researchers to focus on experimental outcomes rather than instrument operation",
+        "Collaborated with hardware engineers and research scientists to translate physics measurement protocols into reliable, automated software workflows"
       ]
     },
     {
@@ -99,7 +100,7 @@
       "url": "https://www.42vienna.com/",
       "summary": "Volunteered as a peer tutor at 42 Vienna, supporting fellow students in system programming and software engineering fundamentals. Designed and hosted a Git workshop for the student community.",
       "highlights": [
-        "Hosted a Git Essentials workshop — 'Something You Should Know Before Git Branch' — covering branching strategy, rebase, conflict resolution, and collaborative workflows",
+        "Hosted a Git Essentials workshop — 'Something You Should Know Before Git Branch' — covering branching strategy, rebase, conflict resolution, and collaborative workflows (slides: https://docs.google.com/presentation/d/13InmNDRSfkeUnGWHNXWFiTr3QCAz4ecFL_wFz-NFdoI/edit?usp=sharing)",
         "Provided peer tutoring in C/C++ system programming, shell scripting, and software architecture concepts"
       ]
     },
@@ -112,7 +113,9 @@
       "summary": "Served as one of the organizers at Taiwan in Data Science (TWiDS), a volunteer organization dedicated to promoting data-related fields in Taiwan.",
       "highlights": [
         "Served as event ambassador: conducted interviews with data domain experts for the TWiDS podcast series",
-        "Co-organized the annual TWiDS conference, coordinating speakers, logistics, and community outreach"
+        "Co-organized the annual TWiDS conference, coordinating speakers, logistics, and community outreach",
+        "Promoted awareness and understanding of data science across Taiwan",
+        "Led preparations for workshops, podcasts, and conferences in 2024"
       ]
     }
   ],

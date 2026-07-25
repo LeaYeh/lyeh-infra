@@ -43,7 +43,7 @@ c-sense develops nanoscale sensor technology and AFM/SPM instruments for scienti
 - Defined cross-layer interface contracts and async command-routing patterns, isolating failure domains and enabling parallel HW/SW development while reducing integration risk during concurrent R&D cycles <!-- src: csense-h4 @d8ac -->
 - Designed a hardware-abstraction layer over a proprietary LabVIEW-based API, keeping the software stack vendor-agnostic and resilient to instrument changes <!-- src: csense-h5 @bcb5 -->
 - Delivered automated measurement workflows (spatial sampling, real-time safety management) demanding concurrency and reliability, letting researchers focus on experimental outcomes rather than instrument operation <!-- src: csense-h6 @a9d2 -->
-- Collaborated with hardware engineers and research scientists to translate physics measurement protocols into reliable, automated software workflows
+- Collaborated with hardware engineers and research scientists to translate physics measurement protocols into reliable, automated software workflows <!-- src: csense-h7 @8516 -->
 
 ## MediaTek — Data Scientist
 <!--meta
@@ -101,7 +101,7 @@ url = "https://www.42vienna.com/"
 
 Volunteered as a peer tutor at 42 Vienna, supporting fellow students in system programming and software engineering fundamentals. Designed and hosted a Git workshop for the student community.
 
-- Hosted a Git Essentials workshop — 'Something You Should Know Before Git Branch' — covering branching strategy, rebase, conflict resolution, and collaborative workflows (slides: https://docs.google.com/presentation/d/13InmNDRSfkeUnGWHNXWFiTr3QCAz4ecFL_wFz-NFdoI/edit?usp=sharing) <!-- src: 42-vienna-tutor-h1 @95e2 -->
+- Hosted a Git Essentials workshop — 'Something You Should Know Before Git Branch' — covering branching strategy, rebase, conflict resolution, and collaborative workflows (slides: https://docs.google.com/presentation/d/13InmNDRSfkeUnGWHNXWFiTr3QCAz4ecFL_wFz-NFdoI/edit?usp=sharing) <!-- src: 42-vienna-tutor-h1 @69e6 -->
 - Provided peer tutoring in C/C++ system programming, shell scripting, and software architecture concepts <!-- src: 42-vienna-tutor-h2 @9bfc -->
 
 # Education

@@ -97,8 +97,8 @@ url = "https://www.facebook.com/TWiDataScience/"
 
 Served as one of the organizers at Taiwan in Data Science (TWiDS), a volunteer organization dedicated to promoting data-related fields in Taiwan.
 
-- Promoted awareness and understanding of data science across Taiwan
-- Led preparations for workshops, podcasts, and conferences in 2024
+- Promoted awareness and understanding of data science across Taiwan <!-- src: twids-h3 @8475 -->
+- Led preparations for workshops, podcasts, and conferences in 2024 <!-- src: twids-h4 @6678 -->
 
 # Education
 

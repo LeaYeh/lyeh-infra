@@ -47,6 +47,7 @@ c-sense develops nanoscale sensor technology and AFM/SPM instruments for scienti
 - Defined cross-layer interface contracts and async command routing patterns to enable parallel development by hardware and software teams, reducing integration risk during concurrent R&D cycles {#csense-h4}
 - Led the design of a hardware abstraction strategy over a LabVIEW-based proprietary API, keeping the software stack agnostic to vendor-specific instrument changes {#csense-h5}
 - Delivered automated measurement capabilities (spatial sampling, real-time safety management) that allow researchers to focus on experimental outcomes rather than instrument operation {#csense-h6}
+- Collaborated with hardware engineers and research scientists to translate physics measurement protocols into reliable, automated software workflows {#csense-h7}
 
 ## MediaTek — Data Scientist
 <!--meta
@@ -107,7 +108,7 @@ url = "https://www.42vienna.com/"
 
 Volunteered as a peer tutor at 42 Vienna, supporting fellow students in system programming and software engineering fundamentals. Designed and hosted a Git workshop for the student community.
 
-- Hosted a Git Essentials workshop — 'Something You Should Know Before Git Branch' — covering branching strategy, rebase, conflict resolution, and collaborative workflows {#42-vienna-tutor-h1}
+- Hosted a Git Essentials workshop — 'Something You Should Know Before Git Branch' — covering branching strategy, rebase, conflict resolution, and collaborative workflows (slides: https://docs.google.com/presentation/d/13InmNDRSfkeUnGWHNXWFiTr3QCAz4ecFL_wFz-NFdoI/edit?usp=sharing) {#42-vienna-tutor-h1}
 - Provided peer tutoring in C/C++ system programming, shell scripting, and software architecture concepts {#42-vienna-tutor-h2}
 
 ## Taiwan in Data Science (TWiDS) — Event Ambassador & Volunteer Organizer
@@ -122,6 +123,8 @@ Served as one of the organizers at Taiwan in Data Science (TWiDS), a volunteer o
 
 - Served as event ambassador: conducted interviews with data domain experts for the TWiDS podcast series {#twids-h1}
 - Co-organized the annual TWiDS conference, coordinating speakers, logistics, and community outreach {#twids-h2}
+- Promoted awareness and understanding of data science across Taiwan {#twids-h3}
+- Led preparations for workshops, podcasts, and conferences in 2024 {#twids-h4}
 
 # Education
 
