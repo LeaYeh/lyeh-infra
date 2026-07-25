@@ -23,8 +23,8 @@ cv-tailor: ## Curate cv.json into a facet resume — assisted; use the /cv-tailo
 cv-build: ## Compile docs/resume/*.md (SSOT) into JSON Resume — schema-gated
 	python3 scripts/cv_build.py
 
-cv-lint: ## Drift backstop: invariants in resume-*.json must match cv.json (decision #13)
-	python3 scripts/cv-lint.py
+cv-lint: ## Gates: invariants, provenance, numbers, banned terms, JSON freshness
+	python3 scripts/cv_lint.py
 
 cv-publish: cv-build cv-lint ## Push docs/resume/cv.json to the public Gist (decision #11)
 	@test -n "$(GIST_ID)" || { echo "GIST_ID missing in scripts/cv-sync.env"; exit 1; }
