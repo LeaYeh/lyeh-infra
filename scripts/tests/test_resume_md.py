@@ -82,3 +82,75 @@ def test_fingerprint_is_whitespace_insensitive_and_four_hex():
     assert a == b
     assert len(a) == 4
     assert all(c in "0123456789abcdef" for c in a)
+
+
+from resume_md import parse
+
+DOC = '''+++
+name = "Lea"
++++
+
+# Summary
+
+Senior engineer
+and architect.
+
+# Work
+
+## c-sense GmbH — Senior Software Engineer
+<!--meta
+id = "csense"
+start = "2024-08-01"
+-->
+
+c-sense builds sensors.
+
+- Drove the GitOps migration {#csense-h1}
+- Cut the CI loop {#csense-h2}
+
+## MediaTek — Data Engineer
+<!--meta
+id = "mtk"
+start = "2018-01-01"
+-->
+
+- Built pipelines {#mtk-h1}
+'''
+
+
+def test_parse_returns_frontmatter():
+    doc = parse(DOC)
+    assert doc.frontmatter == {"name": "Lea"}
+
+
+def test_parse_collects_sections_in_order():
+    doc = parse(DOC)
+    assert [s.title for s in doc.sections] == ["Summary", "Work"]
+
+
+def test_parse_section_prose_joins_wrapped_lines():
+    doc = parse(DOC)
+    assert doc.sections[0].prose == "Senior engineer and architect."
+
+
+def test_parse_entry_heading_meta_prose_and_bullets():
+    work = parse(DOC).sections[1]
+    assert [e.heading for e in work.entries] == [
+        "c-sense GmbH — Senior Software Engineer",
+        "MediaTek — Data Engineer",
+    ]
+    first = work.entries[0]
+    assert first.meta["id"] == "csense"
+    assert first.prose == "c-sense builds sensors."
+    assert [b.id for b in first.bullets] == ["csense-h1", "csense-h2"]
+
+
+def test_parse_records_line_numbers():
+    work = parse(DOC).sections[1]
+    assert work.entries[0].line == 12
+    assert work.entries[0].bullets[0].line == 20
+
+
+def test_parse_rejects_entry_before_any_section():
+    with pytest.raises(MdError):
+        parse('+++\nname = "Lea"\n+++\n\n## Orphan entry\n')

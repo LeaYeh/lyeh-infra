@@ -93,3 +93,97 @@ def parse_bullet(line: str, lineno: int) -> Bullet:
         rest = rest[: id_m.start()]
 
     return Bullet(text=rest.strip(), line=lineno, id=bullet_id, src=src, src_hash=src_hash)
+
+
+@dataclass
+class Entry:
+    heading: str
+    line: int
+    meta: dict = field(default_factory=dict)
+    prose: str = ""
+    bullets: list[Bullet] = field(default_factory=list)
+
+
+@dataclass
+class Section:
+    title: str
+    line: int
+    prose: str = ""
+    entries: list[Entry] = field(default_factory=list)
+
+
+@dataclass
+class Document:
+    frontmatter: dict
+    sections: list[Section] = field(default_factory=list)
+
+    def section(self, title: str) -> Section | None:
+        for s in self.sections:
+            if s.title == title:
+                return s
+        return None
+
+
+def parse(text: str) -> Document:
+    frontmatter, body, offset = split_frontmatter(text)
+    doc = Document(frontmatter=frontmatter)
+
+    prose: list[str] = []
+    section: Section | None = None
+    entry: Entry | None = None
+
+    def flush_prose() -> None:
+        if not prose:
+            return
+        joined = " ".join(" ".join(prose).split())
+        target = entry if entry is not None else section
+        if target is None:
+            raise MdError(offset, "prose found before the first '# Section' heading")
+        if target.prose:
+            raise MdError(offset, f"multiple prose paragraphs in '{target_name(target)}'")
+        target.prose = joined
+        prose.clear()
+
+    def target_name(target) -> str:
+        return getattr(target, "heading", None) or getattr(target, "title", "?")
+
+    i = 0
+    while i < len(body):
+        raw = body[i]
+        lineno = offset + i
+        stripped = raw.strip()
+
+        if stripped.startswith(META_OPEN):
+            if entry is None:
+                raise MdError(lineno, "meta block must follow a '## ' entry heading")
+            flush_prose()
+            entry.meta, consumed = parse_meta_block(body, i, offset)
+            i = consumed
+            continue
+
+        if stripped.startswith("## "):
+            flush_prose()
+            if section is None:
+                raise MdError(lineno, "'## ' entry found before any '# Section' heading")
+            entry = Entry(heading=stripped[3:].strip(), line=lineno)
+            section.entries.append(entry)
+        elif stripped.startswith("# "):
+            flush_prose()
+            entry = None
+            section = Section(title=stripped[2:].strip(), line=lineno)
+            doc.sections.append(section)
+        elif stripped.startswith("- "):
+            flush_prose()
+            if entry is None:
+                if section is None:
+                    raise MdError(lineno, "bullet found before any '# Section' heading")
+                raise MdError(lineno, f"bullet in section '{section.title}' has no '## ' entry")
+            entry.bullets.append(parse_bullet(stripped, lineno))
+        elif stripped:
+            prose.append(stripped)
+        else:
+            flush_prose()
+        i += 1
+
+    flush_prose()
+    return doc
