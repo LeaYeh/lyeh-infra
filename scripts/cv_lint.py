@@ -24,7 +24,7 @@ RESUME_DIR = Path(__file__).resolve().parent.parent / "docs" / "resume"
 CV_MD = RESUME_DIR / "cv.md"
 RULES_FILE = RESUME_DIR / "rules.toml"
 NUMBER_RE = re.compile(
-    r"(?<![A-Za-z0-9])\d+(?:[.,]\d+)*(?:[xX×])?(?![A-Za-z0-9])"
+    r"(?<![A-Za-z0-9])\d+(?:[.,]\d+)*(?:[xX×]|[KkMmBb])?(?![A-Za-z0-9])"
 )
 URL_RE = re.compile(r"https?://\S+")
 
@@ -158,7 +158,10 @@ def _claimed_numbers(text: str) -> list[str]:
     a measurement, and is excluded by the lookaround. URLs are stripped first
     since a digit run inside one (a doc ID, a query param) is never a claim
     either. ``5x`` / ``5×`` is kept as a claim — "reduced build time 5x" is a
-    real metric, not an identifier fragment.
+    real metric, not an identifier fragment. A single trailing magnitude
+    letter (``K``/``M``/``B``, either case) is also kept as part of the token
+    — "14K" is a claim, not an identifier — while any other trailing letter
+    (e.g. ``3D``) still excludes the digits from being a claim.
     """
     return NUMBER_RE.findall(URL_RE.sub("", text))
 

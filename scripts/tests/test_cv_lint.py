@@ -223,6 +223,37 @@ def test_multiplier_claim_absent_from_source_is_still_fatal(tmp_path):
     assert "5" in problems[0].message
 
 
+def test_magnitude_suffix_claim_absent_from_source_is_fatal(tmp_path):
+    # '14K' is a real metric (see docs/resume/cv.md) — a magnitude suffix
+    # must not hide the digits from the gate the way an identifier does.
+    cv = write(tmp_path, "cv", CV)
+    f = write(tmp_path, "resume-a",
+              facet(f"- Reached 14K users <!-- src: csense-h1 @{fingerprint(SOURCE)} -->"))
+    problems = check_numbers(cv, [f])
+    assert problems and problems[0].fatal
+    assert "14K" in problems[0].message
+
+
+def test_magnitude_suffix_claim_present_in_source_passes(tmp_path):
+    cv_text = CV.replace(SOURCE, "Drove the GitOps migration reaching 14K users")
+    cv = write(tmp_path, "cv", cv_text)
+    src_hash = fingerprint("Drove the GitOps migration reaching 14K users")
+    f = write(tmp_path, "resume-a",
+              facet(f"- Reached 14K users <!-- src: csense-h1 @{src_hash} -->"))
+    assert check_numbers(cv, [f]) == []
+
+
+def test_digits_before_non_magnitude_letter_are_not_flagged(tmp_path):
+    # '3D' is not a metric claim — 'D' is not a magnitude suffix, unlike K/M/B.
+    cv = write(tmp_path, "cv", CV)
+    bullet = (
+        "- Rendered a 3D scene visualization "
+        f"<!-- src: csense-h1 @{fingerprint(SOURCE)} -->"
+    )
+    f = write(tmp_path, "resume-a", facet(bullet))
+    assert check_numbers(cv, [f]) == []
+
+
 import json
 
 from cv_build import build_file
