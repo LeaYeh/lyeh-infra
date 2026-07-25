@@ -221,3 +221,28 @@ def test_multiplier_claim_absent_from_source_is_still_fatal(tmp_path):
     problems = check_numbers(cv, [f])
     assert problems and problems[0].fatal
     assert "5" in problems[0].message
+
+
+import json
+
+from cv_build import build_file
+from cv_lint import check_freshness
+
+
+def test_matching_json_passes(tmp_path):
+    md = write(tmp_path, "cv", CV)
+    build_file(md)
+    assert check_freshness([md]) == []
+
+
+def test_stale_json_is_fatal(tmp_path):
+    md = write(tmp_path, "cv", CV)
+    (tmp_path / "cv.json").write_text(json.dumps({"basics": {"name": "Old"}}))
+    problems = check_freshness([md])
+    assert problems[0].fatal
+    assert "cv-build" in problems[0].message
+
+
+def test_missing_json_is_fatal(tmp_path):
+    md = write(tmp_path, "cv", CV)
+    assert check_freshness([md])[0].fatal

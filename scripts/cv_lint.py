@@ -10,6 +10,7 @@ Checks, in order:
 """
 from __future__ import annotations
 
+import json
 import re
 import sys
 import tomllib
@@ -181,6 +182,22 @@ def check_numbers(cv_md: Path, facet_mds: list[Path]) -> list[Problem]:
     return problems
 
 
+def check_freshness(mds: list[Path]) -> list[Problem]:
+    """The committed JSON must equal what the Markdown builds to."""
+    problems: list[Problem] = []
+    for md in mds:
+        out = md.with_suffix(".json")
+        if not out.exists():
+            problems.append(Problem(out.name, None, "missing — run `make cv-build`"))
+            continue
+        built = _data_of(md)
+        committed = json.loads(out.read_text(encoding="utf-8"))
+        if built != committed:
+            problems.append(Problem(
+                out.name, None, "is out of date with the Markdown — run `make cv-build`"))
+    return problems
+
+
 def main() -> int:
     if not CV_MD.exists():
         print(f"✗ {CV_MD} not found", file=sys.stderr)
@@ -192,6 +209,7 @@ def main() -> int:
         + check_provenance(CV_MD, facets)
         + check_numbers(CV_MD, facets)
         + check_rules([CV_MD] + facets, rules)
+        + check_freshness([CV_MD] + facets)
     )
 
     for p in problems:
