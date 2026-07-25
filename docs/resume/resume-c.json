@@ -6,7 +6,6 @@
     "image": "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156",
     "email": "lea.yeh.ml@gmail.com",
     "phone": "",
-    "summary": "MLOps engineer bridging the platform layer (model monitoring, data-drift, Prometheus/Grafana/MLflow, K3s/ArgoCD) and ML internals — built a neural-net framework, autograd, and hyperparameter tuner from scratch. Currently extending into LLM workloads: RAG/GraphRAG and LLM observability in progress.",
     "location": {
       "countryCode": "AT",
       "address": "Austria, Vienna",
@@ -24,7 +23,8 @@
         "username": "LeaYeh",
         "url": "https://github.com/LeaYeh"
       }
-    ]
+    ],
+    "summary": "MLOps engineer bridging the platform layer (model monitoring, data-drift, Prometheus/Grafana/MLflow, K3s/ArgoCD) and ML internals — built a neural-net framework, autograd, and hyperparameter tuner from scratch. Currently extending into LLM workloads: RAG/GraphRAG and LLM observability in progress."
   },
   "work": [
     {
@@ -46,42 +46,42 @@
       "position": "Data Scientist",
       "startDate": "2022-09-01",
       "endDate": "2023-09-01",
+      "location": "Taipei, Taiwan",
+      "url": "https://www.linkedin.com/company/17763",
+      "summary": "Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.",
       "highlights": [
         "Implemented model-monitoring solutions using AWS and Streamlit, ensuring high availability and performance consistency for production ML models",
         "Developed ML models to enhance mobile temperature control mechanisms, achieving temperature errors below 1°C",
         "Collaborated with chip developers to reduce power consumption by 20%, resulting in a 14K Antutu score improvement in mobile performance"
-      ],
-      "summary": "Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.",
-      "url": "https://www.linkedin.com/company/17763",
-      "location": "Taipei, Taiwan"
+      ]
     },
     {
       "name": "MediaTek",
       "position": "Data Engineer",
       "startDate": "2019-07-01",
       "endDate": "2022-09-01",
+      "location": "Taipei, Taiwan",
+      "url": "https://www.linkedin.com/company/17763",
+      "summary": "Built data infrastructure and analytics platforms for one of the world's largest IC design companies.",
       "highlights": [
         "Built ML model-monitoring infrastructure using MLflow and Grafana dashboards to track model performance and data drift in production",
         "Implemented real-time data-quality monitoring and alerting, reducing data missing rates from 50% to <1% and lowering monthly labor costs by 7.5 man-days",
         "Established automated data pipelines for structured and unstructured data; designed PB-level ETL processes using Airflow, NiFi, Dataflow, and BigQuery on GCP",
         "Managed EDA License and Computing Farm costs via interactive BI Dashboard (Splunk + Grafana), aiding procurement decisions and reducing costs by 25%"
-      ],
-      "summary": "Built data infrastructure and analytics platforms for one of the world's largest IC design companies.",
-      "url": "https://www.linkedin.com/company/17763",
-      "location": "Taipei, Taiwan"
+      ]
     },
     {
       "name": "MediaTek",
       "position": "Software Engineer",
       "startDate": "2016-09-01",
       "endDate": "2019-06-01",
+      "location": "Taipei, Taiwan",
+      "url": "https://www.linkedin.com/company/17763",
+      "summary": "",
       "highlights": [
         "Developed an automated ICD DMS using Python and Jenkins to enforce documentation standards",
         "Developed debugging and analysis tools for Modem Logs"
-      ],
-      "summary": "",
-      "url": "https://www.linkedin.com/company/17763",
-      "location": "Taipei, Taiwan"
+      ]
     }
   ],
   "volunteer": [],
@@ -106,9 +106,9 @@
       "institution": "National Chiao Tung University",
       "area": "Computer Science — Data Mining",
       "studyType": "Master of Science",
-      "url": "https://www.nycu.edu.tw/nycu/en/",
       "startDate": "2014-09-01",
       "endDate": "2016-06-01",
+      "url": "https://www.nycu.edu.tw/nycu/en/",
       "score": "",
       "courses": [
         "Data Mining",
@@ -119,9 +119,9 @@
       "institution": "Tatung University",
       "area": "Computer Science — Computer Vision & Algorithms",
       "studyType": "Bachelor",
-      "url": "https://ao.ttu.edu.tw/",
       "startDate": "2010-09-01",
       "endDate": "2014-06-01",
+      "url": "https://ao.ttu.edu.tw/",
       "score": "",
       "courses": [
         "Computer Vision",
@@ -129,33 +129,66 @@
       ]
     }
   ],
-  "awards": [
+  "projects": [
     {
-      "title": "IT Annual Award",
-      "date": "2020-12-01",
-      "awarder": "MediaTek",
-      "summary": "Recognized for impact on data infrastructure and cost reduction initiatives."
-    }
-  ],
-  "certificates": [
-    {
-      "name": "ISTQB Certified Tester Foundation Level (CTFL) v4.0",
-      "date": "2026-04-04",
-      "issuer": "ISTQB / GASQ",
-      "url": "https://app.skillsclub.com/credential/293353-28e36a6435ba059718f6ef53a2b8cf79f593a6d16221c0bd0d9483b06a51c5c3"
+      "name": "litetorch + litetune + sklite — AI Framework Toolkit",
+      "startDate": "2025-03-01",
+      "endDate": "2025-06-01",
+      "url": "https://github.com/42-CC-RNCP",
+      "roles": [
+        "Author"
+      ],
+      "description": "A trio of educational ML infrastructure projects: litetorch (neural network framework built from scratch inspired by PyTorch), litetune (hyperparameter tuner inspired by Ray Tune), and sklite (ML preprocessing toolkit inspired by scikit-learn). Demonstrates understanding of ML internals beyond API usage.",
+      "highlights": [
+        "Implemented forward/backpropagation, autograd, and layer abstractions from scratch in litetorch",
+        "Built a hyperparameter search and experiment tracking system in litetune, mirroring Ray Tune's trial management model",
+        "Designed preprocessing pipelines and utility functions in sklite for educational clarity and extensibility"
+      ]
     },
     {
-      "name": "Microsoft Azure Databricks for Data Engineering",
-      "date": "2024-04-01",
-      "issuer": "Microsoft",
-      "url": "https://www.coursera.org/account/accomplishments/verify/QCEEXZ8HWETC"
-    }
-  ],
-  "publications": [
+      "name": "ft_transcendence — Full-Stack Platform with Observability Stack",
+      "startDate": "2025-10-01",
+      "endDate": "2026-03-01",
+      "url": "https://github.com/anastasiiap42/ft_transcendence/tree/main/devops",
+      "roles": [
+        "DevOps Engineer"
+      ],
+      "description": "Contributed the DevOps module for a full-stack multiplayer web platform (42 Vienna capstone project). Responsible for designing and deploying the complete observability infrastructure covering metrics, logging, and alerting.",
+      "highlights": [
+        "Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds",
+        "Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform",
+        "Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services",
+        "Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity"
+      ]
+    },
     {
-      "name": "Clustering using Radius-Weighted Means and Analytical Radius-Preserved Formula",
-      "publisher": "NCTU",
-      "releaseDate": "2016-06-01"
+      "name": "Inception-of-Things — K3s Kubernetes Cluster",
+      "startDate": "2025-06-01",
+      "endDate": "2025-10-01",
+      "url": "https://github.com/42-CC-RNCP/Inception-of-Things",
+      "roles": [
+        "Developer"
+      ],
+      "description": "Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster using Vagrant and VirtualBox, covering cluster networking, ingress, and GitOps-style deployment workflows — the deployment substrate for running model/inference workloads.",
+      "highlights": [
+        "Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup",
+        "Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes",
+        "Applied GitOps principles with ArgoCD for continuous deployment in the bonus track"
+      ]
+    },
+    {
+      "name": "GraphRAG Proof-of-Concept (POC3) — in-progress",
+      "startDate": "2026-01-01",
+      "endDate": "",
+      "url": "https://github.com/LeaYeh",
+      "roles": [
+        "Author"
+      ],
+      "description": "In-progress proof-of-concept exploring GraphRAG and retrieval-augmented LLM workflows on observable infrastructure. Work is ongoing; RAG/GraphRAG/LangGraph components and LLM observability are not yet completed.",
+      "highlights": [
+        "Prototyping a GraphRAG retrieval pipeline and LLM evaluation approach (in-progress)",
+        "Designing LLM observability and data-governance/access-control considerations into the system (in-progress)"
+      ]
     }
   ],
   "skills": [
@@ -253,6 +286,35 @@
       ]
     }
   ],
+  "awards": [
+    {
+      "title": "IT Annual Award",
+      "date": "2020-12-01",
+      "awarder": "MediaTek",
+      "summary": "Recognized for impact on data infrastructure and cost reduction initiatives."
+    }
+  ],
+  "certificates": [
+    {
+      "name": "ISTQB Certified Tester Foundation Level (CTFL) v4.0",
+      "date": "2026-04-04",
+      "issuer": "ISTQB / GASQ",
+      "url": "https://app.skillsclub.com/credential/293353-28e36a6435ba059718f6ef53a2b8cf79f593a6d16221c0bd0d9483b06a51c5c3"
+    },
+    {
+      "name": "Microsoft Azure Databricks for Data Engineering",
+      "date": "2024-04-01",
+      "issuer": "Microsoft",
+      "url": "https://www.coursera.org/account/accomplishments/verify/QCEEXZ8HWETC"
+    }
+  ],
+  "publications": [
+    {
+      "name": "Clustering using Radius-Weighted Means and Analytical Radius-Preserved Formula",
+      "publisher": "NCTU",
+      "releaseDate": "2016-06-01"
+    }
+  ],
   "languages": [
     {
       "language": "Chinese",
@@ -273,68 +335,6 @@
   ],
   "interests": [],
   "references": [],
-  "projects": [
-    {
-      "name": "litetorch + litetune + sklite — AI Framework Toolkit",
-      "description": "A trio of educational ML infrastructure projects: litetorch (neural network framework built from scratch inspired by PyTorch), litetune (hyperparameter tuner inspired by Ray Tune), and sklite (ML preprocessing toolkit inspired by scikit-learn). Demonstrates understanding of ML internals beyond API usage.",
-      "startDate": "2025-03-01",
-      "endDate": "2025-06-01",
-      "highlights": [
-        "Implemented forward/backpropagation, autograd, and layer abstractions from scratch in litetorch",
-        "Built a hyperparameter search and experiment tracking system in litetune, mirroring Ray Tune's trial management model",
-        "Designed preprocessing pipelines and utility functions in sklite for educational clarity and extensibility"
-      ],
-      "url": "https://github.com/42-CC-RNCP",
-      "roles": [
-        "Author"
-      ]
-    },
-    {
-      "name": "ft_transcendence — Full-Stack Platform with Observability Stack",
-      "description": "Contributed the DevOps module for a full-stack multiplayer web platform (42 Vienna capstone project). Responsible for designing and deploying the complete observability infrastructure covering metrics, logging, and alerting.",
-      "startDate": "2025-10-01",
-      "endDate": "2026-03-01",
-      "highlights": [
-        "Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds",
-        "Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform",
-        "Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services",
-        "Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity"
-      ],
-      "url": "https://github.com/anastasiiap42/ft_transcendence/tree/main/devops",
-      "roles": [
-        "DevOps Engineer"
-      ]
-    },
-    {
-      "name": "Inception-of-Things — K3s Kubernetes Cluster",
-      "description": "Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster using Vagrant and VirtualBox, covering cluster networking, ingress, and GitOps-style deployment workflows — the deployment substrate for running model/inference workloads.",
-      "startDate": "2025-06-01",
-      "endDate": "2025-10-01",
-      "highlights": [
-        "Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup",
-        "Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes",
-        "Applied GitOps principles with ArgoCD for continuous deployment in the bonus track"
-      ],
-      "url": "https://github.com/42-CC-RNCP/Inception-of-Things",
-      "roles": [
-        "Developer"
-      ]
-    },
-    {
-      "name": "GraphRAG Proof-of-Concept (POC3) — in-progress",
-      "description": "In-progress proof-of-concept exploring GraphRAG and retrieval-augmented LLM workflows on observable infrastructure. Work is ongoing; RAG/GraphRAG/LangGraph components and LLM observability are not yet completed.",
-      "startDate": "2026-01-01",
-      "endDate": "",
-      "highlights": [
-        "Prototyping a GraphRAG retrieval pipeline and LLM evaluation approach (in-progress)",
-        "Designing LLM observability and data-governance/access-control considerations into the system (in-progress)"
-      ],
-      "url": "https://github.com/LeaYeh",
-      "roles": [
-        "Author"
-      ]
-    }
-  ],
   "meta": {
     "version": "v1.0.0",
     "canonical": "https://github.com/jsonresume/resume-schema/blob/v1.0.0/schema.json"

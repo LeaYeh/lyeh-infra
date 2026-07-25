@@ -6,7 +6,6 @@
     "image": "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156",
     "email": "lea.yeh.ml@gmail.com",
     "phone": "",
-    "summary": "Data Engineer with PB-scale ETL and data-quality depth: built MediaTek's first data-warehouse layer with Airflow/NiFi/Dataflow/BigQuery on GCP, cutting missing-data rates from 50% to under 1%. Azure Databricks certified; actively building Spark/Delta Lake hands-on.",
     "location": {
       "countryCode": "AT",
       "address": "Austria, Vienna",
@@ -24,7 +23,8 @@
         "username": "LeaYeh",
         "url": "https://github.com/LeaYeh"
       }
-    ]
+    ],
+    "summary": "Data Engineer with PB-scale ETL and data-quality depth: built MediaTek's first data-warehouse layer with Airflow/NiFi/Dataflow/BigQuery on GCP, cutting missing-data rates from 50% to under 1%. Azure Databricks certified; actively building Spark/Delta Lake hands-on."
   },
   "work": [
     {
@@ -45,41 +45,41 @@
       "position": "Data Scientist",
       "startDate": "2022-09-01",
       "endDate": "2023-09-01",
+      "location": "Taipei, Taiwan",
+      "url": "https://www.linkedin.com/company/17763",
+      "summary": "Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.",
       "highlights": [
         "Deployed model-monitoring infrastructure (AWS + Streamlit) to track production model performance and consistency, extending data-quality practices from pipelines to ML systems"
-      ],
-      "summary": "Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.",
-      "url": "https://www.linkedin.com/company/17763",
-      "location": "Taipei, Taiwan"
+      ]
     },
     {
       "name": "MediaTek",
       "position": "Data Engineer",
       "startDate": "2019-07-01",
       "endDate": "2022-09-01",
+      "location": "Taipei, Taiwan",
+      "url": "https://www.linkedin.com/company/17763",
+      "summary": "Built data infrastructure and analytics platforms for one of the world's largest IC design companies.",
       "highlights": [
         "Designed PB-scale ETL pipelines on GCP (Airflow, NiFi, Dataflow, BigQuery) for structured and unstructured data, processing distributed datasets across the company's data platform",
         "Architected the company's first data-warehouse layer, introducing dimensional-modeling theory that improved data-table reuse during the company's early digital transformation",
         "Built real-time data-quality monitoring and alerting that cut missing-data rates from 50% to under 1% and saved 7.5 man-days per month",
         "Tracked ML model performance and data drift in production via MLflow and Grafana dashboards, bridging data engineering and DataOps/MLOps",
         "Managed EDA license and computing-farm costs via interactive BI dashboards (Splunk + Grafana), informing procurement decisions and reducing costs by 25%"
-      ],
-      "summary": "Built data infrastructure and analytics platforms for one of the world's largest IC design companies.",
-      "url": "https://www.linkedin.com/company/17763",
-      "location": "Taipei, Taiwan"
+      ]
     },
     {
       "name": "MediaTek",
       "position": "Software Engineer",
       "startDate": "2016-09-01",
       "endDate": "2019-06-01",
+      "location": "Taipei, Taiwan",
+      "url": "https://www.linkedin.com/company/17763",
+      "summary": "",
       "highlights": [
         "Developed an automated ICD documentation-management system using Python and Jenkins to enforce data-documentation standards",
         "Built debugging and analysis tooling for large-volume Modem Logs"
-      ],
-      "summary": "",
-      "url": "https://www.linkedin.com/company/17763",
-      "location": "Taipei, Taiwan"
+      ]
     }
   ],
   "volunteer": [
@@ -88,8 +88,8 @@
       "position": "Volunteer Organizer",
       "startDate": "2023-10-01",
       "endDate": "2024-05-01",
-      "summary": "Served as one of the organizers at Taiwan in Data Science (TWiDS), a volunteer organization dedicated to promoting data-related fields in Taiwan.",
       "url": "https://www.facebook.com/TWiDataScience/",
+      "summary": "Served as one of the organizers at Taiwan in Data Science (TWiDS), a volunteer organization dedicated to promoting data-related fields in Taiwan.",
       "highlights": [
         "Promoted awareness and understanding of data science across Taiwan",
         "Led preparations for workshops, podcasts, and conferences in 2024"
@@ -117,9 +117,9 @@
       "institution": "National Chiao Tung University",
       "area": "Computer Science — Data Mining",
       "studyType": "Master of Science",
-      "url": "https://www.nycu.edu.tw/nycu/en/",
       "startDate": "2014-09-01",
       "endDate": "2016-06-01",
+      "url": "https://www.nycu.edu.tw/nycu/en/",
       "score": "",
       "courses": [
         "Data Mining",
@@ -130,9 +130,9 @@
       "institution": "Tatung University",
       "area": "Computer Science — Computer Vision & Algorithms",
       "studyType": "Bachelor",
-      "url": "https://ao.ttu.edu.tw/",
       "startDate": "2010-09-01",
       "endDate": "2014-06-01",
+      "url": "https://ao.ttu.edu.tw/",
       "score": "",
       "courses": [
         "Computer Vision",
@@ -140,33 +140,21 @@
       ]
     }
   ],
-  "awards": [
+  "projects": [
     {
-      "title": "IT Annual Award",
-      "date": "2020-12-01",
-      "awarder": "MediaTek",
-      "summary": "Recognized for impact on data infrastructure and cost reduction initiatives."
-    }
-  ],
-  "certificates": [
-    {
-      "name": "Microsoft Azure Databricks for Data Engineering",
-      "date": "2024-04-01",
-      "issuer": "Microsoft",
-      "url": "https://www.coursera.org/account/accomplishments/verify/QCEEXZ8HWETC"
-    },
-    {
-      "name": "ISTQB Certified Tester Foundation Level (CTFL) v4.0",
-      "date": "2026-04-04",
-      "issuer": "ISTQB / GASQ",
-      "url": "https://app.skillsclub.com/credential/293353-28e36a6435ba059718f6ef53a2b8cf79f593a6d16221c0bd0d9483b06a51c5c3"
-    }
-  ],
-  "publications": [
-    {
-      "name": "Clustering using Radius-Weighted Means and Analytical Radius-Preserved Formula",
-      "publisher": "NCTU",
-      "releaseDate": "2016-06-01"
+      "name": "Inception-of-Things — K3s Kubernetes Cluster",
+      "startDate": "2025-06-01",
+      "endDate": "2025-10-01",
+      "url": "https://github.com/42-CC-RNCP/Inception-of-Things",
+      "roles": [
+        "Developer"
+      ],
+      "description": "Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster using Vagrant and VirtualBox, covering cluster networking, ingress, and GitOps-style deployment workflows — foundational infrastructure for running containerized data pipelines and CI/CD.",
+      "highlights": [
+        "Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup",
+        "Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes",
+        "Applied GitOps principles with ArgoCD for continuous deployment in the bonus track"
+      ]
     }
   ],
   "skills": [
@@ -245,6 +233,35 @@
       ]
     }
   ],
+  "awards": [
+    {
+      "title": "IT Annual Award",
+      "date": "2020-12-01",
+      "awarder": "MediaTek",
+      "summary": "Recognized for impact on data infrastructure and cost reduction initiatives."
+    }
+  ],
+  "certificates": [
+    {
+      "name": "Microsoft Azure Databricks for Data Engineering",
+      "date": "2024-04-01",
+      "issuer": "Microsoft",
+      "url": "https://www.coursera.org/account/accomplishments/verify/QCEEXZ8HWETC"
+    },
+    {
+      "name": "ISTQB Certified Tester Foundation Level (CTFL) v4.0",
+      "date": "2026-04-04",
+      "issuer": "ISTQB / GASQ",
+      "url": "https://app.skillsclub.com/credential/293353-28e36a6435ba059718f6ef53a2b8cf79f593a6d16221c0bd0d9483b06a51c5c3"
+    }
+  ],
+  "publications": [
+    {
+      "name": "Clustering using Radius-Weighted Means and Analytical Radius-Preserved Formula",
+      "publisher": "NCTU",
+      "releaseDate": "2016-06-01"
+    }
+  ],
   "languages": [
     {
       "language": "Chinese",
@@ -265,23 +282,6 @@
   ],
   "interests": [],
   "references": [],
-  "projects": [
-    {
-      "name": "Inception-of-Things — K3s Kubernetes Cluster",
-      "description": "Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster using Vagrant and VirtualBox, covering cluster networking, ingress, and GitOps-style deployment workflows — foundational infrastructure for running containerized data pipelines and CI/CD.",
-      "startDate": "2025-06-01",
-      "endDate": "2025-10-01",
-      "highlights": [
-        "Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup",
-        "Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes",
-        "Applied GitOps principles with ArgoCD for continuous deployment in the bonus track"
-      ],
-      "url": "https://github.com/42-CC-RNCP/Inception-of-Things",
-      "roles": [
-        "Developer"
-      ]
-    }
-  ],
   "meta": {
     "version": "v1.0.0",
     "canonical": "https://github.com/jsonresume/resume-schema/blob/v1.0.0/schema.json"
