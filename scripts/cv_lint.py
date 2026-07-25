@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from jsonresume_map import to_jsonresume
-from resume_md import parse
+from resume_md import fingerprint, parse
 
 RESUME_DIR = Path(__file__).resolve().parent.parent / "docs" / "resume"
 CV_MD = RESUME_DIR / "cv.md"
@@ -66,12 +66,64 @@ def check_invariants(cv_md: Path, facet_mds: list[Path]) -> list[Problem]:
     return problems
 
 
+def _id_bearing_bullets(md_path: Path):
+    """Yield every bullet in the document, with its section title."""
+    doc = parse(md_path.read_text(encoding="utf-8"))
+    for section in doc.sections:
+        for entry in section.entries:
+            for bullet in entry.bullets:
+                yield section.title, bullet
+
+
+def cv_index(cv_md: Path) -> tuple[dict[str, str], list[Problem]]:
+    """Map bullet ID -> text, reporting duplicates."""
+    index: dict[str, str] = {}
+    problems: list[Problem] = []
+    for _, bullet in _id_bearing_bullets(cv_md):
+        if bullet.id is None:
+            continue
+        if bullet.id in index:
+            problems.append(Problem(cv_md.name, bullet.line, f"duplicate bullet ID '{bullet.id}'"))
+            continue
+        index[bullet.id] = bullet.text
+    return index, problems
+
+
+def check_provenance(cv_md: Path, facet_mds: list[Path]) -> list[Problem]:
+    """Every facet highlight must cite a live cv.md bullet with a current fingerprint."""
+    index, problems = cv_index(cv_md)
+    for md in facet_mds:
+        for section, bullet in _id_bearing_bullets(md):
+            if section not in ("Work", "Volunteer", "Projects"):
+                continue                      # keywords/courses are not curated content
+            if bullet.src is None:
+                problems.append(Problem(
+                    md.name, bullet.line,
+                    "bullet has no src anchor — add the fact to cv.md first, then cite its ID",
+                ))
+                continue
+            source = index.get(bullet.src)
+            if source is None:
+                problems.append(Problem(
+                    md.name, bullet.line, f"src '{bullet.src}' does not exist in cv.md"))
+                continue
+            current = fingerprint(source)
+            if bullet.src_hash != current:
+                problems.append(Problem(
+                    md.name, bullet.line,
+                    f"stale: cv.md '{bullet.src}' changed since this was written "
+                    f"(@{bullet.src_hash} → @{current}); re-check the wording, then update the anchor",
+                    fatal=False,
+                ))
+    return problems
+
+
 def main() -> int:
     if not CV_MD.exists():
         print(f"✗ {CV_MD} not found", file=sys.stderr)
         return 2
     facets = sorted(RESUME_DIR.glob("resume-*.md"))
-    problems = check_invariants(CV_MD, facets)
+    problems = check_invariants(CV_MD, facets) + check_provenance(CV_MD, facets)
 
     for p in problems:
         print(p.render(), file=sys.stderr)
