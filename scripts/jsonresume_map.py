@@ -44,7 +44,26 @@ HEADING_SEP = "—"
 
 
 def _split_heading(entry: Entry, spec: SectionSpec, section_title: str) -> dict:
-    parts = [p.strip() for p in entry.heading.split(HEADING_SEP)]
+    """Split an entry's '## ' heading into ``spec.heading_fields`` on the em dash.
+
+    The split is bounded to ``len(spec.heading_fields) - 1`` separators, so
+    only the em dashes needed to delimit fields are consumed; any further em
+    dashes stay inside the last field. This matters because field values in
+    the real corpus (project names, education areas) routinely contain their
+    own em dashes, e.g. "lyeh-infra — Self-Hosted Kubernetes Infrastructure
+    (GitOps)" as a single-field Projects heading, or "Computer Science —
+    Software Architecture, Linux Kernel & DevOps" as the second half of a
+    two-field Education heading.
+
+    Residual limitation: for a two-field section, this is "first em dash
+    wins" — an em dash inside the *first* field would still mis-split there.
+    No entry in the corpus does that today, and escaping would cost more
+    than it buys, but a future reader should know the rule.
+    """
+    parts = [
+        p.strip()
+        for p in entry.heading.split(HEADING_SEP, maxsplit=len(spec.heading_fields) - 1)
+    ]
     if len(parts) != len(spec.heading_fields):
         expected = f" {HEADING_SEP} ".join(f"<{f}>" for f in spec.heading_fields)
         raise MdError(entry.line, f"'{section_title}' heading must be: {expected}")

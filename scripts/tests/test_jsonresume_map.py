@@ -119,3 +119,44 @@ def test_id_on_a_non_id_section_is_rejected():
     with pytest.raises(MdError) as e:
         to_jsonresume(parse(bad))
     assert "Skills" in e.value.message
+
+
+def test_project_name_with_em_dash_stays_intact():
+    doc = (
+        '+++\nname = "Lea"\n+++\n\n'
+        "# Projects\n\n"
+        "## lyeh-infra — Self-Hosted Kubernetes Infrastructure (GitOps)\n"
+    )
+    data, _ = to_jsonresume(parse(doc))
+    assert data["projects"][0]["name"] == (
+        "lyeh-infra — Self-Hosted Kubernetes Infrastructure (GitOps)"
+    )
+
+
+def test_education_area_with_em_dash_splits_into_two_fields():
+    doc = (
+        '+++\nname = "Lea"\n+++\n\n'
+        "# Education\n\n"
+        "## 42 Vienna — Computer Science — Software Architecture, Linux Kernel & DevOps\n"
+    )
+    data, _ = to_jsonresume(parse(doc))
+    education = data["education"][0]
+    assert education["institution"] == "42 Vienna"
+    assert education["area"] == (
+        "Computer Science — Software Architecture, Linux Kernel & DevOps"
+    )
+
+
+def test_work_heading_with_no_separator_still_raises():
+    doc = '+++\nname = "Lea"\n+++\n\n# Work\n\n## c-sense GmbH\n'
+    with pytest.raises(MdError) as e:
+        to_jsonresume(parse(doc))
+    assert "<name> — <position>" in e.value.message
+
+
+def test_plain_two_field_work_heading_still_maps_correctly():
+    doc = '+++\nname = "Lea"\n+++\n\n# Work\n\n## c-sense GmbH — Senior Software Engineer\n'
+    data, _ = to_jsonresume(parse(doc))
+    work = data["work"][0]
+    assert work["name"] == "c-sense GmbH"
+    assert work["position"] == "Senior Software Engineer"
