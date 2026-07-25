@@ -243,6 +243,25 @@ def test_parse_bullet_rejects_malformed_annotations(line):
     assert "<!-- src: some-id @abcd -->" in e.value.message
 
 
+@pytest.mark.parametrize(
+    "line",
+    [
+        # Embedded src anchor: the bullet's real (trailing) src anchor is
+        # stripped first, but a second, mid-text one must still be rejected.
+        "- Designed the layered framework <!-- src: csense-h9 @beef --> end to "
+        "end <!-- src: csense-h3 @d85d -->",
+        # Embedded id: same shape, with a {#id} in the middle instead.
+        "- Designed the layered {#csense-h9} framework end to end {#csense-h3}",
+    ],
+)
+def test_parse_bullet_rejects_embedded_annotation(line):
+    with pytest.raises(MdError) as e:
+        parse_bullet(line, 42)
+    assert e.value.line == 42
+    assert "{#some-id}" in e.value.message
+    assert "<!-- src: some-id @abcd -->" in e.value.message
+
+
 def test_parse_bullet_accepts_tab_separated_marker():
     b = parse_bullet("-\tTabbed bullet", 3)
     assert b.text == "Tabbed bullet"

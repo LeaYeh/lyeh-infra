@@ -110,6 +110,11 @@ def parse_meta_block(lines: list[str], start: int, line_offset: int) -> tuple[di
 BULLET_RE = re.compile(r"^-\s+(?P<rest>.+?)\s*$")
 ID_RE = re.compile(r"\s*\{#(?P<id>[A-Za-z0-9._-]+)\}$")
 SRC_RE = re.compile(r"\s*<!--\s*src:\s*(?P<id>[A-Za-z0-9._-]+)\s*@(?P<hash>[0-9a-f]{4})\s*-->$")
+# Same annotation shapes as ID_RE / SRC_RE, but unanchored: used to catch one
+# embedded *anywhere* in the bullet text after trailing annotations have
+# already been stripped, not just a malformed one at the very end.
+EMBEDDED_ID_RE = re.compile(r"\{#")
+EMBEDDED_SRC_RE = re.compile(r"<!--\s*src\s*:")
 
 
 @dataclass
@@ -161,10 +166,20 @@ def parse_bullet(line: str, lineno: int) -> Bullet:
         break
 
     text = rest.strip()
-    if text.endswith(META_CLOSE) or text.endswith("}"):
-        # A malformed annotation would otherwise survive into Bullet.text, be
-        # fingerprinted, be rendered into the PDF, and make the provenance gate
-        # report "no source anchor" at a line that visibly has one.
+    if (
+        text.endswith(META_CLOSE)
+        or text.endswith("}")
+        or EMBEDDED_SRC_RE.search(text)
+        or EMBEDDED_ID_RE.search(text)
+    ):
+        # A malformed or embedded annotation would otherwise survive into
+        # Bullet.text, be fingerprinted, be rendered into the PDF, and (for
+        # a trailing one) make the provenance gate report "no source
+        # anchor" at a line that visibly has one. The trailing-only
+        # endswith() checks catch malformed annotations that don't look
+        # like '<!-- src:' / '{#' at all (e.g. a missing colon); the two
+        # regexes below catch a well-formed-looking annotation that is
+        # merely not at the end of the bullet.
         raise MdError(lineno, f"malformed bullet annotation: {ANNOTATION_HELP}")
 
     return Bullet(text=text, line=lineno, id=bullet_id, src=src, src_hash=src_hash)

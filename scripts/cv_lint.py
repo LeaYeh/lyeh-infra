@@ -18,7 +18,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from jsonresume_map import to_jsonresume
-from resume_md import fingerprint, parse
+from resume_md import Bullet, Document, MdError, fingerprint, parse
 
 RESUME_DIR = Path(__file__).resolve().parent.parent / "docs" / "resume"
 CV_MD = RESUME_DIR / "cv.md"
@@ -54,17 +54,49 @@ def _invariants(data: dict) -> dict:
     }
 
 
-def _data_of(md_path: Path) -> dict:
-    data, _ = to_jsonresume(parse(md_path.read_text(encoding="utf-8")))
-    return data
+def _try_parse(md_path: Path) -> tuple[Document | None, Problem | None]:
+    """Parse ``md_path``, turning a syntax error into a ``Problem``.
+
+    Every gate needs this: an ordinary mid-edit mistake must be reported
+    through the same ``✗ file:line message`` path as any other finding —
+    not as a raw traceback — and a parse failure in one document must not
+    abort the checks for every other document.
+    """
+    try:
+        return parse(md_path.read_text(encoding="utf-8")), None
+    except MdError as exc:
+        return None, Problem(md_path.name, exc.line, exc.message)
+
+
+def _data_of(md_path: Path) -> tuple[dict | None, list[Problem]]:
+    """Parse + map ``md_path`` to JSON Resume data.
+
+    Returns (data, problems). ``data`` is None if the document could not be
+    parsed or mapped, in which case the caller must skip it rather than
+    treat a missing dict as an empty one.
+    """
+    doc, problem = _try_parse(md_path)
+    if problem is not None:
+        return None, [problem]
+    try:
+        data, _ = to_jsonresume(doc)
+    except MdError as exc:
+        return None, [Problem(md_path.name, exc.line, exc.message)]
+    return data, []
 
 
 def check_invariants(cv_md: Path, facet_mds: list[Path]) -> list[Problem]:
     """Fields that must never be tailored have to match cv.md exactly."""
-    ref = _invariants(_data_of(cv_md))
-    problems: list[Problem] = []
+    ref_data, problems = _data_of(cv_md)
+    if ref_data is None:
+        return problems
+    ref = _invariants(ref_data)
     for md in facet_mds:
-        cur = _invariants(_data_of(md))
+        cur_data, cur_problems = _data_of(md)
+        if cur_data is None:
+            problems.extend(cur_problems)
+            continue
+        cur = _invariants(cur_data)
         for section in ("basics", "work", "education", "languages"):
             if cur[section] != ref[section]:
                 problems.append(Problem(
@@ -74,20 +106,30 @@ def check_invariants(cv_md: Path, facet_mds: list[Path]) -> list[Problem]:
     return problems
 
 
-def _id_bearing_bullets(md_path: Path):
-    """Yield every bullet in the document, with its section title."""
-    doc = parse(md_path.read_text(encoding="utf-8"))
-    for section in doc.sections:
-        for entry in section.entries:
-            for bullet in entry.bullets:
-                yield section.title, bullet
+def _all_bullets(md_path: Path) -> tuple[list[tuple[str, Bullet]], Problem | None]:
+    """Return every bullet in the document, with its section title.
+
+    A malformed document is reported as a ``Problem`` instead of raised, so
+    one bad file cannot abort the gates for every other file.
+    """
+    doc, problem = _try_parse(md_path)
+    if problem is not None:
+        return [], problem
+    bullets = [
+        (section.title, bullet)
+        for section in doc.sections
+        for entry in section.entries
+        for bullet in entry.bullets
+    ]
+    return bullets, None
 
 
 def cv_index(cv_md: Path) -> tuple[dict[str, str], list[Problem]]:
     """Map bullet ID -> text, reporting duplicates."""
     index: dict[str, str] = {}
-    problems: list[Problem] = []
-    for _, bullet in _id_bearing_bullets(cv_md):
+    bullets, problem = _all_bullets(cv_md)
+    problems: list[Problem] = [problem] if problem is not None else []
+    for _, bullet in bullets:
         if bullet.id is None:
             continue
         if bullet.id in index:
@@ -101,7 +143,11 @@ def check_provenance(cv_md: Path, facet_mds: list[Path]) -> list[Problem]:
     """Every facet highlight must cite a live cv.md bullet with a current fingerprint."""
     index, problems = cv_index(cv_md)
     for md in facet_mds:
-        for section, bullet in _id_bearing_bullets(md):
+        bullets, problem = _all_bullets(md)
+        if problem is not None:
+            problems.append(problem)
+            continue
+        for section, bullet in bullets:
             if section not in ("Work", "Volunteer", "Projects"):
                 continue                      # keywords/courses are not curated content
             if bullet.src is None:
@@ -139,7 +185,11 @@ def check_rules(mds: list[Path], rules: dict) -> list[Problem]:
     """Banned terms are never allowed; qualified terms need their qualifier nearby."""
     problems: list[Problem] = []
     for md in mds:
-        for _, bullet in _id_bearing_bullets(md):
+        bullets, problem = _all_bullets(md)
+        if problem is not None:
+            problems.append(problem)
+            continue
+        for _, bullet in bullets:
             for rule in rules["banned"]:
                 if re.search(rule["pattern"], bullet.text, re.IGNORECASE):
                     problems.append(Problem(md.name, bullet.line, rule["message"]))
@@ -171,7 +221,11 @@ def check_numbers(cv_md: Path, facet_mds: list[Path]) -> list[Problem]:
     index, _ = cv_index(cv_md)          # duplicate-ID problems are check_provenance's job
     problems: list[Problem] = []
     for md in facet_mds:
-        for _, bullet in _id_bearing_bullets(md):
+        bullets, problem = _all_bullets(md)
+        if problem is not None:
+            problems.append(problem)
+            continue
+        for _, bullet in bullets:
             source = index.get(bullet.src or "")
             if source is None:
                 continue                      # provenance gate already reported this
@@ -193,7 +247,10 @@ def check_freshness(mds: list[Path]) -> list[Problem]:
         if not out.exists():
             problems.append(Problem(out.name, None, "missing — run `make cv-build`"))
             continue
-        built = _data_of(md)
+        built, build_problems = _data_of(md)
+        if built is None:
+            problems.extend(build_problems)
+            continue
         committed = json.loads(out.read_text(encoding="utf-8"))
         if built != committed:
             problems.append(Problem(

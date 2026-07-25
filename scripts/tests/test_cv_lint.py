@@ -277,3 +277,78 @@ def test_stale_json_is_fatal(tmp_path):
 def test_missing_json_is_fatal(tmp_path):
     md = write(tmp_path, "cv", CV)
     assert check_freshness([md])[0].fatal
+
+
+# --- malformed documents are Problems, not exceptions -------------------
+
+BROKEN = '''+++
+name = "Lea"
++++
+
+- Orphan bullet before any section
+'''
+
+
+def test_malformed_facet_is_reported_as_a_problem_in_invariants(tmp_path):
+    cv = write(tmp_path, "cv", CV)
+    facet = write(tmp_path, "resume-a", BROKEN)
+    problems = check_invariants(cv, [facet])
+    assert len(problems) == 1
+    assert problems[0].file == "resume-a.md"
+    assert problems[0].line == 5
+    assert problems[0].fatal
+
+
+def test_malformed_cv_is_reported_as_a_problem_in_invariants(tmp_path):
+    cv = write(tmp_path, "cv", BROKEN)
+    facet = write(tmp_path, "resume-a", CV)
+    problems = check_invariants(cv, [facet])
+    assert len(problems) == 1
+    assert problems[0].file == "cv.md"
+    assert problems[0].fatal
+
+
+def test_malformed_document_is_reported_as_a_problem_in_provenance(tmp_path):
+    cv = write(tmp_path, "cv", CV)
+    facet = write(tmp_path, "resume-a", BROKEN)
+    problems = check_provenance(cv, [facet])
+    assert len(problems) == 1
+    assert problems[0].file == "resume-a.md"
+    assert problems[0].fatal
+
+
+def test_provenance_still_checks_other_facets_after_one_is_malformed(tmp_path):
+    cv = write(tmp_path, "cv", CV)
+    broken_facet = write(tmp_path, "resume-a", BROKEN)
+    good_facet = write(tmp_path, "resume-b", facet(GOOD_ANCHOR))
+    problems = check_provenance(cv, [broken_facet, good_facet])
+    # Only the malformed document is reported; resume-b.md was still
+    # checked (its valid anchor produced no problem of its own).
+    assert len(problems) == 1
+    assert problems[0].file == "resume-a.md"
+
+
+def test_malformed_document_is_reported_as_a_problem_in_rules(tmp_path):
+    facet = write(tmp_path, "resume-a", BROKEN)
+    problems = check_rules([facet], load_rules())
+    assert len(problems) == 1
+    assert problems[0].file == "resume-a.md"
+    assert problems[0].fatal
+
+
+def test_malformed_document_is_reported_as_a_problem_in_numbers(tmp_path):
+    cv = write(tmp_path, "cv", CV)
+    facet = write(tmp_path, "resume-a", BROKEN)
+    problems = check_numbers(cv, [facet])
+    assert len(problems) == 1
+    assert problems[0].file == "resume-a.md"
+    assert problems[0].fatal
+
+
+def test_malformed_document_is_reported_as_a_problem_in_freshness(tmp_path):
+    md = write(tmp_path, "cv", BROKEN)
+    (tmp_path / "cv.json").write_text("{}")  # must exist to reach the parse step
+    problems = check_freshness([md])
+    assert len(problems) == 1
+    assert problems[0].file == "cv.md"
+    assert problems[0].fatal

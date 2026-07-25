@@ -33,7 +33,7 @@ sys.stdout.write(json.dumps({'files':{'resume.json':{'content':c}}}))" \
 	@echo "✓ Gist $(GIST_ID) updated from docs/resume/cv.json"
 	@cp docs/resume/cv.json apps/portal/src/data/resume.json && echo "✓ portal data copy refreshed"
 
-cv-render: cv-build ## Render cv.json (detailed) + resume-*.json (1-page) to PDF via scripts/cv_render.py + headless Chrome (decision #12)
+cv-render: cv-build cv-lint ## Render cv.json (detailed) + resume-*.json (1-page) to PDF via scripts/cv_render.py + headless Chrome (decision #12)
 	@test -n "$(CHROME)" || { echo "No Chrome/Chromium found; set CHROME=/path/to/chrome"; exit 1; }
 	@set -e; cd docs/resume; \
 	for f in cv.json resume-*.json; do \

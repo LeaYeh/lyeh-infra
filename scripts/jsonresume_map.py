@@ -24,7 +24,7 @@ class SectionSpec:
     heading_fields: tuple        # fields the '## ' heading splits into, on ' — '
     prose_field: str | None      # where the prose paragraph goes
     bullet_field: str | None     # where bullets go
-    bullets_are_objects: bool    # True -> highlights (ID-bearing), False -> plain strings
+    ids_allowed: bool            # True -> a bullet in this section may carry a {#id}
 
 
 SECTIONS = {
@@ -90,7 +90,7 @@ def _entry_to_dict(entry: Entry, spec: SectionSpec, section_title: str, key: str
             raise MdError(entry.line, f"'{section_title}' entries take no bullet list")
         values = []
         for n, bullet in enumerate(entry.bullets):
-            if bullet.id and not spec.bullets_are_objects:
+            if bullet.id and not spec.ids_allowed:
                 raise MdError(bullet.line, f"'{section_title}' bullets must not carry a {{#id}}")
             values.append(bullet.text)
             lines[f"{key}[{index}].{spec.bullet_field}[{n}]"] = bullet.line
