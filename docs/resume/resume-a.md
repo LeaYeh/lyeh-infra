@@ -39,10 +39,10 @@ url = "https://www.c-sense.at/"
 
 c-sense develops nanoscale sensor technology and AFM/SPM instruments for scientific and industrial applications.
 
-- Architected a modular, layered SPM instrument-control framework, deliberately separating hardware-vendor, orchestration, and application layers for long-term extensibility and reuse across future instrument variants
-- Defined cross-layer interface contracts and async command-routing patterns, isolating failure domains and enabling parallel HW/SW development while reducing integration risk during concurrent R&D cycles
-- Designed a hardware-abstraction layer over a proprietary LabVIEW-based API, keeping the software stack vendor-agnostic and resilient to instrument changes
-- Delivered automated measurement workflows (spatial sampling, real-time safety management) demanding concurrency and reliability, letting researchers focus on experimental outcomes rather than instrument operation
+- Architected a modular, layered SPM instrument-control framework, deliberately separating hardware-vendor, orchestration, and application layers for long-term extensibility and reuse across future instrument variants <!-- src: csense-h3 @d85d -->
+- Defined cross-layer interface contracts and async command-routing patterns, isolating failure domains and enabling parallel HW/SW development while reducing integration risk during concurrent R&D cycles <!-- src: csense-h4 @d8ac -->
+- Designed a hardware-abstraction layer over a proprietary LabVIEW-based API, keeping the software stack vendor-agnostic and resilient to instrument changes <!-- src: csense-h5 @bcb5 -->
+- Delivered automated measurement workflows (spatial sampling, real-time safety management) demanding concurrency and reliability, letting researchers focus on experimental outcomes rather than instrument operation <!-- src: csense-h6 @a9d2 -->
 - Collaborated with hardware engineers and research scientists to translate physics measurement protocols into reliable, automated software workflows
 
 ## MediaTek — Data Scientist
@@ -56,9 +56,9 @@ url = "https://www.linkedin.com/company/17763"
 
 Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.
 
-- Built model-monitoring infrastructure (AWS + Streamlit) for production ML systems, ensuring high availability and performance consistency
-- Implemented ML models for mobile thermal control achieving temperature errors below 1°C, integrated into automated workflows
-- Collaborated with chip developers to reduce power consumption by 20%, yielding a 14K Antutu performance improvement
+- Built model-monitoring infrastructure (AWS + Streamlit) for production ML systems, ensuring high availability and performance consistency <!-- src: mediatek-ds-h1 @7b92 -->
+- Implemented ML models for mobile thermal control achieving temperature errors below 1°C, integrated into automated workflows <!-- src: mediatek-ds-h2 @11c6 -->
+- Collaborated with chip developers to reduce power consumption by 20%, yielding a 14K Antutu performance improvement <!-- src: mediatek-ds-h3 @4319 -->
 
 ## MediaTek — Data Engineer
 <!--meta
@@ -71,11 +71,11 @@ url = "https://www.linkedin.com/company/17763"
 
 Built data infrastructure and analytics platforms for one of the world's largest IC design companies.
 
-- Built a monitoring & alerting stack (Grafana, Splunk, MLflow) for PB-scale data and ML systems; drove data-quality incidents from 50% to <1% and cut EDA/computing-farm cost 25% through observability-driven decisions
-- Operated PB-scale ETL infrastructure on GCP (Airflow, NiFi, Dataflow, BigQuery), establishing automated pipelines for structured and unstructured data
-- Implemented real-time data-quality monitoring and alerting, lowering monthly operational labor by 7.5 man-days
-- Built model-monitoring infrastructure (MLflow + Grafana dashboards) tracking ML model performance and data drift in production
-- Managed EDA license and computing-farm cost via interactive BI dashboards (Splunk + Grafana), informing procurement decisions
+- Built a monitoring & alerting stack (Grafana, Splunk, MLflow) for PB-scale data and ML systems; drove data-quality incidents from 50% to <1% and cut EDA/computing-farm cost 25% through observability-driven decisions <!-- src: mediatek-de-h3 @ef9e -->
+- Operated PB-scale ETL infrastructure on GCP (Airflow, NiFi, Dataflow, BigQuery), establishing automated pipelines for structured and unstructured data <!-- src: mediatek-de-h1 @2a03 -->
+- Implemented real-time data-quality monitoring and alerting, lowering monthly operational labor by 7.5 man-days <!-- src: mediatek-de-h3 @ef9e -->
+- Built model-monitoring infrastructure (MLflow + Grafana dashboards) tracking ML model performance and data drift in production <!-- src: mediatek-de-h4 @777d -->
+- Managed EDA license and computing-farm cost via interactive BI dashboards (Splunk + Grafana), informing procurement decisions <!-- src: mediatek-de-h5 @345a -->
 
 ## MediaTek — Software Engineer
 <!--meta
@@ -87,7 +87,7 @@ url = "https://www.linkedin.com/company/17763"
 summary = ""
 -->
 
-- Built CI/CD automation (Python + Jenkins) enforcing documentation standards across an automated ICD DMS
+- Built CI/CD automation (Python + Jenkins) enforcing documentation standards across an automated ICD DMS <!-- src: mediatek-se-h2 @0f13 -->
 
 # Volunteer
 
@@ -101,8 +101,8 @@ url = "https://www.42vienna.com/"
 
 Volunteered as a peer tutor at 42 Vienna, supporting fellow students in system programming and software engineering fundamentals. Designed and hosted a Git workshop for the student community.
 
-- Hosted a Git Essentials workshop — 'Something You Should Know Before Git Branch' — covering branching strategy, rebase, conflict resolution, and collaborative workflows (slides: https://docs.google.com/presentation/d/13InmNDRSfkeUnGWHNXWFiTr3QCAz4ecFL_wFz-NFdoI/edit?usp=sharing)
-- Provided peer tutoring in C/C++ system programming, shell scripting, and software architecture concepts
+- Hosted a Git Essentials workshop — 'Something You Should Know Before Git Branch' — covering branching strategy, rebase, conflict resolution, and collaborative workflows (slides: https://docs.google.com/presentation/d/13InmNDRSfkeUnGWHNXWFiTr3QCAz4ecFL_wFz-NFdoI/edit?usp=sharing) <!-- src: 42-vienna-tutor-h1 @95e2 -->
+- Provided peer tutoring in C/C++ system programming, shell scripting, and software architecture concepts <!-- src: 42-vienna-tutor-h2 @9bfc -->
 
 # Education
 
@@ -161,9 +161,9 @@ roles = ["Author"]
 
 A personal production infrastructure running live on a Hetzner cloud server: a k3s Kubernetes cluster with ArgoCD-driven GitOps, deploying multiple self-hosted applications. Infrastructure is declared as code via Helm charts and ArgoCD manifests (no Terraform).
 
-- Runs a k3s cluster on a Hetzner CX23 instance with ArgoCD continuously reconciling application state from Git
+- Runs a k3s cluster on a Hetzner CX23 instance with ArgoCD continuously reconciling application state from Git <!-- src: lyeh-infra-h1 @e59c -->
 - Manages infrastructure as code through Helm charts and ArgoCD manifests — IaC via Helm + ArgoCD
-- Operates the full deployment lifecycle (build, containerize, deploy, observe) for live self-hosted services
+- Operates the full deployment lifecycle (build, containerize, deploy, observe) for live self-hosted services <!-- src: lyeh-infra-h3 @6eb8 -->
 
 ## Inception-of-Things — K3s Kubernetes Cluster
 <!--meta
@@ -176,9 +176,9 @@ roles = ["Developer"]
 
 Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster using Vagrant and VirtualBox, covering cluster networking, ingress, and GitOps-style deployment workflows.
 
-- Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup
-- Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes
-- Applied GitOps principles with ArgoCD for continuous deployment in the bonus track
+- Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup <!-- src: inception-of-things-h1 @2eed -->
+- Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes <!-- src: inception-of-things-h2 @b8a4 -->
+- Applied GitOps principles with ArgoCD for continuous deployment in the bonus track <!-- src: inception-of-things-h3 @2291 -->
 
 ## ft_transcendence — Full-Stack Platform with Observability Stack
 <!--meta
@@ -191,10 +191,10 @@ roles = ["DevOps Engineer"]
 
 Contributed the DevOps module for a full-stack multiplayer web platform (42 Vienna capstone project). Responsible for designing and deploying the complete observability infrastructure covering metrics, logging, and alerting.
 
-- Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds
-- Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform
-- Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services
-- Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity
+- Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds <!-- src: ft-transcendence-h1 @d4fc -->
+- Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform <!-- src: ft-transcendence-h2 @7adb -->
+- Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services <!-- src: ft-transcendence-h3 @0e32 -->
+- Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity <!-- src: ft-transcendence-h4 @ef5c -->
 
 ## ft_linux — Linux From Scratch
 <!--meta
@@ -207,10 +207,10 @@ roles = ["Author"]
 
 Built a fully bootable Linux system from scratch, covering every layer from cross-compilation toolchain to kernel configuration, filesystem hierarchy, init system, and bootloader. Follows LFS/BLFS/ALFS methodology with a custom automation layer.
 
-- Compiled a custom Linux kernel (4.x) with hand-selected driver and filesystem configuration
-- Built a two-phase cross-compilation toolchain (temporary + final) to produce a host-independent, self-contained Linux system
-- Automated the full build pipeline (14 stages) via an ALFS-style bootstrap script with environment isolation and error recovery
-- Designed partition layout, configured GRUB bootloader, SysV init, and udev for dynamic device management
+- Compiled a custom Linux kernel (4.x) with hand-selected driver and filesystem configuration <!-- src: ft-linux-h1 @28e0 -->
+- Built a two-phase cross-compilation toolchain (temporary + final) to produce a host-independent, self-contained Linux system <!-- src: ft-linux-h2 @efd1 -->
+- Automated the full build pipeline (14 stages) via an ALFS-style bootstrap script with environment isolation and error recovery <!-- src: ft-linux-h3 @5370 -->
+- Designed partition layout, configured GRUB bootloader, SysV init, and udev for dynamic device management <!-- src: ft-linux-h4 @2e4a -->
 
 ## libftpp — C++ Architecture Library
 <!--meta
@@ -223,9 +223,9 @@ roles = ["Author"]
 
 A modern C++20 library built through structured exercises practicing SOLID principles, hexagonal architecture, and design patterns. Includes Architectural Decision Records (ADRs) documenting trade-off reasoning.
 
-- Implemented core data structures and utilities applying SOLID principles and hexagonal (ports & adapters) architecture
-- Documented architectural decisions via ADRs, treating design trade-offs as first-class engineering artifacts
-- Maintained CI pipeline with CMake, clang-format, and automated test suite
+- Implemented core data structures and utilities applying SOLID principles and hexagonal (ports & adapters) architecture <!-- src: libftpp-h1 @43bb -->
+- Documented architectural decisions via ADRs, treating design trade-offs as first-class engineering artifacts <!-- src: libftpp-h2 @1335 -->
+- Maintained CI pipeline with CMake, clang-format, and automated test suite <!-- src: libftpp-h3 @96ca -->
 
 # Skills
 

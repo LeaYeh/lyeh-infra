@@ -39,8 +39,8 @@ url = "https://www.c-sense.at/"
 
 c-sense develops nanoscale sensor technology and AFM/SPM instruments for scientific and industrial applications.
 
-- Architected a modular, layered software framework for SPM instrument control, applying interface contracts and SOLID principles for long-term extensibility
-- Built automated measurement workflows that turn high-volume sensor measurement protocols into reliable, reproducible data-acquisition processes
+- Architected a modular, layered software framework for SPM instrument control, applying interface contracts and SOLID principles for long-term extensibility <!-- src: csense-h3 @d85d -->
+- Built automated measurement workflows that turn high-volume sensor measurement protocols into reliable, reproducible data-acquisition processes <!-- src: csense-h6 @a9d2 -->
 
 ## MediaTek — Data Scientist
 <!--meta
@@ -53,7 +53,7 @@ url = "https://www.linkedin.com/company/17763"
 
 Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.
 
-- Deployed model-monitoring infrastructure (AWS + Streamlit) to track production model performance and consistency, extending data-quality practices from pipelines to ML systems
+- Deployed model-monitoring infrastructure (AWS + Streamlit) to track production model performance and consistency, extending data-quality practices from pipelines to ML systems <!-- src: mediatek-ds-h1 @7b92 -->
 
 ## MediaTek — Data Engineer
 <!--meta
@@ -66,11 +66,11 @@ url = "https://www.linkedin.com/company/17763"
 
 Built data infrastructure and analytics platforms for one of the world's largest IC design companies.
 
-- Designed PB-scale ETL pipelines on GCP (Airflow, NiFi, Dataflow, BigQuery) for structured and unstructured data, processing distributed datasets across the company's data platform
-- Architected the company's first data-warehouse layer, introducing dimensional-modeling theory that improved data-table reuse during the company's early digital transformation
-- Built real-time data-quality monitoring and alerting that cut missing-data rates from 50% to under 1% and saved 7.5 man-days per month
-- Tracked ML model performance and data drift in production via MLflow and Grafana dashboards, bridging data engineering and DataOps/MLOps
-- Managed EDA license and computing-farm costs via interactive BI dashboards (Splunk + Grafana), informing procurement decisions and reducing costs by 25%
+- Designed PB-scale ETL pipelines on GCP (Airflow, NiFi, Dataflow, BigQuery) for structured and unstructured data, processing distributed datasets across the company's data platform <!-- src: mediatek-de-h1 @2a03 -->
+- Architected the company's first data-warehouse layer, introducing dimensional-modeling theory that improved data-table reuse during the company's early digital transformation <!-- src: mediatek-de-h2 @c2f3 -->
+- Built real-time data-quality monitoring and alerting that cut missing-data rates from 50% to under 1% and saved 7.5 man-days per month <!-- src: mediatek-de-h3 @ef9e -->
+- Tracked ML model performance and data drift in production via MLflow and Grafana dashboards, bridging data engineering and DataOps/MLOps <!-- src: mediatek-de-h4 @777d -->
+- Managed EDA license and computing-farm costs via interactive BI dashboards (Splunk + Grafana), informing procurement decisions and reducing costs by 25% <!-- src: mediatek-de-h5 @345a -->
 
 ## MediaTek — Software Engineer
 <!--meta
@@ -82,8 +82,8 @@ url = "https://www.linkedin.com/company/17763"
 summary = ""
 -->
 
-- Developed an automated ICD documentation-management system using Python and Jenkins to enforce data-documentation standards
-- Built debugging and analysis tooling for large-volume Modem Logs
+- Developed an automated ICD documentation-management system using Python and Jenkins to enforce data-documentation standards <!-- src: mediatek-se-h2 @0f13 -->
+- Built debugging and analysis tooling for large-volume Modem Logs <!-- src: mediatek-se-h1 @c6c7 -->
 
 # Volunteer
 
@@ -157,9 +157,9 @@ roles = ["Developer"]
 
 Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster using Vagrant and VirtualBox, covering cluster networking, ingress, and GitOps-style deployment workflows — foundational infrastructure for running containerized data pipelines and CI/CD.
 
-- Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup
-- Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes
-- Applied GitOps principles with ArgoCD for continuous deployment in the bonus track
+- Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup <!-- src: inception-of-things-h1 @2eed -->
+- Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes <!-- src: inception-of-things-h2 @b8a4 -->
+- Applied GitOps principles with ArgoCD for continuous deployment in the bonus track <!-- src: inception-of-things-h3 @2291 -->
 
 # Skills
 

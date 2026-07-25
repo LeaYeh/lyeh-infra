@@ -39,9 +39,9 @@ url = "https://www.c-sense.at/"
 
 c-sense develops nanoscale sensor technology and AFM/SPM instruments for scientific and industrial applications.
 
-- Architected a modular, layered software framework for SPM instrument control, separating hardware-vendor, orchestration, and application layers for long-term extensibility and reuse
-- Defined cross-layer interface contracts and async command-routing patterns, isolating failure domains and enabling parallel hardware/software development
-- Delivered automated measurement workflows (spatial sampling, real-time safety management) that let researchers focus on experimental outcomes rather than instrument operation
+- Architected a modular, layered software framework for SPM instrument control, separating hardware-vendor, orchestration, and application layers for long-term extensibility and reuse <!-- src: csense-h3 @d85d -->
+- Defined cross-layer interface contracts and async command-routing patterns, isolating failure domains and enabling parallel hardware/software development <!-- src: csense-h4 @d8ac -->
+- Delivered automated measurement workflows (spatial sampling, real-time safety management) that let researchers focus on experimental outcomes rather than instrument operation <!-- src: csense-h6 @a9d2 -->
 
 ## MediaTek — Data Scientist
 <!--meta
@@ -54,9 +54,9 @@ url = "https://www.linkedin.com/company/17763"
 
 Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.
 
-- Implemented model-monitoring solutions using AWS and Streamlit, ensuring high availability and performance consistency for production ML models
-- Developed ML models to enhance mobile temperature control mechanisms, achieving temperature errors below 1°C
-- Collaborated with chip developers to reduce power consumption by 20%, resulting in a 14K Antutu score improvement in mobile performance
+- Implemented model-monitoring solutions using AWS and Streamlit, ensuring high availability and performance consistency for production ML models <!-- src: mediatek-ds-h1 @7b92 -->
+- Developed ML models to enhance mobile temperature control mechanisms, achieving temperature errors below 1°C <!-- src: mediatek-ds-h2 @11c6 -->
+- Collaborated with chip developers to reduce power consumption by 20%, resulting in a 14K Antutu score improvement in mobile performance <!-- src: mediatek-ds-h3 @4319 -->
 
 ## MediaTek — Data Engineer
 <!--meta
@@ -69,10 +69,10 @@ url = "https://www.linkedin.com/company/17763"
 
 Built data infrastructure and analytics platforms for one of the world's largest IC design companies.
 
-- Built ML model-monitoring infrastructure using MLflow and Grafana dashboards to track model performance and data drift in production
-- Implemented real-time data-quality monitoring and alerting, reducing data missing rates from 50% to <1% and lowering monthly labor costs by 7.5 man-days
-- Established automated data pipelines for structured and unstructured data; designed PB-level ETL processes using Airflow, NiFi, Dataflow, and BigQuery on GCP
-- Managed EDA License and Computing Farm costs via interactive BI Dashboard (Splunk + Grafana), aiding procurement decisions and reducing costs by 25%
+- Built ML model-monitoring infrastructure using MLflow and Grafana dashboards to track model performance and data drift in production <!-- src: mediatek-de-h4 @777d -->
+- Implemented real-time data-quality monitoring and alerting, reducing data missing rates from 50% to <1% and lowering monthly labor costs by 7.5 man-days <!-- src: mediatek-de-h3 @ef9e -->
+- Established automated data pipelines for structured and unstructured data; designed PB-level ETL processes using Airflow, NiFi, Dataflow, and BigQuery on GCP <!-- src: mediatek-de-h1 @2a03 -->
+- Managed EDA License and Computing Farm costs via interactive BI Dashboard (Splunk + Grafana), aiding procurement decisions and reducing costs by 25% <!-- src: mediatek-de-h5 @345a -->
 
 ## MediaTek — Software Engineer
 <!--meta
@@ -84,8 +84,8 @@ url = "https://www.linkedin.com/company/17763"
 summary = ""
 -->
 
-- Developed an automated ICD DMS using Python and Jenkins to enforce documentation standards
-- Developed debugging and analysis tools for Modem Logs
+- Developed an automated ICD DMS using Python and Jenkins to enforce documentation standards <!-- src: mediatek-se-h2 @0f13 -->
+- Developed debugging and analysis tools for Modem Logs <!-- src: mediatek-se-h1 @c6c7 -->
 
 # Education
 
@@ -144,9 +144,9 @@ roles = ["Author"]
 
 A trio of educational ML infrastructure projects: litetorch (neural network framework built from scratch inspired by PyTorch), litetune (hyperparameter tuner inspired by Ray Tune), and sklite (ML preprocessing toolkit inspired by scikit-learn). Demonstrates understanding of ML internals beyond API usage.
 
-- Implemented forward/backpropagation, autograd, and layer abstractions from scratch in litetorch
-- Built a hyperparameter search and experiment tracking system in litetune, mirroring Ray Tune's trial management model
-- Designed preprocessing pipelines and utility functions in sklite for educational clarity and extensibility
+- Implemented forward/backpropagation, autograd, and layer abstractions from scratch in litetorch <!-- src: litetorch-suite-h1 @70e1 -->
+- Built a hyperparameter search and experiment tracking system in litetune, mirroring Ray Tune's trial management model <!-- src: litetorch-suite-h2 @379e -->
+- Designed preprocessing pipelines and utility functions in sklite for educational clarity and extensibility <!-- src: litetorch-suite-h3 @f737 -->
 
 ## ft_transcendence — Full-Stack Platform with Observability Stack
 <!--meta
@@ -159,10 +159,10 @@ roles = ["DevOps Engineer"]
 
 Contributed the DevOps module for a full-stack multiplayer web platform (42 Vienna capstone project). Responsible for designing and deploying the complete observability infrastructure covering metrics, logging, and alerting.
 
-- Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds
-- Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform
-- Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services
-- Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity
+- Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds <!-- src: ft-transcendence-h1 @d4fc -->
+- Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform <!-- src: ft-transcendence-h2 @7adb -->
+- Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services <!-- src: ft-transcendence-h3 @0e32 -->
+- Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity <!-- src: ft-transcendence-h4 @ef5c -->
 
 ## Inception-of-Things — K3s Kubernetes Cluster
 <!--meta
@@ -175,9 +175,9 @@ roles = ["Developer"]
 
 Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster using Vagrant and VirtualBox, covering cluster networking, ingress, and GitOps-style deployment workflows — the deployment substrate for running model/inference workloads.
 
-- Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup
-- Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes
-- Applied GitOps principles with ArgoCD for continuous deployment in the bonus track
+- Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup <!-- src: inception-of-things-h1 @2eed -->
+- Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes <!-- src: inception-of-things-h2 @b8a4 -->
+- Applied GitOps principles with ArgoCD for continuous deployment in the bonus track <!-- src: inception-of-things-h3 @2291 -->
 
 ## GraphRAG Proof-of-Concept (POC3) — in-progress
 <!--meta
