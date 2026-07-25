@@ -159,10 +159,9 @@ url = "https://github.com/LeaYeh"
 roles = ["Author"]
 -->
 
-A personal production infrastructure running live on a Hetzner cloud server: a k3s Kubernetes cluster with ArgoCD-driven GitOps, deploying multiple self-hosted applications. Infrastructure is declared as code via Helm charts and ArgoCD manifests (no Terraform).
+A personal production infrastructure running live on a Hetzner cloud server: a k3s Kubernetes cluster with ArgoCD-driven GitOps, deploying multiple self-hosted applications.
 
 - Runs a k3s cluster on a Hetzner CX23 instance with ArgoCD continuously reconciling application state from Git <!-- src: lyeh-infra-h1 @e59c -->
-- Manages infrastructure as code through Helm charts and ArgoCD manifests — IaC via Helm + ArgoCD
 - Operates the full deployment lifecycle (build, containerize, deploy, observe) for live self-hosted services <!-- src: lyeh-infra-h3 @6eb8 -->
 
 ## Inception-of-Things — K3s Kubernetes Cluster

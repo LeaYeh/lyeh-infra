@@ -153,10 +153,9 @@
       "roles": [
         "Author"
       ],
-      "description": "A personal production infrastructure running live on a Hetzner cloud server: a k3s Kubernetes cluster with ArgoCD-driven GitOps, deploying multiple self-hosted applications. Infrastructure is declared as code via Helm charts and ArgoCD manifests (no Terraform).",
+      "description": "A personal production infrastructure running live on a Hetzner cloud server: a k3s Kubernetes cluster with ArgoCD-driven GitOps, deploying multiple self-hosted applications.",
       "highlights": [
         "Runs a k3s cluster on a Hetzner CX23 instance with ArgoCD continuously reconciling application state from Git",
-        "Manages infrastructure as code through Helm charts and ArgoCD manifests — IaC via Helm + ArgoCD",
         "Operates the full deployment lifecycle (build, containerize, deploy, observe) for live self-hosted services"
       ]
     },
