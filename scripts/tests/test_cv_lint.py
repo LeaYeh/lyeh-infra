@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from cv_lint import check_invariants, check_provenance
+from cv_lint import check_invariants, check_numbers, check_provenance, check_rules, load_rules
 from resume_md import fingerprint
 
 CV = '''+++
@@ -118,3 +118,56 @@ def test_duplicate_ids_in_cv_are_fatal(tmp_path):
     problems = check_provenance(cv, [])
     assert problems[0].fatal
     assert "duplicate" in problems[0].message
+
+
+RULES = '''
+[[banned]]
+pattern = '\\bterraform\\b'
+message = "IaC here is Helm + ArgoCD, never Terraform"
+
+[[qualified]]
+pattern = '\\b(graph)?rag\\b'
+requires = '\\(in-progress\\)'
+message = "RAG must be marked (in-progress)"
+'''
+
+
+def rules_file(tmp_path):
+    p = tmp_path / "rules.toml"
+    p.write_text(RULES)
+    return load_rules(p)
+
+
+def test_banned_term_is_fatal(tmp_path):
+    f = write(tmp_path, "resume-a", facet("- Managed infra with Terraform"))
+    problems = check_rules([f], rules_file(tmp_path))
+    assert problems[0].fatal
+    assert "Terraform" in problems[0].message
+
+
+def test_qualified_term_without_qualifier_is_fatal(tmp_path):
+    f = write(tmp_path, "resume-a", facet("- Built a RAG pipeline"))
+    problems = check_rules([f], rules_file(tmp_path))
+    assert problems and problems[0].fatal
+
+
+def test_qualified_term_with_qualifier_passes(tmp_path):
+    f = write(tmp_path, "resume-a", facet("- Built a RAG pipeline (in-progress)"))
+    assert check_rules([f], rules_file(tmp_path)) == []
+
+
+def test_number_absent_from_source_is_fatal(tmp_path):
+    cv = write(tmp_path, "cv", CV)
+    f = write(tmp_path, "resume-a", facet(f"- Migrated 12 services <!-- src: csense-h1 @{fingerprint(SOURCE)} -->"))
+    problems = check_numbers(cv, [f])
+    assert problems[0].fatal
+    assert "12" in problems[0].message
+
+
+def test_number_present_in_source_passes(tmp_path):
+    cv_text = CV.replace(SOURCE, "Drove the GitOps migration for 12 services")
+    cv = write(tmp_path, "cv", cv_text)
+    src_hash = fingerprint("Drove the GitOps migration for 12 services")
+    f = write(tmp_path, "resume-a",
+              facet(f"- Migrated 12 services <!-- src: csense-h1 @{src_hash} -->"))
+    assert check_numbers(cv, [f]) == []

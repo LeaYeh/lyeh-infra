@@ -1,0 +1,22 @@
+# Machine-checkable truthfulness rules for the resume set.
+# The human-facing rationale lives in raw/resume_split_blueprint.md (local-only).
+# Patterns are Python regexes, matched case-insensitively against bullet text.
+
+[[banned]]
+pattern = '\b(py)?spark\b'
+message = "MediaTek used Beam/Dataflow, never Spark/PySpark"
+
+[[banned]]
+pattern = '\bterraform\b'
+message = "IaC here is Helm + ArgoCD, never Terraform"
+
+# Terms that may appear only when qualified as not-yet-mastered.
+[[qualified]]
+pattern = '\b(graph)?rag\b|\blanggraph\b|\bagentic\b'
+requires = '\((in-progress|learning|exploring)\)'
+message = "RAG / LangGraph / agent work must be marked (in-progress)"
+
+[[qualified]]
+pattern = '\bgerman\b'
+requires = '\b(beginner|a[12])\b'
+message = "German is beginner level"
