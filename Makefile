@@ -20,10 +20,13 @@ cv-sync: ## Fold portal/blog content into docs/resume/cv.json — assisted; use 
 cv-tailor: ## Curate cv.json into a facet resume — assisted; use the /cv-tailor skill
 	@echo "Flow 2 (targeting) is LLM-assisted: run the /cv-tailor <a|b|c> [--jd <url>] skill in Claude Code."
 
+cv-build: ## Compile docs/resume/*.md (SSOT) into JSON Resume — schema-gated
+	python3 scripts/cv_build.py
+
 cv-lint: ## Drift backstop: invariants in resume-*.json must match cv.json (decision #13)
 	python3 scripts/cv-lint.py
 
-cv-publish: cv-lint ## Push docs/resume/cv.json to the public Gist (decision #11)
+cv-publish: cv-build cv-lint ## Push docs/resume/cv.json to the public Gist (decision #11)
 	@test -n "$(GIST_ID)" || { echo "GIST_ID missing in scripts/cv-sync.env"; exit 1; }
 	python3 -c "import json,sys; c=open('docs/resume/cv.json').read(); \
 sys.stdout.write(json.dumps({'files':{'resume.json':{'content':c}}}))" \
@@ -31,7 +34,7 @@ sys.stdout.write(json.dumps({'files':{'resume.json':{'content':c}}}))" \
 	@echo "✓ Gist $(GIST_ID) updated from docs/resume/cv.json"
 	@cp docs/resume/cv.json apps/portal/src/data/resume.json && echo "✓ portal data copy refreshed"
 
-cv-render: ## Render cv.json (detailed) + resume-*.json (1-page) to PDF via scripts/cv_render.py + headless Chrome (decision #12)
+cv-render: cv-build ## Render cv.json (detailed) + resume-*.json (1-page) to PDF via scripts/cv_render.py + headless Chrome (decision #12)
 	@test -n "$(CHROME)" || { echo "No Chrome/Chromium found; set CHROME=/path/to/chrome"; exit 1; }
 	@set -e; cd docs/resume; \
 	for f in cv.json resume-*.json; do \
