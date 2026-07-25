@@ -45,3 +45,40 @@ def test_parse_meta_block_reads_toml_between_markers():
 def test_parse_meta_block_rejects_unterminated():
     with pytest.raises(MdError):
         parse_meta_block(["<!--meta", 'id = "x"'], 0, line_offset=1)
+
+
+from resume_md import fingerprint, parse_bullet
+
+
+def test_parse_bullet_plain():
+    b = parse_bullet("- Cut CI feedback loop from 20 min to 4 min", 12)
+    assert b.text == "Cut CI feedback loop from 20 min to 4 min"
+    assert b.id is None
+    assert b.src is None
+    assert b.line == 12
+
+
+def test_parse_bullet_with_id():
+    b = parse_bullet("- Drove the GitOps migration {#csense-h1}", 5)
+    assert b.text == "Drove the GitOps migration"
+    assert b.id == "csense-h1"
+
+
+def test_parse_bullet_with_src_anchor():
+    b = parse_bullet("- Owned the GitOps delivery path <!-- src: csense-h1 @4f2a -->", 9)
+    assert b.text == "Owned the GitOps delivery path"
+    assert b.src == "csense-h1"
+    assert b.src_hash == "4f2a"
+
+
+def test_parse_bullet_rejects_non_bullet():
+    with pytest.raises(MdError):
+        parse_bullet("not a bullet", 3)
+
+
+def test_fingerprint_is_whitespace_insensitive_and_four_hex():
+    a = fingerprint("Drove   the GitOps\nmigration")
+    b = fingerprint("Drove the GitOps migration")
+    assert a == b
+    assert len(a) == 4
+    assert all(c in "0123456789abcdef" for c in a)
