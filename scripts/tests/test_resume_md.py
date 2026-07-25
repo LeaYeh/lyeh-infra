@@ -287,31 +287,75 @@ def test_prose_before_any_section_reports_its_own_line():
     assert e.value.line == 7
 
 
-def test_second_prose_paragraph_reports_the_second_paragraph_line():
+def test_entry_multiple_prose_paragraphs_join_with_blank_line():
     text = (
         '+++\nname = "Lea"\n+++\n\n'  # 1-4
         "# Work\n\n"  # 5-6
         "## Acme\n\n"  # 7-8
         "First paragraph.\n\n"  # 9-10
-        "Second paragraph.\n"  # 11
+        "Second paragraph.\n\n"  # 11-12
+        "- Did a thing\n"  # 13
     )
-    with pytest.raises(MdError) as e:
-        parse(text)
-    assert e.value.line == 11
-    assert "Acme" in e.value.message
+    doc = parse(text)
+    entry = doc.section("Work").entries[0]
+    assert entry.prose == "First paragraph.\n\nSecond paragraph."
+    assert [b.text for b in entry.bullets] == ["Did a thing"]
 
 
-def test_second_prose_paragraph_in_a_section_reports_the_second_paragraph_line():
+def test_section_multiple_prose_paragraphs_join_with_blank_line():
     text = (
         '+++\nname = "Lea"\n+++\n\n'  # 1-4
         "# Summary\n\n"  # 5-6
         "First paragraph\nwrapped.\n\n"  # 7-9
         "Second paragraph.\n"  # 10
     )
+    doc = parse(text)
+    prose = doc.sections[0].prose
+    assert prose == "First paragraph wrapped.\n\nSecond paragraph."
+    assert prose.split("\n\n") == ["First paragraph wrapped.", "Second paragraph."]
+
+
+def test_three_prose_paragraphs_join_in_order():
+    text = (
+        '+++\nname = "Lea"\n+++\n\n'  # 1-4
+        "# Summary\n\n"  # 5-6
+        "First.\n\n"  # 7-8
+        "Second.\n\n"  # 9-10
+        "Third.\n"  # 11
+    )
+    doc = parse(text)
+    assert doc.sections[0].prose == "First.\n\nSecond.\n\nThird."
+
+
+def test_prose_after_bullets_is_an_error():
+    text = (
+        '+++\nname = "Lea"\n+++\n\n'  # 1-4
+        "# Work\n\n"  # 5-6
+        "## Acme\n\n"  # 7-8
+        "- Did a thing\n\n"  # 9-10
+        "Stray prose after the bullets.\n"  # 11
+    )
     with pytest.raises(MdError) as e:
         parse(text)
-    assert e.value.line == 10
-    assert "Summary" in e.value.message
+    assert e.value.line == 11
+    assert "before the bullet" in e.value.message
+    assert "Acme" in e.value.message
+
+
+def test_two_paragraph_summary_round_trips_through_split():
+    paragraphs = [
+        "Senior engineer with a decade of infra experience.",
+        "Believes in boring technology.",
+    ]
+    original = "\n\n".join(paragraphs)
+    md = (
+        '+++\nname = "Lea"\n+++\n\n'
+        "# Summary\n\n"
+        + "\n\n".join(paragraphs)
+        + "\n"
+    )
+    doc = parse(md)
+    assert doc.sections[0].prose == original
 
 
 def test_second_meta_block_reports_the_second_block_line():

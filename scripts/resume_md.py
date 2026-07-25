@@ -6,11 +6,14 @@ JSON Resume; see jsonresume_map.py for the semantic mapping.
 
 Grammar notes that are deliberate rather than incidental:
 
-* A node (section or entry) carries at most **one** prose paragraph. A second
-  paragraph is a hard error, not a silent drop: the operator wrote text that
-  would otherwise vanish from the rendered PDF and the published Gist with no
-  diagnostic. If a node needs more prose, the sentences belong in one paragraph
-  or in bullets.
+* A node (section or entry) may carry multiple prose paragraphs, separated by
+  a blank line in the source. They join with ``"\n\n"``, matching the
+  paragraph break that JSON Resume fields such as ``basics.summary`` may
+  legitimately contain (the one-page renderer takes the first paragraph; the
+  full renderer emits one ``<p>`` per paragraph). Within an entry, prose must
+  come before the bullet list: a paragraph flushed after bullets have already
+  been recorded is an operator mistake — under naive joining it would be
+  silently appended to the entry's summary — so it is a hard error instead.
 * An entry carries at most **one** ``<!--meta`` block, for the same reason.
 * ``<!--meta`` must stand alone on its opening line. Freeform HTML comments are
   not part of this grammar, so a line that merely starts with ``<!--meta``
@@ -212,11 +215,12 @@ def parse(text: str) -> Document:
         target = entry if entry is not None else section
         if target is None:
             raise MdError(prose_line, "prose found before the first '# Section' heading")
-        if target.prose:
+        if getattr(target, "bullets", None):
             raise MdError(
-                prose_line, f"multiple prose paragraphs in '{target_name(target)}'"
+                prose_line,
+                f"prose must come before the bullet list in '{target_name(target)}'",
             )
-        target.prose = joined
+        target.prose = f"{target.prose}\n\n{joined}" if target.prose else joined
         prose.clear()
 
     def target_name(target) -> str:
