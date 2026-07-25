@@ -47,4 +47,4 @@ cv-render: ## Render cv.json (detailed) + resume-*.json (1-page) to PDF via scri
 	@echo "✓ PDFs rendered into docs/resume/"
 
 cv-test: ## Run the resume tooling test suite
-	python3 -m pytest scripts/tests -q
+	uvx pytest scripts/tests -q
