@@ -153,7 +153,7 @@ score = ""
 ## Personal Hetzner Infrastructure — Live GitOps Cluster
 <!--meta
 id = "lyeh-infra"
-start = "2025-01-01"
+start = "2026-04-01"
 end = ""
 url = "https://github.com/LeaYeh"
 roles = ["Author"]
