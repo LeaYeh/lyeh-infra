@@ -6,7 +6,6 @@
     "image": "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156",
     "email": "lea.yeh.ml@gmail.com",
     "phone": "",
-    "summary": "Platform engineer who designs and operates the same infrastructure. Production K3s + ArgoCD/GitOps, Prometheus/Grafana/ELK, GitHub Actions CI/CD — alongside software architecture (async routing, hardware-abstraction layers, interface contracts) at c-sense GmbH. Running a personal Hetzner K3s cluster live.",
     "location": {
       "countryCode": "AT",
       "address": "Austria, Vienna",
@@ -24,7 +23,8 @@
         "username": "LeaYeh",
         "url": "https://github.com/LeaYeh"
       }
-    ]
+    ],
+    "summary": "Platform engineer who designs and operates the same infrastructure. Production K3s + ArgoCD/GitOps, Prometheus/Grafana/ELK, GitHub Actions CI/CD — alongside software architecture (async routing, hardware-abstraction layers, interface contracts) at c-sense GmbH. Running a personal Hetzner K3s cluster live."
   },
   "work": [
     {
@@ -48,42 +48,42 @@
       "position": "Data Scientist",
       "startDate": "2022-09-01",
       "endDate": "2023-09-01",
+      "location": "Taipei, Taiwan",
+      "url": "https://www.linkedin.com/company/17763",
+      "summary": "Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.",
       "highlights": [
         "Built model-monitoring infrastructure (AWS + Streamlit) for production ML systems, ensuring high availability and performance consistency",
         "Implemented ML models for mobile thermal control achieving temperature errors below 1°C, integrated into automated workflows",
         "Collaborated with chip developers to reduce power consumption by 20%, yielding a 14K Antutu performance improvement"
-      ],
-      "summary": "Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.",
-      "url": "https://www.linkedin.com/company/17763",
-      "location": "Taipei, Taiwan"
+      ]
     },
     {
       "name": "MediaTek",
       "position": "Data Engineer",
       "startDate": "2019-07-01",
       "endDate": "2022-09-01",
+      "location": "Taipei, Taiwan",
+      "url": "https://www.linkedin.com/company/17763",
+      "summary": "Built data infrastructure and analytics platforms for one of the world's largest IC design companies.",
       "highlights": [
-        "Built a monitoring & alerting stack (Grafana, Splunk, MLflow) for PB-scale data and ML systems; drove data-quality incidents from 50% to <1% and cut EDA/computing-farm cost 25% through observability-driven decisions",
+        "Built a monitoring & alerting stack (Grafana, Splunk, MLflow) for PB-scale data and ML systems; drove data-quality incidents from 50% to <1% through observability-driven decisions",
         "Operated PB-scale ETL infrastructure on GCP (Airflow, NiFi, Dataflow, BigQuery), establishing automated pipelines for structured and unstructured data",
         "Implemented real-time data-quality monitoring and alerting, lowering monthly operational labor by 7.5 man-days",
         "Built model-monitoring infrastructure (MLflow + Grafana dashboards) tracking ML model performance and data drift in production",
-        "Managed EDA license and computing-farm cost via interactive BI dashboards (Splunk + Grafana), informing procurement decisions"
-      ],
-      "summary": "Built data infrastructure and analytics platforms for one of the world's largest IC design companies.",
-      "url": "https://www.linkedin.com/company/17763",
-      "location": "Taipei, Taiwan"
+        "Managed EDA license and computing-farm cost via interactive BI dashboards (Splunk + Grafana), informing procurement decisions and reducing costs by 25%"
+      ]
     },
     {
       "name": "MediaTek",
       "position": "Software Engineer",
       "startDate": "2016-09-01",
       "endDate": "2019-06-01",
+      "location": "Taipei, Taiwan",
+      "url": "https://www.linkedin.com/company/17763",
+      "summary": "",
       "highlights": [
         "Built CI/CD automation (Python + Jenkins) enforcing documentation standards across an automated ICD DMS"
-      ],
-      "summary": "",
-      "url": "https://www.linkedin.com/company/17763",
-      "location": "Taipei, Taiwan"
+      ]
     }
   ],
   "volunteer": [
@@ -92,12 +92,12 @@
       "position": "Peer Tutor & Workshop Host",
       "startDate": "2024-07-01",
       "endDate": "2024-10-01",
+      "url": "https://www.42vienna.com/",
       "summary": "Volunteered as a peer tutor at 42 Vienna, supporting fellow students in system programming and software engineering fundamentals. Designed and hosted a Git workshop for the student community.",
       "highlights": [
         "Hosted a Git Essentials workshop — 'Something You Should Know Before Git Branch' — covering branching strategy, rebase, conflict resolution, and collaborative workflows (slides: https://docs.google.com/presentation/d/13InmNDRSfkeUnGWHNXWFiTr3QCAz4ecFL_wFz-NFdoI/edit?usp=sharing)",
         "Provided peer tutoring in C/C++ system programming, shell scripting, and software architecture concepts"
-      ],
-      "url": "https://www.42vienna.com/"
+      ]
     }
   ],
   "education": [
@@ -121,9 +121,9 @@
       "institution": "National Chiao Tung University",
       "area": "Computer Science — Data Mining",
       "studyType": "Master of Science",
-      "url": "https://www.nycu.edu.tw/nycu/en/",
       "startDate": "2014-09-01",
       "endDate": "2016-06-01",
+      "url": "https://www.nycu.edu.tw/nycu/en/",
       "score": "",
       "courses": [
         "Data Mining",
@@ -134,9 +134,9 @@
       "institution": "Tatung University",
       "area": "Computer Science — Computer Vision & Algorithms",
       "studyType": "Bachelor",
-      "url": "https://ao.ttu.edu.tw/",
       "startDate": "2010-09-01",
       "endDate": "2014-06-01",
+      "url": "https://ao.ttu.edu.tw/",
       "score": "",
       "courses": [
         "Computer Vision",
@@ -144,33 +144,82 @@
       ]
     }
   ],
-  "awards": [
+  "projects": [
     {
-      "title": "IT Annual Award",
-      "date": "2020-12-01",
-      "awarder": "MediaTek",
-      "summary": "Recognized for impact on data infrastructure and cost reduction initiatives."
-    }
-  ],
-  "certificates": [
-    {
-      "name": "ISTQB Certified Tester Foundation Level (CTFL) v4.0",
-      "date": "2026-04-04",
-      "issuer": "ISTQB / GASQ",
-      "url": "https://app.skillsclub.com/credential/293353-28e36a6435ba059718f6ef53a2b8cf79f593a6d16221c0bd0d9483b06a51c5c3"
+      "name": "Personal Hetzner Infrastructure — Live GitOps Cluster",
+      "startDate": "2026-04-01",
+      "endDate": "",
+      "url": "https://github.com/LeaYeh",
+      "roles": [
+        "Author"
+      ],
+      "description": "A personal production infrastructure running live on a Hetzner cloud server: a k3s Kubernetes cluster with ArgoCD-driven GitOps, deploying multiple self-hosted applications.",
+      "highlights": [
+        "Runs a k3s cluster on a Hetzner CX23 instance with ArgoCD continuously reconciling application state from Git",
+        "Operates the full deployment lifecycle (build, containerize, deploy, observe) for live self-hosted services"
+      ]
     },
     {
-      "name": "Microsoft Azure Databricks for Data Engineering",
-      "date": "2024-04-01",
-      "issuer": "Microsoft",
-      "url": "https://www.coursera.org/account/accomplishments/verify/QCEEXZ8HWETC"
-    }
-  ],
-  "publications": [
+      "name": "Inception-of-Things — K3s Kubernetes Cluster",
+      "startDate": "2025-06-01",
+      "endDate": "2025-10-01",
+      "url": "https://github.com/42-CC-RNCP/Inception-of-Things",
+      "roles": [
+        "Developer"
+      ],
+      "description": "Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster using Vagrant and VirtualBox, covering cluster networking, ingress, and GitOps-style deployment workflows.",
+      "highlights": [
+        "Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup",
+        "Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes",
+        "Applied GitOps principles with ArgoCD for continuous deployment in the bonus track"
+      ]
+    },
     {
-      "name": "Clustering using Radius-Weighted Means and Analytical Radius-Preserved Formula",
-      "publisher": "NCTU",
-      "releaseDate": "2016-06-01"
+      "name": "ft_transcendence — Full-Stack Platform with Observability Stack",
+      "startDate": "2025-10-01",
+      "endDate": "2026-03-01",
+      "url": "https://github.com/anastasiiap42/ft_transcendence/tree/main/devops",
+      "roles": [
+        "DevOps Engineer"
+      ],
+      "description": "Contributed the DevOps module for a full-stack multiplayer web platform (42 Vienna capstone project). Responsible for designing and deploying the complete observability infrastructure covering metrics, logging, and alerting.",
+      "highlights": [
+        "Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds",
+        "Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform",
+        "Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services",
+        "Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity"
+      ]
+    },
+    {
+      "name": "ft_linux — Linux From Scratch",
+      "startDate": "2025-09-01",
+      "endDate": "",
+      "url": "https://github.com/42-CC-RNCP/ft_linux",
+      "roles": [
+        "Author"
+      ],
+      "description": "Built a fully bootable Linux system from scratch, covering every layer from cross-compilation toolchain to kernel configuration, filesystem hierarchy, init system, and bootloader. Follows LFS/BLFS/ALFS methodology with a custom automation layer.",
+      "highlights": [
+        "Compiled a custom Linux kernel (4.x) with hand-selected driver and filesystem configuration",
+        "Built a two-phase cross-compilation toolchain (temporary + final) to produce a host-independent, self-contained Linux system",
+        "Automated the full build pipeline (14 stages) via an ALFS-style bootstrap script with environment isolation and error recovery",
+        "Designed partition layout, configured GRUB bootloader, SysV init, and udev for dynamic device management"
+      ]
+    },
+    {
+      "name": "libftpp — C++ Architecture Library",
+      "startDate": "2025-10-01",
+      "endDate": "",
+      "url": "https://github.com/42-CC-RNCP/libftpp",
+      "roles": [
+        "Author"
+      ],
+      "description": "A modern C++20 library built through structured exercises practicing SOLID principles, hexagonal architecture, and design patterns. Includes Architectural Decision Records (ADRs) documenting trade-off reasoning.",
+      "highlights": [
+        "Implemented core data structures and utilities applying SOLID principles and hexagonal (ports & adapters) architecture",
+        "Documented architectural decisions via ADRs, treating design trade-offs as first-class engineering artifacts",
+        "Maintained CI pipeline with CMake, clang-format, and automated test suite"
+      ]
     }
   ],
   "skills": [
@@ -180,11 +229,11 @@
       "keywords": [
         "Kubernetes (K3s)",
         "ArgoCD / GitOps",
-        "Helm",
+        "Kustomize",
         "Docker",
         "GitHub Actions",
         "CI/CD",
-        "IaC via Helm + ArgoCD",
+        "GitOps via ArgoCD",
         "Vagrant / VM provisioning"
       ]
     },
@@ -258,6 +307,35 @@
       ]
     }
   ],
+  "awards": [
+    {
+      "title": "IT Annual Award",
+      "date": "2020-12-01",
+      "awarder": "MediaTek",
+      "summary": "Recognized for impact on data infrastructure and cost reduction initiatives."
+    }
+  ],
+  "certificates": [
+    {
+      "name": "ISTQB Certified Tester Foundation Level (CTFL) v4.0",
+      "date": "2026-04-04",
+      "issuer": "ISTQB / GASQ",
+      "url": "https://app.skillsclub.com/credential/293353-28e36a6435ba059718f6ef53a2b8cf79f593a6d16221c0bd0d9483b06a51c5c3"
+    },
+    {
+      "name": "Microsoft Azure Databricks for Data Engineering",
+      "date": "2024-04-01",
+      "issuer": "Microsoft",
+      "url": "https://www.coursera.org/account/accomplishments/verify/QCEEXZ8HWETC"
+    }
+  ],
+  "publications": [
+    {
+      "name": "Clustering using Radius-Weighted Means and Analytical Radius-Preserved Formula",
+      "publisher": "NCTU",
+      "releaseDate": "2016-06-01"
+    }
+  ],
   "languages": [
     {
       "language": "Chinese",
@@ -278,85 +356,6 @@
   ],
   "interests": [],
   "references": [],
-  "projects": [
-    {
-      "name": "Personal Hetzner Infrastructure — Live GitOps Cluster",
-      "description": "A personal production infrastructure running live on a Hetzner cloud server: a k3s Kubernetes cluster with ArgoCD-driven GitOps, deploying multiple self-hosted applications. Infrastructure is declared as code via Helm charts and ArgoCD manifests (no Terraform).",
-      "startDate": "2025-01-01",
-      "endDate": "",
-      "highlights": [
-        "Runs a k3s cluster on a Hetzner CX23 instance with ArgoCD continuously reconciling application state from Git",
-        "Manages infrastructure as code through Helm charts and ArgoCD manifests — IaC via Helm + ArgoCD",
-        "Operates the full deployment lifecycle (build, containerize, deploy, observe) for live self-hosted services"
-      ],
-      "url": "https://github.com/LeaYeh",
-      "roles": [
-        "Author"
-      ]
-    },
-    {
-      "name": "Inception-of-Things — K3s Kubernetes Cluster",
-      "description": "Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster using Vagrant and VirtualBox, covering cluster networking, ingress, and GitOps-style deployment workflows.",
-      "startDate": "2025-06-01",
-      "endDate": "2025-10-01",
-      "highlights": [
-        "Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup",
-        "Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes",
-        "Applied GitOps principles with ArgoCD for continuous deployment in the bonus track"
-      ],
-      "url": "https://github.com/42-CC-RNCP/Inception-of-Things",
-      "roles": [
-        "Developer"
-      ]
-    },
-    {
-      "name": "ft_transcendence — Full-Stack Platform with Observability Stack",
-      "description": "Contributed the DevOps module for a full-stack multiplayer web platform (42 Vienna capstone project). Responsible for designing and deploying the complete observability infrastructure covering metrics, logging, and alerting.",
-      "startDate": "2025-10-01",
-      "endDate": "2026-03-01",
-      "highlights": [
-        "Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds",
-        "Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform",
-        "Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services",
-        "Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity"
-      ],
-      "url": "https://github.com/anastasiiap42/ft_transcendence/tree/main/devops",
-      "roles": [
-        "DevOps Engineer"
-      ]
-    },
-    {
-      "name": "ft_linux — Linux From Scratch",
-      "description": "Built a fully bootable Linux system from scratch, covering every layer from cross-compilation toolchain to kernel configuration, filesystem hierarchy, init system, and bootloader. Follows LFS/BLFS/ALFS methodology with a custom automation layer.",
-      "startDate": "2025-09-01",
-      "endDate": "",
-      "highlights": [
-        "Compiled a custom Linux kernel (4.x) with hand-selected driver and filesystem configuration",
-        "Built a two-phase cross-compilation toolchain (temporary + final) to produce a host-independent, self-contained Linux system",
-        "Automated the full build pipeline (14 stages) via an ALFS-style bootstrap script with environment isolation and error recovery",
-        "Designed partition layout, configured GRUB bootloader, SysV init, and udev for dynamic device management"
-      ],
-      "url": "https://github.com/42-CC-RNCP/ft_linux",
-      "roles": [
-        "Author"
-      ]
-    },
-    {
-      "name": "libftpp — C++ Architecture Library",
-      "description": "A modern C++20 library built through structured exercises practicing SOLID principles, hexagonal architecture, and design patterns. Includes Architectural Decision Records (ADRs) documenting trade-off reasoning.",
-      "startDate": "2025-10-01",
-      "endDate": "",
-      "highlights": [
-        "Implemented core data structures and utilities applying SOLID principles and hexagonal (ports & adapters) architecture",
-        "Documented architectural decisions via ADRs, treating design trade-offs as first-class engineering artifacts",
-        "Maintained CI pipeline with CMake, clang-format, and automated test suite"
-      ],
-      "url": "https://github.com/42-CC-RNCP/libftpp",
-      "roles": [
-        "Author"
-      ]
-    }
-  ],
   "meta": {
     "version": "v1.0.0",
     "canonical": "https://github.com/jsonresume/resume-schema/blob/v1.0.0/schema.json"

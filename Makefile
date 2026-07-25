@@ -1,4 +1,4 @@
-.PHONY: cv-sync cv-tailor cv-lint cv-publish cv-render
+.PHONY: cv-sync cv-tailor cv-lint cv-publish cv-render cv-build cv-test
 
 GIST_ID  := $(shell sed -n 's/^GIST_ID=//p' scripts/cv-sync.env 2>/dev/null | tr -d '"[:space:]')
 
@@ -13,17 +13,19 @@ CHROME ?= $(shell \
     [ -x "$$c" ] && { echo "$$c"; break; }; \
   done)
 
-cv-sync: ## Fold portal/blog content into docs/resume/cv.json — assisted; use the /cv-sync skill
+cv-sync: ## Fold portal/blog content into docs/resume/cv.md — assisted; use the /cv-sync skill
 	@echo "Flow 1 (intake) is LLM-assisted: run the /cv-sync skill in Claude Code."
-	@echo "(legacy portal→Gist tool scripts/cv_sync.py is superseded by the SSOT design.)"
 
-cv-tailor: ## Curate cv.json into a facet resume — assisted; use the /cv-tailor skill
+cv-tailor: ## Curate cv.md into a facet resume — assisted; use the /cv-tailor skill
 	@echo "Flow 2 (targeting) is LLM-assisted: run the /cv-tailor <a|b|c> [--jd <url>] skill in Claude Code."
 
-cv-lint: ## Drift backstop: invariants in resume-*.json must match cv.json (decision #13)
-	python3 scripts/cv-lint.py
+cv-build: ## Compile docs/resume/*.md (SSOT) into JSON Resume — schema-gated
+	python3 scripts/cv_build.py
 
-cv-publish: cv-lint ## Push docs/resume/cv.json to the public Gist (decision #11)
+cv-lint: ## Gates: invariants, provenance, numbers, banned terms, JSON freshness
+	python3 scripts/cv_lint.py
+
+cv-publish: cv-build cv-lint ## Push docs/resume/cv.json to the public Gist (decision #11)
 	@test -n "$(GIST_ID)" || { echo "GIST_ID missing in scripts/cv-sync.env"; exit 1; }
 	python3 -c "import json,sys; c=open('docs/resume/cv.json').read(); \
 sys.stdout.write(json.dumps({'files':{'resume.json':{'content':c}}}))" \
@@ -31,7 +33,7 @@ sys.stdout.write(json.dumps({'files':{'resume.json':{'content':c}}}))" \
 	@echo "✓ Gist $(GIST_ID) updated from docs/resume/cv.json"
 	@cp docs/resume/cv.json apps/portal/src/data/resume.json && echo "✓ portal data copy refreshed"
 
-cv-render: ## Render cv.json (detailed) + resume-*.json (1-page) to PDF via scripts/cv_render.py + headless Chrome (decision #12)
+cv-render: cv-build ## Render cv.json (detailed) + resume-*.json (1-page) to PDF via scripts/cv_render.py + headless Chrome (decision #12)
 	@test -n "$(CHROME)" || { echo "No Chrome/Chromium found; set CHROME=/path/to/chrome"; exit 1; }
 	@set -e; cd docs/resume; \
 	for f in cv.json resume-*.json; do \
@@ -45,3 +47,6 @@ cv-render: ## Render cv.json (detailed) + resume-*.json (1-page) to PDF via scri
 	  echo "  ✓ $$n.pdf ($$mode)"; \
 	done
 	@echo "✓ PDFs rendered into docs/resume/"
+
+cv-test: ## Run the resume tooling test suite
+	uvx pytest scripts/tests -q

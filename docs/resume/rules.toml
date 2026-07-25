@@ -1,0 +1,29 @@
+# Machine-checkable truthfulness rules for the resume set.
+# The human-facing rationale lives in raw/resume_split_blueprint.md (local-only).
+# Patterns are Python regexes, matched case-insensitively against bullet text.
+
+[[banned]]
+pattern = '\b(py)?spark\b'
+message = "MediaTek used Beam/Dataflow, never Spark/PySpark"
+
+[[banned]]
+pattern = '\bterraform\b'
+message = "IaC here is Kustomize + ArgoCD, never Terraform"
+
+# Terms that may appear only when qualified as not-yet-mastered.
+#
+# The qualifier may be the literal (in-progress) marker used in skills lists, or
+# present-continuous framing in a work bullet — "currently architecting …",
+# "evaluating LLM tooling …" — which says the same thing in prose. Note the
+# widened forms are matched anywhere in the bullet, so they can satisfy the rule
+# for a term they do not actually qualify; the marker is the stricter choice when
+# a bullet could read as a proficiency claim.
+[[qualified]]
+pattern = '\b(graph)?rag\b|\blanggraph\b|\bagentic\b'
+requires = '\((in-progress|learning|exploring)\)|currently \w+ing|\bevaluating\b'
+message = "RAG / LangGraph / agent work must be marked (in-progress) or framed as current activity"
+
+[[qualified]]
+pattern = '\bgerman\b'
+requires = '\b(beginner|a[12])\b'
+message = "German is beginner level"
