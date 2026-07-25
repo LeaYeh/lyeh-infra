@@ -71,11 +71,11 @@ url = "https://www.linkedin.com/company/17763"
 
 Built data infrastructure and analytics platforms for one of the world's largest IC design companies.
 
-- Built a monitoring & alerting stack (Grafana, Splunk, MLflow) for PB-scale data and ML systems; drove data-quality incidents from 50% to <1% and cut EDA/computing-farm cost 25% through observability-driven decisions <!-- src: mediatek-de-h3 @ef9e -->
+- Built a monitoring & alerting stack (Grafana, Splunk, MLflow) for PB-scale data and ML systems; drove data-quality incidents from 50% to <1% through observability-driven decisions <!-- src: mediatek-de-h3 @ef9e -->
 - Operated PB-scale ETL infrastructure on GCP (Airflow, NiFi, Dataflow, BigQuery), establishing automated pipelines for structured and unstructured data <!-- src: mediatek-de-h1 @2a03 -->
 - Implemented real-time data-quality monitoring and alerting, lowering monthly operational labor by 7.5 man-days <!-- src: mediatek-de-h3 @ef9e -->
 - Built model-monitoring infrastructure (MLflow + Grafana dashboards) tracking ML model performance and data drift in production <!-- src: mediatek-de-h4 @777d -->
-- Managed EDA license and computing-farm cost via interactive BI dashboards (Splunk + Grafana), informing procurement decisions <!-- src: mediatek-de-h5 @345a -->
+- Managed EDA license and computing-farm cost via interactive BI dashboards (Splunk + Grafana), informing procurement decisions and reducing costs by 25% <!-- src: mediatek-de-h5 @345a -->
 
 ## MediaTek — Software Engineer
 <!--meta
