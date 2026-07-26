@@ -10,6 +10,8 @@ Checks, in order:
   6. portal copy — apps/portal/src/data/resume.json (a third publishing surface,
                    deployed by portal-deploy.yml on any push under
                    apps/portal/src/**) matches what cv.md builds to
+  7. curation    — a facet's Summary and label are cv.md's with words deleted,
+                   never newly written prose
 
 Bullets are not the document. About half of what reaches the JSON is prose or
 frontmatter — ``# Summary`` prose becomes ``basics.summary``, entry prose
@@ -519,6 +521,71 @@ def check_portal_copy(cv_md: Path, portal_json: Path | None = None) -> list[Prob
     return []
 
 
+CURATION_WORD_RE = re.compile(r"[a-z0-9+]+")
+
+
+def _is_subsequence(sub: list[str], base: list[str]) -> str | None:
+    """Return the first word of `sub` that is not reachable in order, or None."""
+    it = iter(base)
+    for word in sub:
+        if word not in it:
+            return word
+    return None
+
+
+def check_curation(cv_md: Path, facet_mds: list[Path]) -> list[Problem]:
+    """A facet's Summary and label must be cv.md's, with words removed.
+
+    A facet reframes the CV — but only its *bullets* do, and those are held to
+    account by the provenance, numbers and rules gates. The Summary paragraph and
+    the frontmatter label had no such tie: they became `basics.summary` and
+    `basics.label`, the two things a reader meets first, with nothing checking
+    that they said what the CV says. Newly authored prose slipped in there twice.
+
+    The rule is deliberately crude: the facet's words must appear in the CV's, in
+    order. Deleting a clause is curation and passes; writing a new phrase does
+    not. Punctuation is free, so ending a sentence early where a clause was cut
+    is fine.
+    """
+    cv_doc, problem = _try_parse(cv_md)
+    if cv_doc is None:
+        return [problem]
+    cv_summary = next(
+        (s.prose for s in cv_doc.sections if s.title == "Summary"), "")
+    base = {
+        "Summary": CURATION_WORD_RE.findall(cv_summary.lower()),
+        "label": CURATION_WORD_RE.findall(
+            str(cv_doc.frontmatter.get("label", "")).lower()),
+    }
+
+    problems: list[Problem] = []
+    for md in facet_mds:
+        doc, problem = _try_parse(md)
+        if doc is None:
+            problems.append(problem)
+            continue
+        section = next((s for s in doc.sections if s.title == "Summary"), None)
+        candidates = [
+            ("Summary", section.prose if section else "",
+             (section.prose_line or section.line) if section else 1),
+            ("label", str(doc.frontmatter.get("label", "")), 1),
+        ]
+        for kind, text, line in candidates:
+            if not text:
+                continue
+            stray = _is_subsequence(CURATION_WORD_RE.findall(text.lower()), base[kind])
+            if stray is not None:
+                where = kind if kind == "Summary" else "frontmatter 'label'"
+                problems.append(Problem(
+                    md.name, line,
+                    f"{where}: '{stray}' is not in cv.md's {kind} — a facet curates "
+                    f"the CV by deleting from it, never by writing new wording. "
+                    f"Cut what this audience does not need, or add the claim to "
+                    f"cv.md first.",
+                ))
+    return problems
+
+
 USAGE = "usage: cv_lint.py [--strict]"
 
 
@@ -550,6 +617,7 @@ def main(argv: list[str] | None = None) -> int:
         + check_rules([CV_MD] + facets, rules)
         + check_freshness([CV_MD] + facets)
         + check_portal_copy(CV_MD)
+        + check_curation(CV_MD, facets)
     )
 
     for p in problems:

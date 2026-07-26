@@ -24,7 +24,7 @@ url = "https://github.com/LeaYeh"
 
 # Summary
 
-Senior Software Engineer in applied AI: sole technical decision-maker for a company's AI integration, currently architecting an agentic RAG system over internal documentation and business data. Came by the engineering path — PB-scale pipelines, then the analysis and model monitoring on them — and writes the internals: neural-net framework, autograd and tuner from scratch.
+Senior Software Engineer with solution architecture responsibilities at c-sense GmbH — the sole engineer responsible for the full software stack, currently architecting an agentic RAG system (LangChain/LangGraph, Chroma, LLM cloud APIs) to give the CEO cross-domain visibility into internal technical documentation, sales/CRM data, competitor products, and prospective customers.
 
 # Work
 

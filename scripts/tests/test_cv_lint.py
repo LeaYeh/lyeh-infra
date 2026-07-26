@@ -1356,3 +1356,110 @@ def test_shipped_rules_do_not_flag_lambda_glue_or_s3_out_of_aws_context(tmp_path
         f"an AWS claim at all (bare Python lambda / ordinary 'glue code' / "
         f"S3, the one AWS service actually used): {problems!r}"
     )
+
+
+# ── gate 7: curation — a facet's Summary and label are cv.md's, with words cut ──
+
+from cv_lint import check_curation
+
+CURATION_CV = '''+++
+name = "Lea"
+email = "lea@example.com"
+label = "Senior Software Engineer | Data Engineer | Systems Architecture"
++++
+
+# Summary
+
+Senior Software Engineer at Acme with PB-scale pipelines and an agentic RAG system.
+
+# Work
+
+## Acme — Engineer
+<!--meta
+id = "acme"
+start = "2020-01-01"
+-->
+
+- Built the thing {#acme-h1}
+'''
+
+
+def curation_facet(summary=None, label=None):
+    t = CURATION_CV.replace("- Built the thing {#acme-h1}",
+                            "- Built the thing <!-- src: acme-h1 @" + fingerprint("Built the thing") + " -->")
+    if summary is not None:
+        t = t.replace(
+            "Senior Software Engineer at Acme with PB-scale pipelines and an agentic RAG system.",
+            summary)
+    if label is not None:
+        t = t.replace(
+            'label = "Senior Software Engineer | Data Engineer | Systems Architecture"',
+            f'label = "{label}"')
+    return t
+
+
+def test_a_summary_that_only_deletes_passes(tmp_path):
+    cv = write(tmp_path, "cv", CURATION_CV)
+    f = write(tmp_path, "resume-de", curation_facet(
+        summary="Senior Software Engineer at Acme with PB-scale pipelines."))
+    assert check_curation(cv, [f]) == []
+
+
+def test_a_summary_with_new_wording_is_fatal(tmp_path):
+    cv = write(tmp_path, "cv", CURATION_CV)
+    f = write(tmp_path, "resume-de", curation_facet(
+        summary="Senior Software Engineer who came by the engineering path."))
+    problems = check_curation(cv, [f])
+    assert problems and problems[0].fatal
+    assert "'who'" in problems[0].message   # the first word with no home in the CV
+
+
+def test_reordering_the_summary_is_not_deletion(tmp_path):
+    cv = write(tmp_path, "cv", CURATION_CV)
+    f = write(tmp_path, "resume-de", curation_facet(
+        summary="An agentic RAG system and PB-scale pipelines at Acme."))
+    assert check_curation(cv, [f])
+
+
+def test_punctuation_may_change_where_a_clause_was_cut(tmp_path):
+    """Ending a sentence early needs a full stop the CV spells as a comma."""
+    cv = write(tmp_path, "cv", CURATION_CV)
+    f = write(tmp_path, "resume-de", curation_facet(
+        summary="Senior Software Engineer at Acme. PB-scale pipelines."))
+    assert check_curation(cv, [f]) == []
+
+
+def test_a_label_that_only_deletes_passes(tmp_path):
+    cv = write(tmp_path, "cv", CURATION_CV)
+    f = write(tmp_path, "resume-de", curation_facet(
+        label="Senior Software Engineer | Data Engineer"))
+    assert check_curation(cv, [f]) == []
+
+
+def test_a_label_with_a_new_term_is_fatal(tmp_path):
+    cv = write(tmp_path, "cv", CURATION_CV)
+    f = write(tmp_path, "resume-de", curation_facet(
+        label="Senior Software Engineer | ETL at Scale"))
+    problems = check_curation(cv, [f])
+    assert problems and problems[0].fatal
+    assert "frontmatter 'label'" in problems[0].message
+
+
+def test_the_finding_points_at_the_summary_prose(tmp_path):
+    cv = write(tmp_path, "cv", CURATION_CV)
+    f = write(tmp_path, "resume-de", curation_facet(summary="Totally new sentence."))
+    assert check_curation(cv, [f])[0].line == 9
+
+
+def test_cv_itself_is_not_curation_checked(tmp_path):
+    """cv.md is the base; there is nothing above it to have deleted from."""
+    cv = write(tmp_path, "cv", CURATION_CV)
+    assert check_curation(cv, []) == []
+
+
+def test_a_curation_breach_alone_fails_main(tmp_path, monkeypatch, capsys):
+    corpus(tmp_path, monkeypatch,
+           facet(GOOD_ANCHOR).replace("Engineer.", "Engineer who invented this phrase."))
+    rc, err = run_main(capsys)
+    assert rc == 1
+    assert "never by writing new wording" in err
