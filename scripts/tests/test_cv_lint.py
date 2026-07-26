@@ -940,30 +940,45 @@ def test_work_summary_stays_tailorable(tmp_path):
     assert check_invariants(cv, [f]) == []
 
 
-# --- 8. a prose finding says which line it is anchored to ---------------
+# --- 8. a prose finding points at the prose -----------------------------
 #
-# The parser records a line for the '# Summary' heading but not for the
-# paragraph beneath it, so a prose finding is reported two-or-more lines above
-# the text the operator has to edit. Until the tree carries a prose line, the
-# message has to say so.
+# A finding must land on the line the operator has to edit. The parser records
+# the paragraph's own first line (Section.prose_line / Entry.prose_line), so a
+# prose finding quotes that, not the heading above it — and the message names
+# the block without any caveat, because the line is now true. The one string
+# with no line of its own is a frontmatter value, and it still says so.
 
 SUMMARY_HEADING_LINE = 7   # CV: '+++', name, email, phone, '+++', '', '# Summary'
+SUMMARY_PROSE_LINE = 9     # ... '', 'Engineer.'
+ENTRY_PROSE_LINE = 21      # the paragraph with_entry_prose() inserts after '-->'
 
 
-def test_section_prose_finding_names_the_heading_it_is_anchored_to(tmp_path):
+def test_section_prose_finding_points_at_the_prose_not_its_heading(tmp_path):
     cv = write(tmp_path, "cv", CV)
     f = write(tmp_path, "resume-a", with_summary("Platform engineer with 15 years."))
     problems = check_numbers(cv, [f])
-    assert problems[0].line == SUMMARY_HEADING_LINE
-    assert "heading" in problems[0].message
-    assert "Summary" in problems[0].message
+    assert problems[0].line == SUMMARY_PROSE_LINE
+    assert problems[0].line != SUMMARY_HEADING_LINE
+    assert problems[0].message.startswith("'Summary' prose: ")
+    assert "heading" not in problems[0].message
 
 
-def test_entry_prose_finding_names_the_heading_it_is_anchored_to(tmp_path):
+def test_entry_prose_finding_points_at_the_prose_not_its_heading(tmp_path):
     f = write(tmp_path, "resume-a", with_entry_prose("Managed the estate with Terraform."))
     problems = check_rules([f], rules_file(tmp_path))
-    assert "heading" in problems[0].message
+    assert problems[0].line == ENTRY_PROSE_LINE
     assert "c-sense GmbH" in problems[0].message
+    assert "heading" not in problems[0].message
+
+
+def test_prose_finding_points_at_the_first_paragraph_of_a_multi_paragraph_block(tmp_path):
+    # Prose joins across a blank line; the anchor stays on the first paragraph
+    # rather than drifting to the last one flushed.
+    f = write(tmp_path, "resume-a",
+              with_summary("First paragraph.\n\nSecond, with Terraform in it."))
+    problems = check_rules([f], rules_file(tmp_path))
+    assert len(problems) == 1
+    assert problems[0].line == SUMMARY_PROSE_LINE
 
 
 def test_bullet_findings_carry_no_anchor_caveat(tmp_path):
@@ -971,6 +986,17 @@ def test_bullet_findings_carry_no_anchor_caveat(tmp_path):
     f = write(tmp_path, "resume-a", facet("- Managed infra with Terraform"))
     problems = check_rules([f], rules_file(tmp_path))
     assert "heading" not in problems[0].message
+    assert "line 1" not in problems[0].message
+
+
+def test_frontmatter_findings_keep_their_caveat(tmp_path):
+    # The one string with no source line: line 1 is the opening fence, not the
+    # value, and the message has to say so.
+    f = write(tmp_path, "resume-a", with_label("Staff Engineer | Terraform"))
+    problems = check_rules([f], rules_file(tmp_path))
+    assert problems[0].line == 1
+    assert problems[0].message.startswith(
+        "frontmatter 'label' (no line of its own; anchored to line 1): ")
 
 
 # --- 9. --strict makes warnings fatal on the publishing paths -----------

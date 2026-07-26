@@ -158,6 +158,57 @@ def test_parse_records_line_numbers():
     assert work.entries[0].bullets[0].line == 20
 
 
+def test_parse_records_the_prose_line_apart_from_the_heading_line():
+    # A prose finding has to point at the paragraph, so the paragraph's own
+    # first line is recorded separately from the heading it sits under.
+    doc = parse(DOC)
+    summary = doc.sections[0]
+    assert summary.line == 5          # '# Summary'
+    assert summary.prose_line == 7    # 'Senior engineer'
+    entry = doc.sections[1].entries[0]
+    assert entry.line == 12           # '## c-sense GmbH — ...'
+    assert entry.prose_line == 18     # 'c-sense builds sensors.'
+
+
+def test_prose_line_is_none_when_a_node_has_no_prose():
+    entry = parse(DOC).sections[1].entries[1]
+    assert entry.prose == ""
+    assert entry.prose_line is None
+
+
+def test_prose_line_stays_on_the_first_of_several_paragraphs():
+    text = (
+        '+++\nname = "Lea"\n+++\n\n'  # 1-4
+        "# Summary\n\n"  # 5-6
+        "First paragraph\nwrapped.\n\n"  # 7-9
+        "Second paragraph.\n\n"  # 10-11
+        "Third paragraph.\n"  # 12
+    )
+    section = parse(text).sections[0]
+    assert section.prose == "First paragraph wrapped.\n\nSecond paragraph.\n\nThird paragraph."
+    assert section.prose_line == 7
+
+
+def test_entry_prose_line_stays_on_the_first_paragraph():
+    text = (
+        '+++\nname = "Lea"\n+++\n\n'  # 1-4
+        "# Work\n\n"  # 5-6
+        "## Acme\n\n"  # 7-8
+        "First paragraph.\n\n"  # 9-10
+        "Second paragraph.\n\n"  # 11-12
+        "- Did a thing\n"  # 13
+    )
+    entry = parse(text).section("Work").entries[0]
+    assert entry.prose == "First paragraph.\n\nSecond paragraph."
+    assert entry.prose_line == 9
+
+
+def test_prose_line_skips_the_meta_block_between_heading_and_prose():
+    entry = parse(FACET_DOC).section("Work").entries[0]
+    assert entry.line == 8            # '## c-sense GmbH — ...'
+    assert entry.prose_line == 14     # 'Derived one-pager prose.'
+
+
 def test_parse_rejects_entry_before_any_section():
     with pytest.raises(MdError):
         parse('+++\nname = "Lea"\n+++\n\n## Orphan entry\n')

@@ -143,17 +143,15 @@ class Text:
 
     ``kind`` is one of ``frontmatter`` / ``section-prose`` / ``entry-prose`` /
     ``bullet``. ``where`` names the location for a human; it prefixes the
-    message of any non-bullet finding, because a prose or frontmatter finding
-    is anchored to a heading line (or to line 1) rather than to the text
-    itself, and the line alone would be ambiguous.
+    message of any non-bullet finding, because "line 27" alone does not say
+    whether the operator is looking for a summary paragraph, an entry's
+    paragraph or a frontmatter field.
 
-    For prose that ambiguity is a real misdirection: ``resume_md.parse`` knows
-    the paragraph's own first line while it is flushing it, but neither
-    ``Section`` nor ``Entry`` records it, so the only line the tree can offer
-    is the heading's. In ``resume-b.md`` the ``# Summary`` heading is line 25
-    and the prose is line 27 — reporting 25 bare sends the operator two lines
-    above the text they must edit. Until the tree carries a prose line, the
-    ``where`` string says out loud that the line is the heading's.
+    ``line`` is the text's own line wherever the source has one. Prose gets it
+    from ``Section.prose_line`` / ``Entry.prose_line``; a frontmatter value is
+    the one case that has none — the parser hands back a TOML dict, not a
+    position — so it is anchored to line 1 and its ``where`` says so rather
+    than let the operator read line 1 as a real location.
     """
 
     kind: str
@@ -169,9 +167,20 @@ class Text:
         return "" if self.kind == "bullet" else f"{self.where}: "
 
 
-def _prose_where(heading: str) -> str:
-    """Name a prose block *and* disclose that the line is its heading's."""
-    return f"'{heading}' prose (line is its heading; the prose follows below)"
+FRONTMATTER_CAVEAT = "no line of its own; anchored to line 1"
+
+
+def _prose_where(heading: str, prose_line: int | None) -> str:
+    """Name a prose block, disclosing a heading anchor only if that is all there is.
+
+    ``prose_line`` is set for every non-empty prose block the current parser
+    produces, so the caveat branch is unreachable in practice — it stays
+    because a silently-wrong line is worse than a wordy one, and the fallback
+    to ``Section.line`` above it must never start lying by omission.
+    """
+    if prose_line is None:
+        return f"'{heading}' prose (line is its heading; the prose follows below)"
+    return f"'{heading}' prose"
 
 
 def _all_texts(md_path: Path) -> tuple[list[Text], Problem | None]:
@@ -191,21 +200,23 @@ def _all_texts(md_path: Path) -> tuple[list[Text], Problem | None]:
             # A frontmatter value has no line of its own: the parser hands
             # back a TOML dict, not a position. Line 1 (the opening fence) is
             # honest about that; a guessed line would send the operator to the
-            # wrong place.
-            texts.append(Text("frontmatter", value, 1, f"frontmatter '{key}'"))
+            # wrong place. The 'where' string says so, because unlike a prose
+            # finding this line really is not the text's.
+            texts.append(Text(
+                "frontmatter", value, 1, f"frontmatter '{key}' ({FRONTMATTER_CAVEAT})"))
 
     for section in doc.sections:
         if section.prose:
             texts.append(Text(
-                "section-prose", section.prose, section.line,
-                _prose_where(section.title), section=section.title,
+                "section-prose", section.prose, section.prose_line or section.line,
+                _prose_where(section.title, section.prose_line), section=section.title,
             ))
         for entry in section.entries:
             entry_id = entry.meta.get("id")
             if entry.prose:
                 texts.append(Text(
-                    "entry-prose", entry.prose, entry.line,
-                    _prose_where(entry.heading), section.title, entry_id,
+                    "entry-prose", entry.prose, entry.prose_line or entry.line,
+                    _prose_where(entry.heading, entry.prose_line), section.title, entry_id,
                 ))
             for bullet in entry.bullets:
                 texts.append(Text(

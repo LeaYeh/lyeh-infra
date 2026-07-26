@@ -6,6 +6,10 @@ JSON Resume; see jsonresume_map.py for the semantic mapping.
 
 Grammar notes that are deliberate rather than incidental:
 
+* Every node records where it starts, and prose records its own start
+  separately from its heading's (``Section.prose_line`` / ``Entry.prose_line``):
+  a finding about a summary paragraph must point at the paragraph, not at the
+  heading two lines above it.
 * A node (section or entry) may carry multiple prose paragraphs, separated by
   a blank line in the source. They join with ``"\n\n"``, matching the
   paragraph break that JSON Resume fields such as ``basics.summary`` may
@@ -187,18 +191,32 @@ def parse_bullet(line: str, lineno: int) -> Bullet:
 
 @dataclass
 class Entry:
+    """``line`` is the '## ' heading's line; ``prose_line`` the prose's own.
+
+    They are different lines — a heading, a meta block and a blank line
+    routinely sit between them — and a tool reporting on the prose has to
+    quote the second, or it sends the operator above the text to edit.
+    ``prose_line`` is None exactly when ``prose`` is empty, and records where
+    the *first* paragraph started: a second paragraph appends to the string
+    but does not move the anchor.
+    """
+
     heading: str
     line: int
     meta: dict = field(default_factory=dict)
     prose: str = ""
+    prose_line: int | None = None
     bullets: list[Bullet] = field(default_factory=list)
 
 
 @dataclass
 class Section:
+    """``line`` is the '# ' heading's line; ``prose_line`` the prose's own (see Entry)."""
+
     title: str
     line: int
     prose: str = ""
+    prose_line: int | None = None
     entries: list[Entry] = field(default_factory=list)
 
 
@@ -235,7 +253,13 @@ def parse(text: str) -> Document:
                 prose_line,
                 f"prose must come before the bullet list in '{target_name(target)}'",
             )
-        target.prose = f"{target.prose}\n\n{joined}" if target.prose else joined
+        if target.prose:
+            # A later paragraph extends the same field; the anchor stays on
+            # the first one, which is where a reader starts editing.
+            target.prose = f"{target.prose}\n\n{joined}"
+        else:
+            target.prose = joined
+            target.prose_line = prose_line
         prose.clear()
 
     def target_name(target) -> str:
