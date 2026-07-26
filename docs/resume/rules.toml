@@ -49,8 +49,8 @@ message = "German is beginner level"
 # actually happened.
 [[qualified]]
 pattern  = '\baws\b'
-requires = '\bmonitor'
-message = "AWS is model-monitoring only, not platform depth"
+requires = '\bs3\b'
+message = "AWS use was S3 (and S3-compatible MinIO) only — name S3, do not claim AWS broadly"
 
 # The only AWS service ever used is S3. These names are banned outright
 # (no qualifier can rescue them) because they were never touched at all.

@@ -56,7 +56,7 @@ url = "https://www.linkedin.com/company/17763"
 
 Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.
 
-- Built model-monitoring infrastructure (AWS + Streamlit) for production ML systems, ensuring high availability and performance consistency <!-- src: mediatek-ds-h1 @7b92 -->
+- Built model-monitoring infrastructure (MLflow + Streamlit) for production ML systems, ensuring high availability and performance consistency <!-- src: mediatek-ds-h1 @72ec -->
 - Implemented ML models for mobile thermal control achieving temperature errors below 1°C, integrated into automated workflows <!-- src: mediatek-ds-h2 @11c6 -->
 - Collaborated with chip developers to reduce power consumption by 20%, yielding a 14K Antutu performance improvement <!-- src: mediatek-ds-h3 @4319 -->
 
@@ -102,7 +102,7 @@ url = "https://www.42vienna.com/"
 Volunteered as a peer tutor at 42 Vienna, supporting fellow students in system programming and software engineering fundamentals. Designed and hosted a Git workshop for the student community.
 
 - Hosted a Git Essentials workshop — 'Something You Should Know Before Git Branch' — covering branching strategy, rebase, conflict resolution, and collaborative workflows (slides: https://docs.google.com/presentation/d/13InmNDRSfkeUnGWHNXWFiTr3QCAz4ecFL_wFz-NFdoI/edit?usp=sharing) <!-- src: 42-vienna-tutor-h1 @69e6 -->
-- Provided peer tutoring in C/C++ system programming, shell scripting, and software architecture concepts <!-- src: 42-vienna-tutor-h2 @9bfc -->
+- Provided peer review and guidance in C/C++ system programming, shell scripting, and software architecture concepts <!-- src: 42-vienna-tutor-h2 @d02a -->
 
 # Education
 

@@ -49,7 +49,7 @@
       "url": "https://www.linkedin.com/company/17763",
       "summary": "Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.",
       "highlights": [
-        "Deployed model-monitoring infrastructure (AWS + Streamlit) to track production model performance and consistency, extending data-quality practices from pipelines to ML systems"
+        "Deployed model-monitoring infrastructure (MLflow + Streamlit) to track production model performance and consistency, extending data-quality practices from pipelines to ML systems"
       ]
     },
     {
@@ -205,8 +205,7 @@
         "Google Cloud Platform (GCP)",
         "Beam / Dataflow (distributed data)",
         "Azure Databricks (certified)",
-        "Delta Lake (learning)",
-        "AWS (model monitoring)"
+        "Delta Lake (learning)"
       ]
     },
     {

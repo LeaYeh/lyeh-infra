@@ -52,7 +52,7 @@
       "url": "https://www.linkedin.com/company/17763",
       "summary": "Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.",
       "highlights": [
-        "Built model-monitoring infrastructure (AWS + Streamlit) for production ML systems, ensuring high availability and performance consistency",
+        "Built model-monitoring infrastructure (MLflow + Streamlit) for production ML systems, ensuring high availability and performance consistency",
         "Implemented ML models for mobile thermal control achieving temperature errors below 1°C, integrated into automated workflows",
         "Collaborated with chip developers to reduce power consumption by 20%, yielding a 14K Antutu performance improvement"
       ]
@@ -96,7 +96,7 @@
       "summary": "Volunteered as a peer tutor at 42 Vienna, supporting fellow students in system programming and software engineering fundamentals. Designed and hosted a Git workshop for the student community.",
       "highlights": [
         "Hosted a Git Essentials workshop — 'Something You Should Know Before Git Branch' — covering branching strategy, rebase, conflict resolution, and collaborative workflows (slides: https://docs.google.com/presentation/d/13InmNDRSfkeUnGWHNXWFiTr3QCAz4ecFL_wFz-NFdoI/edit?usp=sharing)",
-        "Provided peer tutoring in C/C++ system programming, shell scripting, and software architecture concepts"
+        "Provided peer review and guidance in C/C++ system programming, shell scripting, and software architecture concepts"
       ]
     }
   ],

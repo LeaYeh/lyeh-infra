@@ -1318,8 +1318,10 @@ def test_shipped_rules_catch_the_adversarial_bypasses(tmp_path, text, expected_m
 
 # (true statement, why it is true — see docs/resume/raw/resume_split_blueprint.md)
 TRUE_STATEMENTS = [
-    "model-monitoring infrastructure (AWS + Streamlit)",
-    "AWS (model monitoring)",
+    # AWS use was S3 (and S3-compatible MinIO) only — naming S3 is what makes an
+    # AWS mention honest. The model monitoring itself was MLflow + Streamlit.
+    "object storage on AWS S3 and MinIO",
+    "model-monitoring infrastructure (MLflow + Streamlit)",
     "Currently architecting an agentic RAG system",
     "Agentic RAG (in-progress)",
     "evaluating LLM tooling and defining the end-to-end agentic architecture strategy",

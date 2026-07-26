@@ -53,7 +53,7 @@ url = "https://www.linkedin.com/company/17763"
 
 Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.
 
-- Deployed model-monitoring infrastructure (AWS + Streamlit) to track production model performance and consistency, extending data-quality practices from pipelines to ML systems <!-- src: mediatek-ds-h1 @7b92 -->
+- Deployed model-monitoring infrastructure (MLflow + Streamlit) to track production model performance and consistency, extending data-quality practices from pipelines to ML systems <!-- src: mediatek-ds-h1 @72ec -->
 
 ## MediaTek — Data Engineer
 <!--meta
@@ -216,7 +216,6 @@ level = "Advanced"
 - Beam / Dataflow (distributed data)
 - Azure Databricks (certified)
 - Delta Lake (learning)
-- AWS (model monitoring)
 
 ## CI/CD & DevOps
 <!--meta

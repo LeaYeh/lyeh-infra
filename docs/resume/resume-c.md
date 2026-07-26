@@ -54,7 +54,7 @@ url = "https://www.linkedin.com/company/17763"
 
 Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.
 
-- Implemented model-monitoring solutions using AWS and Streamlit, ensuring high availability and performance consistency for production ML models <!-- src: mediatek-ds-h1 @7b92 -->
+- Implemented model-monitoring solutions using MLflow and Streamlit, ensuring high availability and performance consistency for production ML models <!-- src: mediatek-ds-h1 @72ec -->
 - Developed ML models to enhance mobile temperature control mechanisms, achieving temperature errors below 1°C <!-- src: mediatek-ds-h2 @11c6 -->
 - Collaborated with chip developers to reduce power consumption by 20%, resulting in a 14K Antutu score improvement in mobile performance <!-- src: mediatek-ds-h3 @4319 -->
 

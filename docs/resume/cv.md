@@ -24,9 +24,9 @@ url = "https://github.com/LeaYeh"
 
 # Summary
 
-Senior Software Engineer and de facto systems architect at c-sense GmbH — the sole engineer responsible for the full software stack: layered SPM instrument-control framework (hardware abstraction, async command routing, interface contracts) and currently architecting an agentic RAG system (LangChain/LangGraph, Chroma, LLM cloud APIs) to give the CEO cross-domain visibility into internal technical documentation, sales/CRM data, competitor products, and prospective customers.
+Senior Software Engineer with solution architecture responsibilities at c-sense GmbH — the sole engineer responsible for the full software stack: layered SPM instrument-control framework (hardware abstraction, async command routing, interface contracts) and currently architecting an agentic RAG system (LangChain/LangGraph, Chroma, LLM cloud APIs) to give the CEO cross-domain visibility into internal technical documentation, sales/CRM data, competitor products, and prospective customers.
 
-Background spans 8+ years in Data Engineering, Data Science, and Software Engineering — including PB-scale ETL pipelines and ML model monitoring at MediaTek. Deepening systems foundations at 42 Vienna: Linux kernel internals, DevOps (K3s/ArgoCD/GitOps), and architecture design patterns.
+Background spans 9+ years in Data Engineering, Data Science, and Software Engineering — including PB-scale ETL pipelines and ML model monitoring at MediaTek. Continuously advancing expertise in Linux kernel internals and DevOps at 42 Vienna, actively sharing knowledge and contributing to the technical community.
 
 # Work
 
@@ -60,7 +60,7 @@ url = "https://www.linkedin.com/company/17763"
 
 Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.
 
-- Implemented model monitoring solutions using AWS and Streamlit, ensuring high availability and performance consistency for production ML models {#mediatek-ds-h1}
+- Implemented model monitoring solutions using MLflow and Streamlit, ensuring high availability and performance consistency for production ML models {#mediatek-ds-h1}
 - Implemented ML models to enhance mobile temperature control mechanisms, achieving temperature errors below 1°C {#mediatek-ds-h2}
 - Collaborated with chip developers to reduce power consumption by 20%, resulting in a 14K Antutu score improvement in mobile performance {#mediatek-ds-h3}
 
@@ -109,7 +109,7 @@ url = "https://www.42vienna.com/"
 Volunteered as a peer tutor at 42 Vienna, supporting fellow students in system programming and software engineering fundamentals. Designed and hosted a Git workshop for the student community.
 
 - Hosted a Git Essentials workshop — 'Something You Should Know Before Git Branch' — covering branching strategy, rebase, conflict resolution, and collaborative workflows (slides: https://docs.google.com/presentation/d/13InmNDRSfkeUnGWHNXWFiTr3QCAz4ecFL_wFz-NFdoI/edit?usp=sharing) {#42-vienna-tutor-h1}
-- Provided peer tutoring in C/C++ system programming, shell scripting, and software architecture concepts {#42-vienna-tutor-h2}
+- Provided peer review and guidance in C/C++ system programming, shell scripting, and software architecture concepts {#42-vienna-tutor-h2}
 
 ## Taiwan in Data Science (TWiDS) — Event Ambassador & Volunteer Organizer
 <!--meta

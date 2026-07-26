@@ -50,7 +50,7 @@
       "url": "https://www.linkedin.com/company/17763",
       "summary": "Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.",
       "highlights": [
-        "Implemented model-monitoring solutions using AWS and Streamlit, ensuring high availability and performance consistency for production ML models",
+        "Implemented model-monitoring solutions using MLflow and Streamlit, ensuring high availability and performance consistency for production ML models",
         "Developed ML models to enhance mobile temperature control mechanisms, achieving temperature errors below 1°C",
         "Collaborated with chip developers to reduce power consumption by 20%, resulting in a 14K Antutu score improvement in mobile performance"
       ]
