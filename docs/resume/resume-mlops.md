@@ -42,6 +42,7 @@ c-sense develops nanoscale sensor technology and AFM/SPM instruments for scienti
 - Architected a modular, layered software framework for SPM instrument control, separating hardware-vendor, orchestration, and application layers for long-term extensibility and reuse <!-- src: csense-h3 @d85d -->
 - Defined cross-layer interface contracts and async command-routing patterns, isolating failure domains and enabling parallel hardware/software development <!-- src: csense-h4 @d8ac -->
 - Delivered automated measurement workflows (spatial sampling, real-time safety management) that let researchers focus on experimental outcomes rather than instrument operation <!-- src: csense-h6 @a9d2 -->
+- Built the GitOps delivery platform that ships the company's internal ML/AI services — ArgoCD-driven continuous delivery across environments, with architecture recorded as ADRs <!-- src: csense-h8 @ce2f -->
 
 ## MediaTek — Data Scientist
 <!--meta

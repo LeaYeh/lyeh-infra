@@ -44,6 +44,7 @@ c-sense develops nanoscale sensor technology and AFM/SPM instruments for scienti
 - Designed a hardware-abstraction layer over a proprietary LabVIEW-based API, keeping the software stack vendor-agnostic and resilient to instrument changes <!-- src: csense-h5 @bcb5 -->
 - Delivered automated measurement workflows (spatial sampling, real-time safety management) demanding concurrency and reliability, letting researchers focus on experimental outcomes rather than instrument operation <!-- src: csense-h6 @a9d2 -->
 - Collaborated with hardware engineers and research scientists to translate physics measurement protocols into reliable, automated software workflows <!-- src: csense-h7 @8516 -->
+- Built the GitOps delivery platform for the company's internal service pipeline — ArgoCD-driven continuous delivery across environments, with every architectural decision recorded as an ADR <!-- src: csense-h8 @ce2f -->
 
 ## MediaTek — Data Scientist
 <!--meta

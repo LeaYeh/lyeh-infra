@@ -40,7 +40,8 @@
         "Defined cross-layer interface contracts and async command-routing patterns, isolating failure domains and enabling parallel HW/SW development while reducing integration risk during concurrent R&D cycles",
         "Designed a hardware-abstraction layer over a proprietary LabVIEW-based API, keeping the software stack vendor-agnostic and resilient to instrument changes",
         "Delivered automated measurement workflows (spatial sampling, real-time safety management) demanding concurrency and reliability, letting researchers focus on experimental outcomes rather than instrument operation",
-        "Collaborated with hardware engineers and research scientists to translate physics measurement protocols into reliable, automated software workflows"
+        "Collaborated with hardware engineers and research scientists to translate physics measurement protocols into reliable, automated software workflows",
+        "Built the GitOps delivery platform for the company's internal service pipeline — ArgoCD-driven continuous delivery across environments, with every architectural decision recorded as an ADR"
       ]
     },
     {

@@ -37,7 +37,8 @@
       "summary": "c-sense develops nanoscale sensor technology and AFM/SPM instruments for scientific and industrial applications.",
       "highlights": [
         "Architected a modular, layered software framework for SPM instrument control, applying interface contracts and SOLID principles for long-term extensibility",
-        "Built automated measurement workflows that turn high-volume sensor measurement protocols into reliable, reproducible data-acquisition processes"
+        "Built automated measurement workflows that turn high-volume sensor measurement protocols into reliable, reproducible data-acquisition processes",
+        "Built the GitOps delivery platform carrying the company's internal data pipeline to its environments, with ArgoCD-driven continuous delivery and ADR-recorded architecture"
       ]
     },
     {

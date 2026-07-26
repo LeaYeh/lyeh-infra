@@ -17,7 +17,7 @@ cv-sync: ## Fold portal/blog content into docs/resume/cv.md — assisted; use th
 	@echo "Flow 1 (intake) is LLM-assisted: run the /cv-sync skill in Claude Code."
 
 cv-tailor: ## Curate cv.md into a facet resume — assisted; use the /cv-tailor skill
-	@echo "Flow 2 (targeting) is LLM-assisted: run the /cv-tailor <a|b|c> [--jd <url>] skill in Claude Code."
+	@echo "Flow 2 (targeting) is LLM-assisted: run the /cv-tailor <sre|de|mlops> [--jd <url>] skill in Claude Code."
 
 cv-build: ## Compile docs/resume/*.md (SSOT) into JSON Resume — schema-gated
 	python3 scripts/cv_build.py
