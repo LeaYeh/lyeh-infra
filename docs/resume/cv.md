@@ -48,6 +48,7 @@ c-sense develops nanoscale sensor technology and AFM/SPM instruments for scienti
 - Led the design of a hardware abstraction strategy over a LabVIEW-based proprietary API, keeping the software stack agnostic to vendor-specific instrument changes {#csense-h5}
 - Delivered automated measurement capabilities (spatial sampling, real-time safety management) that allow researchers to focus on experimental outcomes rather than instrument operation {#csense-h6}
 - Collaborated with hardware engineers and research scientists to translate physics measurement protocols into reliable, automated software workflows {#csense-h7}
+- Built the GitOps delivery platform for the company's internal service pipeline — ArgoCD-driven continuous delivery across environments, with every architectural decision recorded as an ADR {#csense-h8}
 
 ## MediaTek — Data Scientist
 <!--meta
@@ -340,6 +341,8 @@ level = "Advanced"
 - ArgoCD
 - Traefik ingress
 - cert-manager
+- Sealed Secrets
+- Workload Identity Federation (keyless auth)
 - Self-hosted infrastructure
 
 ## CI/CD & GitOps

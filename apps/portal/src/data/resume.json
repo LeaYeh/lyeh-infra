@@ -42,7 +42,8 @@
         "Defined cross-layer interface contracts and async command routing patterns to enable parallel development by hardware and software teams, reducing integration risk during concurrent R&D cycles",
         "Led the design of a hardware abstraction strategy over a LabVIEW-based proprietary API, keeping the software stack agnostic to vendor-specific instrument changes",
         "Delivered automated measurement capabilities (spatial sampling, real-time safety management) that allow researchers to focus on experimental outcomes rather than instrument operation",
-        "Collaborated with hardware engineers and research scientists to translate physics measurement protocols into reliable, automated software workflows"
+        "Collaborated with hardware engineers and research scientists to translate physics measurement protocols into reliable, automated software workflows",
+        "Built the GitOps delivery platform for the company's internal service pipeline — ArgoCD-driven continuous delivery across environments, with every architectural decision recorded as an ADR"
       ]
     },
     {
@@ -329,6 +330,8 @@
         "ArgoCD",
         "Traefik ingress",
         "cert-manager",
+        "Sealed Secrets",
+        "Workload Identity Federation (keyless auth)",
         "Self-hosted infrastructure"
       ]
     },
