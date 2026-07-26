@@ -1,6 +1,6 @@
 +++
 name = "Lea (Mei Ling) Yeh"
-label = "Senior Software Engineer | Applied AI & LLM Systems | AI Platform"
+label = "Senior Software Engineer | AI/LLM Applied"
 image = "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156"
 email = "lea.yeh.ml@gmail.com"
 phone = ""
@@ -24,7 +24,7 @@ url = "https://github.com/LeaYeh"
 
 # Summary
 
-Senior Software Engineer with solution architecture responsibilities at c-sense GmbH — the sole engineer responsible for the full software stack, currently architecting an agentic RAG system (LangChain/LangGraph, Chroma, LLM cloud APIs) to give the CEO cross-domain visibility into internal technical documentation, sales/CRM data, competitor products, and prospective customers.
+Senior Software Engineer in applied AI: sole technical decision-maker for a company's AI integration, currently architecting an agentic RAG system over internal documentation and business data. Came by the engineering path — PB-scale pipelines, then the analysis and model monitoring on them — and writes the internals: neural-net framework, autograd and tuner from scratch.
 
 # Work
 

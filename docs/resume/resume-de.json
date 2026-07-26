@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
   "basics": {
     "name": "Lea (Mei Ling) Yeh",
-    "label": "Senior Software Engineer | Data Platform & Pipelines | ETL at Scale",
+    "label": "Senior Software Engineer | Data Engineer",
     "image": "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156",
     "email": "lea.yeh.ml@gmail.com",
     "phone": "",
