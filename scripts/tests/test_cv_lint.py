@@ -170,6 +170,29 @@ def test_stale_fingerprint_warns_but_is_not_fatal(tmp_path):
     assert "stale" in problems[0].message
 
 
+def test_a_missing_anchor_below_a_valid_one_is_still_found(tmp_path):
+    # Same exposure the rules gate had: an entry's bullets must all be read.
+    # An uncited claim appended under a properly cited one is the normal shape
+    # of the mistake, and it sits second.
+    cv = write(tmp_path, "cv", CV)
+    f = write(tmp_path, "resume-a", facet(f"{GOOD_ANCHOR}\n- Owned the CI loop"))
+    problems = check_provenance(cv, [f])
+    assert len(problems) == 1
+    assert problems[0].fatal
+    assert problems[0].line == 22          # the second bullet, not the first
+    assert "no src anchor" in problems[0].message
+
+
+def test_every_bullet_after_the_first_is_checked_for_provenance(tmp_path):
+    cv = write(tmp_path, "cv", CV)
+    f = write(tmp_path, "resume-a", facet(
+        f"{GOOD_ANCHOR}\n"
+        "- Owned the CI loop\n"
+        "- Ran the rollout <!-- src: ghost-h9 @0000 -->"))
+    problems = check_provenance(cv, [f])
+    assert [p.line for p in problems] == [22, 23]
+
+
 def test_duplicate_ids_in_cv_are_fatal(tmp_path):
     dup = CV.replace(
         "- Drove the GitOps migration {#csense-h1}",
@@ -746,6 +769,34 @@ def test_spelled_magnitude_present_in_source_passes(tmp_path):
     assert check_numbers(cv, [f]) == []
 
 
+def test_a_magnitude_in_the_source_does_not_license_a_different_one(tmp_path):
+    # The digit gate's membership-vs-emptiness bug, in the magnitude branch:
+    # every other case here uses a source with no magnitude word at all, so
+    # "the facet's word is in the source" and "the source has some word" are
+    # indistinguishable. A source that says 'doubled' must not license
+    # 'tripled'.
+    cv = write(tmp_path, "cv", CV.replace(SOURCE, "Doubled the GitOps throughput"))
+    src_hash = fingerprint("Doubled the GitOps throughput")
+    f = write(tmp_path, "resume-a",
+              facet(f"- Tripled delivery throughput <!-- src: csense-h1 @{src_hash} -->"))
+    problems = check_numbers(cv, [f])
+    assert len(problems) == 1
+    assert not problems[0].fatal
+    assert "'tripled'" in problems[0].message
+    assert "doubled" not in problems[0].message.lower()
+
+
+def test_only_the_ungrounded_magnitude_of_a_mixed_bullet_warns(tmp_path):
+    # The facet keeps the grounded 'doubled' and adds 'tripled'.
+    cv = write(tmp_path, "cv", CV.replace(SOURCE, "Doubled the GitOps throughput"))
+    src_hash = fingerprint("Doubled the GitOps throughput")
+    f = write(tmp_path, "resume-a", facet(
+        f"- Doubled throughput and tripled deploys <!-- src: csense-h1 @{src_hash} -->"))
+    problems = check_numbers(cv, [f])
+    assert len(problems) == 1
+    assert "'tripled'" in problems[0].message
+
+
 def test_spelled_magnitude_in_prose_warns(tmp_path):
     cv = write(tmp_path, "cv", CV)
     f = write(tmp_path, "resume-a", with_summary("Halved the cost of the platform."))
@@ -981,12 +1032,34 @@ def test_prose_finding_points_at_the_first_paragraph_of_a_multi_paragraph_block(
     assert problems[0].line == SUMMARY_PROSE_LINE
 
 
+BANNED_MESSAGE = "IaC here is Helm + ArgoCD, never Terraform"   # from RULES, above
+
+
 def test_bullet_findings_carry_no_anchor_caveat(tmp_path):
-    # A bullet's line is the bullet's own line; nothing to disclaim.
+    # A bullet's line is the bullet's own line; nothing to disclaim. Pinned as
+    # equality, not as the absence of a word: 'no caveat' passes for any
+    # prefix that merely avoids saying 'heading', and a bullet finding must
+    # carry no prefix at all.
     f = write(tmp_path, "resume-a", facet("- Managed infra with Terraform"))
     problems = check_rules([f], rules_file(tmp_path))
-    assert "heading" not in problems[0].message
-    assert "line 1" not in problems[0].message
+    assert problems[0].message == BANNED_MESSAGE
+
+
+def test_a_bullet_number_finding_carries_no_prefix_either(tmp_path):
+    # The same for the gate that composes its own message rather than
+    # forwarding a rule's.
+    cv = write(tmp_path, "cv", CV)
+    f = write(tmp_path, "resume-a",
+              facet(f"- Migrated 12 services <!-- src: csense-h1 @{fingerprint(SOURCE)} -->"))
+    problems = check_numbers(cv, [f])
+    assert problems[0].message == "number(s) 12 do not appear in cv.md 'csense-h1'"
+
+
+def test_a_prose_finding_forwards_the_rule_message_after_its_prefix(tmp_path):
+    # The prefix is added, not substituted: the rule's own words survive.
+    f = write(tmp_path, "resume-a", with_summary("Platform engineer fluent in Terraform."))
+    problems = check_rules([f], rules_file(tmp_path))
+    assert problems[0].message == f"'Summary' prose: {BANNED_MESSAGE}"
 
 
 def test_frontmatter_findings_keep_their_caveat(tmp_path):
@@ -1047,3 +1120,82 @@ def test_a_fatal_problem_fails_in_both_modes(tmp_path, monkeypatch):
 def test_unknown_flag_is_rejected(tmp_path, monkeypatch):
     corpus(tmp_path, monkeypatch, facet(GOOD_ANCHOR))
     assert cv_lint.main(["--publish"]) == 2
+
+
+# --- 10. every gate is wired into the exit code -------------------------
+#
+# main() sums five gates and returns 1 if any finding is fatal. That sum is
+# the line `make cv-publish` and `make cv-render` depend on, and a gate
+# dropped from it fails open: the gate keeps working, its own tests keep
+# passing, and nothing blocks. Each test below arranges a corpus whose only
+# fatal finding comes from one named gate, then asserts both the return code
+# and that the finding actually reached stderr.
+#
+# The provenance and numbers terms were already pinned here — by
+# test_a_fatal_problem_fails_in_both_modes and
+# test_spelled_magnitude_warning_also_blocks_under_strict respectively — so
+# only the fatal-path numbers case is added, for the branch that blocks
+# without --strict.
+
+
+def run_main(capsys, argv=()):
+    """main()'s return code and what it told the operator."""
+    rc = cv_lint.main(list(argv))
+    return rc, capsys.readouterr().err
+
+
+def with_rules(tmp_path, monkeypatch):
+    """Point the gate set at the test RULES instead of corpus()'s empty set."""
+    path = tmp_path / "rules.toml"
+    path.write_text(RULES)
+    monkeypatch.setattr(cv_lint, "RULES_FILE", path)
+
+
+def test_an_invariant_drift_alone_fails_main(tmp_path, monkeypatch, capsys):
+    corpus(tmp_path, monkeypatch,
+           facet(GOOD_ANCHOR).replace("lea@example.com", "other@example.com"))
+    rc, err = run_main(capsys)
+    assert rc == 1
+    assert "drifts from cv.md" in err
+
+
+def test_a_banned_term_alone_fails_main(tmp_path, monkeypatch, capsys):
+    corpus(tmp_path, monkeypatch, facet(
+        f"- Owned the delivery path with Terraform "
+        f"<!-- src: csense-h1 @{fingerprint(SOURCE)} -->"))
+    with_rules(tmp_path, monkeypatch)
+    rc, err = run_main(capsys)
+    assert rc == 1
+    assert BANNED_MESSAGE in err
+
+
+def test_a_stale_json_alone_fails_main(tmp_path, monkeypatch, capsys):
+    _cv, f = corpus(tmp_path, monkeypatch, facet(GOOD_ANCHOR))
+    out = f.with_suffix(".json")
+    data = json.loads(out.read_text())
+    data["work"][0]["position"] = "Principal Software Engineer"
+    out.write_text(json.dumps(data))
+    rc, err = run_main(capsys)
+    assert rc == 1
+    assert "out of date with the Markdown" in err
+
+
+def test_an_invented_number_alone_fails_main(tmp_path, monkeypatch, capsys):
+    # The numbers term is reachable from main() via the --strict warning path
+    # already; this pins the fatal path, which is what blocks a plain
+    # `make cv-lint`.
+    corpus(tmp_path, monkeypatch, facet(
+        f"- Migrated 12 services <!-- src: csense-h1 @{fingerprint(SOURCE)} -->"))
+    rc, err = run_main(capsys)
+    assert rc == 1
+    assert "number(s) 12 do not appear" in err
+
+
+def test_a_clean_corpus_reaches_the_success_line(tmp_path, monkeypatch, capsys):
+    # The counterweight: none of the above passes by accident because every
+    # corpus is dirty. This one is clean under the same wiring.
+    corpus(tmp_path, monkeypatch, facet(GOOD_ANCHOR))
+    with_rules(tmp_path, monkeypatch)
+    rc, err = run_main(capsys)
+    assert rc == 0
+    assert err == ""
