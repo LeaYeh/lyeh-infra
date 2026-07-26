@@ -5,7 +5,7 @@ Run from the lyeh-infra repo root.
 
 This is **Flow 1 (intake)** of the resume SSOT system: `portal content → cv.md`.
 `docs/resume/cv.md` is the single source of truth and the comprehensive intake pool
-("包山包海"); the facet resumes (`resume-{sre,de,mlops}.md`) are derived from it separately via
+("包山包海"); the facet resumes (`resume-{swe,ai,mlops,de}.md`) are derived from it separately via
 `/cv-tailor`. `docs/resume/*.json` are **build artifacts** — `make cv-build` writes them,
 you never hand-edit them. Publishing is a separate step (`make cv-publish`); this command
 does NOT touch the Gist.

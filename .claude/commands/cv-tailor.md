@@ -3,8 +3,8 @@ Run from the lyeh-infra repo root.
 
 **Language:** Traditional Chinese (zh-TW) for all user-facing output.
 
-**Usage:** `/cv-tailor <sre|de|mlops> [--jd <url-or-path>]`
-- `<sre|de|mlops>` selects the facet: sre = Platform/Infrastructure/SRE · de = Data Engineer · mlops = MLOps/AI Platform.
+**Usage:** `/cv-tailor <swe|ai|mlops|de> [--jd <url-or-path>]`
+- `<swe|ai|mlops|de>` selects the facet: swe = Senior Software Engineer · ai = AI Platform/Applied AI · mlops = MLOps/DevOps/GitOps · de = Data Engineer.
 - Without `--jd`: refine the tracked `docs/resume/resume-<facet>.md` (Flow 2a — write back).
 - With `--jd`: produce a one-off export tailored to that specific JD (Flow 2b — **do NOT commit**, write to `/tmp/`).
 
@@ -85,7 +85,7 @@ wrong anchor is worse than a missing one, because it makes an unsupported claim 
 employer is fatal, even with a perfectly current hash:
 
 ```
-✗ resume-sre.md:23 src 'mediatek-ds-h1' belongs to entry 'mediatek-ds', not 'csense' — cite a bullet from this entry, or move the claim to the entry that earned it
+✗ resume-mlops.md:23 src 'mediatek-ds-h1' belongs to entry 'mediatek-ds', not 'csense' — cite a bullet from this entry, or move the claim to the entry that earned it
 ```
 
 Reshuffling a strong achievement under a more relevant employer is exactly what this
@@ -165,9 +165,9 @@ accept some / tweak). Mirror the `/cv-sync` approval UX.
   `docs/resume/`, so a one-off has to be copied there to be rendered:
 
   ```bash
-  cp /tmp/resume-sre-acme.md docs/resume/     # now matches the resume-*.md glob
-  make cv-render                            # runs cv-build first → docs/resume/resume-sre-acme.pdf
-  rm docs/resume/resume-sre-acme.md docs/resume/resume-sre-acme.json   # keep the PDF only
+  cp /tmp/resume-mlops-acme.md docs/resume/     # now matches the resume-*.md glob
+  make cv-render                            # runs cv-build first → docs/resume/resume-mlops-acme.pdf
+  rm docs/resume/resume-mlops-acme.md docs/resume/resume-mlops-acme.json   # keep the PDF only
   ```
 
   While the copy is in `docs/resume/` it is treated as a fourth facet by `cv-build` and

@@ -103,7 +103,7 @@ Legitimate fix: correct the Markdown at the reported line. See
 ## Gate 1 — invariants
 
 ```
-✗ resume-sre.md 'work' drifts from cv.md — invariant fields must be copied verbatim
+✗ resume-mlops.md 'work' drifts from cv.md — invariant fields must be copied verbatim
 ```
 
 Compares `cv.md` against every `resume-*.md` on the fields that must **never** be
@@ -155,7 +155,7 @@ entry `id` instead.
 ### `bullet has no src anchor`
 
 ```
-✗ resume-sre.md:46 bullet has no src anchor — add the fact to cv.md first, then cite its ID
+✗ resume-mlops.md:46 bullet has no src anchor — add the fact to cv.md first, then cite its ID
 ```
 
 The bullet asserts something with no traceable origin. Either you wrote a new
@@ -188,7 +188,7 @@ first. Rename one.
 ### `src '<id>' belongs to entry '<x>', not '<y>'`
 
 ```
-✗ resume-sre.md:23 src 'beta-h1' belongs to entry 'beta', not 'acme' — cite a bullet from this entry, or move the claim to the entry that earned it
+✗ resume-mlops.md:23 src 'beta-h1' belongs to entry 'beta', not 'acme' — cite a bullet from this entry, or move the claim to the entry that earned it
 ```
 
 A live anchor with a current fingerprint proves the cited sentence still exists
@@ -206,7 +206,7 @@ in a new costume.
 ### `stale: cv.md '<id>' changed`
 
 ```
-⚠ resume-sre.md:22 stale: cv.md 'acme-h1' changed since this was written (@ffff → @e673); re-check the wording, then update the anchor
+⚠ resume-mlops.md:22 stale: cv.md 'acme-h1' changed since this was written (@ffff → @e673); re-check the wording, then update the anchor
 ```
 
 This is a **warning** (`⚠`), not fatal — it does not by itself make `make cv-lint`
@@ -242,9 +242,9 @@ of `cv.md`:
 | frontmatter `label` | the whole of `cv.md` | `cv.md` |
 
 ```
-✗ resume-sre.md:22 number(s) 40 do not appear in cv.md 'acme-h1'
-✗ resume-sre.md:20 'Acme — Engineer' prose: number(s) 200ms do not appear in cv.md entry 'acme'
-✗ resume-sre.md:9 'Summary' prose: number(s) 14K do not appear in cv.md
+✗ resume-mlops.md:22 number(s) 40 do not appear in cv.md 'acme-h1'
+✗ resume-mlops.md:20 'Acme — Engineer' prose: number(s) 200ms do not appear in cv.md entry 'acme'
+✗ resume-mlops.md:9 'Summary' prose: number(s) 14K do not appear in cv.md
 ```
 
 A facet may drop a number; it may never introduce one. Comparison is
@@ -269,7 +269,7 @@ token carries its unit.
 ### Spelled-out magnitudes — a warning, not a block
 
 ```
-⚠ resume-sre.md:1 frontmatter 'label' (no line of its own; anchored to line 1): 'doubled' has no counterpart in cv.md — a spelled-out magnitude cannot be checked mechanically; verify by eye
+⚠ resume-mlops.md:1 frontmatter 'label' (no line of its own; anchored to line 1): 'doubled' has no counterpart in cv.md — a spelled-out magnitude cannot be checked mechanically; verify by eye
 ```
 
 `doubled`, `halved`, `tripled`, `quadrupled`, `thousand`, `million`, `billion`,
@@ -404,7 +404,7 @@ Legitimate fix: `make cv-publish`. Never hand-edit the copy; it is an artifact o
 
 Contact details, profiles, homepage and avatar, employer, position, dates, work
 location, work URL, education and languages are **copied verbatim across all four
-documents** — `cv.md`, `resume-sre.md`, `resume-de.md`, `resume-mlops.md` — and are
+documents** — `cv.md`, `resume-mlops.md`, `resume-de.md`, `resume-mlops.md` — and are
 never tailored per facet.
 
 Tailoring means choosing *which* true facts to show and *how to frame* them for

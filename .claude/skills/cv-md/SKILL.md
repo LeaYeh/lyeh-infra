@@ -47,7 +47,7 @@ CI (`.github/workflows/resume-gates.yml`) runs the test suite and
 Both tools anchor every problem to a source line:
 
 ```
-✗ resume-sre.md:46 bullet has no src anchor — add the fact to cv.md first, then cite its ID
+✗ resume-mlops.md:46 bullet has no src anchor — add the fact to cv.md first, then cite its ID
 ✗ cv.md:212 RAG / LangGraph / agent work must be marked (in-progress) or framed as current activity
 ⚠ resume-de.md:88 stale: cv.md 'csense-h3' changed since this was written (@d85d → @1f0a); re-check the wording, then update the anchor
 ```
@@ -76,10 +76,10 @@ JSON, never edit a test expectation, never edit `rules.toml` to silence a hit.
 | A new career fact (a real thing the human did) | `docs/resume/cv.md` | A bullet with a new `{#id}` |
 | Reframing a fact that is already in the CV, for one audience | `docs/resume/resume-<facet>.md` | The reframed bullet plus `<!-- src: <cv-id> @<hash> -->` |
 
-Facets: **sre** = Platform / Infrastructure / SRE · **de** = Data Engineer ·
-**mlops** = MLOps / AI Platform.
+Facets: **swe** = Senior Software Engineer · **ai** = AI Platform / Applied AI ·
+**mlops** = MLOps / DevOps / GitOps · **de** = Data Engineer.
 
-`cv.md` is comprehensive (multi-page when rendered). `resume-sre/de/mlops.md` are
+`cv.md` is comprehensive (multi-page when rendered). `resume-swe/ai/mlops/de.md` are
 one-page pitches — a curated subset, reframed to one angle, and **nothing else**.
 A facet may not contain a fact the CV does not.
 

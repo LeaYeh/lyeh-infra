@@ -1,6 +1,6 @@
 +++
 name = "Lea (Mei Ling) Yeh"
-label = "MLOps Engineer | AI Platform & Observability | ML Infrastructure"
+label = "Senior Software Engineer | MLOps & DevOps | GitOps & Observability"
 image = "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156"
 email = "lea.yeh.ml@gmail.com"
 phone = ""
@@ -24,7 +24,7 @@ url = "https://github.com/LeaYeh"
 
 # Summary
 
-MLOps engineer bridging the platform layer (model monitoring, data-drift, Prometheus/Grafana/MLflow, K3s/ArgoCD) and ML internals — built a neural-net framework, autograd, and hyperparameter tuner from scratch. Currently extending into LLM workloads: agentic RAG and LLM observability in progress.
+MLOps and DevOps engineer who builds the delivery path and the monitoring that watches what runs on it: K3s + ArgoCD GitOps, GitHub Actions CI/CD, Prometheus/Grafana/ELK, and MLflow-based model monitoring with data-drift tracking for production ML at MediaTek. Runs a personal Hetzner K3s cluster live.
 
 # Work
 
@@ -39,10 +39,11 @@ url = "https://www.c-sense.at/"
 
 c-sense develops nanoscale sensor technology and AFM/SPM instruments for scientific and industrial applications.
 
-- Architected a modular, layered software framework for SPM instrument control, separating hardware-vendor, orchestration, and application layers for long-term extensibility and reuse <!-- src: csense-h3 @d85d -->
-- Defined cross-layer interface contracts and async command-routing patterns, isolating failure domains and enabling parallel hardware/software development <!-- src: csense-h4 @d8ac -->
-- Delivered automated measurement workflows (spatial sampling, real-time safety management) that let researchers focus on experimental outcomes rather than instrument operation <!-- src: csense-h6 @a9d2 -->
-- Built the GitOps delivery platform that ships the company's internal ML/AI services — ArgoCD-driven continuous delivery across environments, with architecture recorded as ADRs <!-- src: csense-h8 @ce2f -->
+- Built the GitOps delivery platform for the company's internal service pipeline — ArgoCD-driven continuous delivery across environments, with every architectural decision recorded as an ADR <!-- src: csense-h8 @ce2f -->
+- Defined cross-layer interface contracts and async command-routing patterns, isolating failure domains and enabling parallel HW/SW development while reducing integration risk during concurrent R&D cycles <!-- src: csense-h4 @d8ac -->
+- Architected a modular, layered SPM instrument-control framework, deliberately separating hardware-vendor, orchestration, and application layers for long-term extensibility and reuse across future instrument variants <!-- src: csense-h3 @d85d -->
+- Designed a hardware-abstraction layer over a proprietary LabVIEW-based API, keeping the software stack vendor-agnostic and resilient to instrument changes <!-- src: csense-h5 @bcb5 -->
+- Delivered automated measurement workflows (spatial sampling, real-time safety management) demanding concurrency and reliability, letting researchers focus on experimental outcomes rather than instrument operation <!-- src: csense-h6 @a9d2 -->
 
 ## MediaTek — Data Scientist
 <!--meta
@@ -55,9 +56,9 @@ url = "https://www.linkedin.com/company/17763"
 
 Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.
 
-- Implemented model-monitoring solutions using MLflow and Streamlit, ensuring high availability and performance consistency for production ML models <!-- src: mediatek-ds-h1 @72ec -->
-- Developed ML models to enhance mobile temperature control mechanisms, achieving temperature errors below 1°C <!-- src: mediatek-ds-h2 @11c6 -->
-- Collaborated with chip developers to reduce power consumption by 20%, resulting in a 14K Antutu score improvement in mobile performance <!-- src: mediatek-ds-h3 @4319 -->
+- Built model-monitoring infrastructure (MLflow + Streamlit) for production ML systems, ensuring high availability and performance consistency <!-- src: mediatek-ds-h1 @72ec -->
+- Implemented ML models for mobile thermal control achieving temperature errors below 1°C, integrated into automated workflows <!-- src: mediatek-ds-h2 @11c6 -->
+- Collaborated with chip developers to reduce power consumption by 20%, yielding a 14K Antutu performance improvement <!-- src: mediatek-ds-h3 @4319 -->
 
 ## MediaTek — Data Engineer
 <!--meta
@@ -70,10 +71,10 @@ url = "https://www.linkedin.com/company/17763"
 
 Built data infrastructure and analytics platforms for one of the world's largest IC design companies.
 
-- Built ML model-monitoring infrastructure using MLflow and Grafana dashboards to track model performance and data drift in production <!-- src: mediatek-de-h4 @777d -->
-- Implemented real-time data-quality monitoring and alerting, reducing data missing rates from 50% to <1% and lowering monthly labor costs by 7.5 man-days <!-- src: mediatek-de-h3 @ef9e -->
-- Established automated data pipelines for structured and unstructured data; designed PB-level ETL processes using Airflow, NiFi, Dataflow, and BigQuery on GCP <!-- src: mediatek-de-h1 @2a03 -->
-- Managed EDA License and Computing Farm costs via interactive BI Dashboard (Splunk + Grafana), aiding procurement decisions and reducing costs by 25% <!-- src: mediatek-de-h5 @345a -->
+- Built model-monitoring infrastructure (MLflow + Grafana dashboards) tracking ML model performance and data drift in production <!-- src: mediatek-de-h4 @777d -->
+- Built a real-time data-quality monitoring and alerting stack, driving missing-data rates from 50% to <1% and lowering monthly operational labor by 7.5 man-days <!-- src: mediatek-de-h3 @ef9e -->
+- Operated PB-scale ETL infrastructure on GCP (Airflow, NiFi, Dataflow, BigQuery), establishing automated pipelines for structured and unstructured data <!-- src: mediatek-de-h1 @2a03 -->
+- Managed EDA license and computing-farm cost via interactive BI dashboards (Splunk + Grafana), informing procurement decisions and reducing costs by 25% <!-- src: mediatek-de-h5 @345a -->
 
 ## MediaTek — Software Engineer
 <!--meta
@@ -85,8 +86,22 @@ url = "https://www.linkedin.com/company/17763"
 summary = ""
 -->
 
-- Developed an automated ICD DMS using Python and Jenkins to enforce documentation standards <!-- src: mediatek-se-h2 @0f13 -->
-- Developed debugging and analysis tools for Modem Logs <!-- src: mediatek-se-h1 @c6c7 -->
+- Built CI/CD automation (Python + Jenkins) enforcing documentation standards across an automated ICD DMS <!-- src: mediatek-se-h2 @0f13 -->
+
+# Volunteer
+
+## 42 Vienna — Peer Tutor & Workshop Host
+<!--meta
+id = "42-vienna-tutor"
+start = "2024-07-01"
+end = "2024-10-01"
+url = "https://www.42vienna.com/"
+-->
+
+Volunteered as a peer tutor at 42 Vienna, supporting fellow students in system programming and software engineering fundamentals. Designed and hosted a Git workshop for the student community.
+
+- Hosted a Git Essentials workshop — 'Something You Should Know Before Git Branch' — covering branching strategy, rebase, conflict resolution, and collaborative workflows (slides: https://docs.google.com/presentation/d/13InmNDRSfkeUnGWHNXWFiTr3QCAz4ecFL_wFz-NFdoI/edit?usp=sharing) <!-- src: 42-vienna-tutor-h1 @69e6 -->
+- Provided peer review and guidance in C/C++ system programming, shell scripting, and software architecture concepts <!-- src: 42-vienna-tutor-h2 @d02a -->
 
 # Education
 
@@ -134,20 +149,34 @@ score = ""
 
 # Projects
 
-## litetorch + litetune + sklite — AI Framework Toolkit
+## Personal Hetzner Infrastructure — Live GitOps Cluster
 <!--meta
-id = "litetorch-suite"
-start = "2025-03-01"
-end = "2025-06-01"
-url = "https://github.com/42-CC-RNCP"
+id = "lyeh-infra"
+start = "2026-04-01"
+end = ""
+url = "https://github.com/LeaYeh"
 roles = ["Author"]
 -->
 
-A trio of educational ML infrastructure projects: litetorch (neural network framework built from scratch inspired by PyTorch), litetune (hyperparameter tuner inspired by Ray Tune), and sklite (ML preprocessing toolkit inspired by scikit-learn). Demonstrates understanding of ML internals beyond API usage.
+A personal production infrastructure running live on a Hetzner cloud server: a k3s Kubernetes cluster with ArgoCD-driven GitOps, deploying multiple self-hosted applications.
 
-- Implemented forward/backpropagation, autograd, and layer abstractions from scratch in litetorch <!-- src: litetorch-suite-h1 @70e1 -->
-- Built a hyperparameter search and experiment tracking system in litetune, mirroring Ray Tune's trial management model <!-- src: litetorch-suite-h2 @379e -->
-- Designed preprocessing pipelines and utility functions in sklite for educational clarity and extensibility <!-- src: litetorch-suite-h3 @f737 -->
+- Runs a k3s cluster on a Hetzner CX23 instance with ArgoCD continuously reconciling application state from Git <!-- src: lyeh-infra-h1 @e59c -->
+- Operates the full deployment lifecycle (build, containerize, deploy, observe) for live self-hosted services <!-- src: lyeh-infra-h3 @6eb8 -->
+
+## Inception-of-Things — K3s Kubernetes Cluster
+<!--meta
+id = "inception-of-things"
+start = "2025-06-01"
+end = "2025-10-01"
+url = "https://github.com/42-CC-RNCP/Inception-of-Things"
+roles = ["Developer"]
+-->
+
+Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster using Vagrant and VirtualBox, covering cluster networking, ingress, and GitOps-style deployment workflows.
+
+- Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup <!-- src: inception-of-things-h1 @2eed -->
+- Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes <!-- src: inception-of-things-h2 @b8a4 -->
+- Applied GitOps principles with ArgoCD for continuous deployment in the bonus track <!-- src: inception-of-things-h3 @2291 -->
 
 ## ft_transcendence — Full-Stack Platform with Observability Stack
 <!--meta
@@ -165,21 +194,6 @@ Contributed the DevOps module for a full-stack multiplayer web platform (42 Vien
 - Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services <!-- src: ft-transcendence-h3 @0e32 -->
 - Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity <!-- src: ft-transcendence-h4 @ef5c -->
 
-## Inception-of-Things — K3s Kubernetes Cluster
-<!--meta
-id = "inception-of-things"
-start = "2025-06-01"
-end = "2025-10-01"
-url = "https://github.com/42-CC-RNCP/Inception-of-Things"
-roles = ["Developer"]
--->
-
-Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster using Vagrant and VirtualBox, covering cluster networking, ingress, and GitOps-style deployment workflows — the deployment substrate for running model/inference workloads.
-
-- Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup <!-- src: inception-of-things-h1 @2eed -->
-- Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes <!-- src: inception-of-things-h2 @b8a4 -->
-- Applied GitOps principles with ArgoCD for continuous deployment in the bonus track <!-- src: inception-of-things-h3 @2291 -->
-
 # Skills
 
 ## MLOps & Model Operations
@@ -192,83 +206,48 @@ level = "Advanced"
 - Model monitoring
 - Model deployment
 - Data drift tracking
-- Prometheus
-- Grafana
-- ELK stack (Elasticsearch, Logstash, Kibana)
-- Splunk
-- CI/CD
-- Docker
-- GitHub Actions
+- Data Quality Monitoring
+- Streamlit
 
-## Machine Learning & ML Internals
+## GitOps, CI/CD & Delivery
 <!--meta
-id = "skill-ml-internals"
+id = "skill-gitops-delivery"
 level = "Advanced"
 -->
 
-- PyTorch
-- Deep Learning
-- Model Evaluation
-- Autograd / backpropagation (from scratch)
-- Hyperparameter tuning
-- Explainable AI
-- Streamlit
+- ArgoCD / GitOps
+- Kustomize
+- GitHub Actions
+- Jenkins
+- CI/CD pipelines
+- Docker
+- Git / Git Flow
 
-## Platform & Orchestration
+## Kubernetes & Platform
 <!--meta
-id = "skill-platform-ops"
+id = "skill-kubernetes-platform"
 level = "Advanced"
 -->
 
 - Kubernetes (K3s)
-- Docker
-- GitOps / ArgoCD
+- Traefik ingress
+- cert-manager
+- Sealed Secrets
 - Vagrant / VM provisioning
-- Kustomize
-- CI/CD
-- Git Flow
+- Self-hosted infrastructure
 
-## Data Engineering
+## Observability & Alerting
 <!--meta
-id = "skill-data-engineering"
-level = "Master"
+id = "skill-observability-alerting"
+level = "Advanced"
 -->
 
-- Big data pipeline
-- ETL
-- Data Warehouse
-- Data Quality Monitoring
-- Google Cloud Platform (GCP)
-- Object storage (AWS S3, MinIO)
-- Apache Airflow
-- NiFi
-- BigQuery
-- Dataflow
-- Azure Databricks (certified)
-
-## Programming
-<!--meta
-id = "skill-programming"
-level = "Master"
--->
-
-- Python
-- OOP
-- Pandas
-- SQL
-- C/C++
-
-## LLM / Applied AI (in-progress)
-<!--meta
-id = "skill-llm-ai-progress"
-level = "Foundation"
--->
-
-- LLM application development (in-progress)
-- RAG (in-progress)
-- Agentic RAG (in-progress)
-- LangGraph (in-progress)
-- LLM observability (in-progress)
+- Prometheus
+- Grafana
+- ELK stack (Elasticsearch, Logstash, Kibana)
+- Splunk
+- Alerting
+- BI dashboards
 
 ## Systems Architecture
 <!--meta
@@ -276,12 +255,40 @@ id = "skill-systems-architecture"
 level = "Advanced"
 -->
 
-- Event-driven architecture
+- Event-driven / async architecture
 - Layered system design
 - SOLID principles
 - Hardware abstraction
-- Interface design
-- Design Patterns
+- Interface-first design
+- ADR-driven design
+
+## Python, Bash & Linux
+<!--meta
+id = "skill-python-bash-linux"
+level = "Master"
+-->
+
+- Python / OOP / Pythonic
+- Pandas
+- Automation tooling
+- Shell scripting
+- Linux internals
+
+## Data Platform
+<!--meta
+id = "skill-data-platform"
+level = "Master"
+-->
+
+- Apache Airflow
+- NiFi
+- Dataflow
+- BigQuery
+- ETL
+- Data Warehouse
+- Google Cloud Platform (GCP)
+- Object storage (AWS S3, MinIO)
+- SQL
 
 # Awards
 

@@ -1,10 +1,11 @@
 +++
 # ---------------------------------------------------------------------------
-# TEMPLATE — one-page facet resume. Copy to docs/resume/resume-<sre|de|mlops>.md
+# TEMPLATE — one-page facet resume. Copy to docs/resume/resume-<swe|ai|mlops|de>.md
 # and replace every placeholder. All content below is invented filler.
-#   sre = Platform / Infrastructure / SRE
+#   swe = Senior Software Engineer
+#   ai  = AI Platform / Applied AI
 #   de = Data Engineer
-#   mlops = MLOps / AI Platform
+#   mlops = MLOps / DevOps / GitOps
 #
 # INVARIANTS — copied VERBATIM from cv.md, never tailored per facet:
 #   * this whole frontmatter except `label`: name, image, email, phone,
