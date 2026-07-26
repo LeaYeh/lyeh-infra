@@ -1,6 +1,6 @@
 +++
 name = "Lea (Mei Ling) Yeh"
-label = "Senior Software Engineer | Systems Architecture"
+label = "Senior Software Engineer | Systems Architecture | AI/LLM Applied"
 image = "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156"
 email = "lea.yeh.ml@gmail.com"
 phone = ""
@@ -24,7 +24,7 @@ url = "https://github.com/LeaYeh"
 
 # Summary
 
-Senior Software Engineer with solution architecture responsibilities at c-sense GmbH — the sole engineer responsible for the full software stack: layered SPM instrument-control framework (hardware abstraction, async command routing, interface contracts). Background spans 9+ years in Software Engineering. Continuously advancing expertise in Linux kernel internals and DevOps at 42 Vienna.
+Senior Software Engineer with solution architecture responsibilities at c-sense GmbH — the sole engineer responsible for the full software stack: layered SPM instrument-control framework (hardware abstraction, async command routing, interface contracts) and currently architecting an agentic RAG system (LangChain/LangGraph, Chroma, LLM cloud APIs). Background spans 9+ years in Software Engineering. Continuously advancing expertise in Linux kernel internals and DevOps at 42 Vienna.
 
 # Work
 
@@ -39,6 +39,7 @@ url = "https://www.c-sense.at/"
 
 c-sense develops nanoscale sensor technology and AFM/SPM instruments for scientific and industrial applications.
 
+- Currently architecting an agentic RAG system (LangChain/LangGraph, Chroma, LLM cloud APIs) to give the CEO cross-domain visibility into internal technical documentation, sales/CRM data, competitor product analysis, and prospective customer profiling <!-- src: csense-h2 @7679 -->
 - Architected a modular, layered SPM instrument-control framework, deliberately separating hardware-vendor, orchestration, and application layers for long-term extensibility and reuse across future instrument variants <!-- src: csense-h3 @d85d -->
 - Defined cross-layer interface contracts and async command-routing patterns so hardware and software teams could develop in parallel, reducing integration risk during concurrent R&D cycles <!-- src: csense-h4 @d8ac -->
 - Designed a hardware-abstraction layer over a proprietary LabVIEW-based API, keeping the software stack agnostic to vendor-specific instrument changes <!-- src: csense-h5 @bcb5 -->
@@ -58,7 +59,6 @@ url = "https://www.linkedin.com/company/17763"
 Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.
 
 - Implemented ML models driving mobile temperature-control mechanisms, achieving temperature errors below 1°C <!-- src: mediatek-ds-h2 @11c6 -->
-- Worked with chip developers to cut power consumption by 20%, yielding a 14K Antutu score improvement in mobile performance <!-- src: mediatek-ds-h3 @4319 -->
 
 ## MediaTek — Data Engineer
 <!--meta
@@ -252,18 +252,6 @@ level = "Intermediate"
 - Multiprocessing & parallel computing
 - Performance Optimization
 
-## Application & Web Development
-<!--meta
-id = "skill-app-web"
-level = "Intermediate"
--->
-
-- Vue.js / Electron
-- AngularJS
-- Streamlit
-- HTTP / CGI
-- Desktop & internal tooling
-
 ## Build, CI/CD & Delivery
 <!--meta
 id = "skill-build-delivery"
@@ -290,6 +278,17 @@ level = "Foundation"
 - Test planning
 - Automated test suites
 
+
+## LLM & AI Application Development
+<!--meta
+id = "skill-llm-ai"
+level = "Intermediate"
+-->
+
+- LLM Application Development
+- Agentic RAG (in-progress)
+- LangChain / LangGraph (in-progress)
+- Chroma (vector DB)
 # Awards
 
 ## IT Annual Award

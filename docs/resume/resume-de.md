@@ -1,6 +1,6 @@
 +++
 name = "Lea (Mei Ling) Yeh"
-label = "Senior Software Engineer | Data Engineer"
+label = "Senior Software Engineer | Data Engineer | AI/LLM Applied"
 image = "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156"
 email = "lea.yeh.ml@gmail.com"
 phone = ""
@@ -24,7 +24,7 @@ url = "https://github.com/LeaYeh"
 
 # Summary
 
-Senior Software Engineer with solution architecture responsibilities at c-sense GmbH — the sole engineer responsible for the full software stack. Background spans 9+ years in Data Engineering and Software Engineering — including PB-scale ETL pipelines and ML model monitoring at MediaTek.
+Senior Software Engineer with solution architecture responsibilities at c-sense GmbH — the sole engineer responsible for the full software stack and currently architecting an agentic RAG system (LangChain/LangGraph, Chroma, LLM cloud APIs). Background spans 9+ years in Data Engineering and Software Engineering — including PB-scale ETL pipelines and ML model monitoring at MediaTek.
 
 # Work
 
@@ -39,10 +39,10 @@ url = "https://www.c-sense.at/"
 
 c-sense develops nanoscale sensor technology and AFM/SPM instruments for scientific and industrial applications.
 
+- Currently architecting an agentic RAG system (LangChain/LangGraph, Chroma, LLM cloud APIs) to give the CEO cross-domain visibility into internal technical documentation, sales/CRM data, competitor product analysis, and prospective customer profiling <!-- src: csense-h2 @7679 -->
 - Architected a modular, layered software framework for SPM instrument control, applying interface contracts and SOLID principles for long-term extensibility <!-- src: csense-h3 @d85d -->
 - Built automated measurement workflows that turn high-volume sensor measurement protocols into reliable, reproducible data-acquisition processes <!-- src: csense-h6 @a9d2 -->
 - Built the GitOps delivery platform carrying the company's internal data pipeline to its environments, with ArgoCD-driven continuous delivery and ADR-recorded architecture <!-- src: csense-h8 @ce2f -->
-- Defined cross-layer interface contracts and async command routing patterns to enable parallel development by hardware and software teams, reducing integration risk during concurrent R&D cycles <!-- src: csense-h4 @d8ac -->
 
 ## MediaTek — Data Scientist
 <!--meta
@@ -278,6 +278,17 @@ level = "Foundation"
 - Defect management
 - SDLC quality assurance
 
+
+## LLM & AI Application Development
+<!--meta
+id = "skill-llm-ai"
+level = "Intermediate"
+-->
+
+- LLM Application Development
+- Agentic RAG (in-progress)
+- LangChain / LangGraph (in-progress)
+- Chroma (vector DB)
 # Awards
 
 ## IT Annual Award

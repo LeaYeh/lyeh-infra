@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
   "basics": {
     "name": "Lea (Mei Ling) Yeh",
-    "label": "Senior Software Engineer | Systems Architecture",
+    "label": "Senior Software Engineer | Systems Architecture | AI/LLM Applied",
     "image": "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156",
     "email": "lea.yeh.ml@gmail.com",
     "phone": "",
@@ -24,7 +24,7 @@
         "url": "https://github.com/LeaYeh"
       }
     ],
-    "summary": "Senior Software Engineer with solution architecture responsibilities at c-sense GmbH — the sole engineer responsible for the full software stack: layered SPM instrument-control framework (hardware abstraction, async command routing, interface contracts). Background spans 9+ years in Software Engineering. Continuously advancing expertise in Linux kernel internals and DevOps at 42 Vienna."
+    "summary": "Senior Software Engineer with solution architecture responsibilities at c-sense GmbH — the sole engineer responsible for the full software stack: layered SPM instrument-control framework (hardware abstraction, async command routing, interface contracts) and currently architecting an agentic RAG system (LangChain/LangGraph, Chroma, LLM cloud APIs). Background spans 9+ years in Software Engineering. Continuously advancing expertise in Linux kernel internals and DevOps at 42 Vienna."
   },
   "work": [
     {
@@ -36,6 +36,7 @@
       "url": "https://www.c-sense.at/",
       "summary": "c-sense develops nanoscale sensor technology and AFM/SPM instruments for scientific and industrial applications.",
       "highlights": [
+        "Currently architecting an agentic RAG system (LangChain/LangGraph, Chroma, LLM cloud APIs) to give the CEO cross-domain visibility into internal technical documentation, sales/CRM data, competitor product analysis, and prospective customer profiling",
         "Architected a modular, layered SPM instrument-control framework, deliberately separating hardware-vendor, orchestration, and application layers for long-term extensibility and reuse across future instrument variants",
         "Defined cross-layer interface contracts and async command-routing patterns so hardware and software teams could develop in parallel, reducing integration risk during concurrent R&D cycles",
         "Designed a hardware-abstraction layer over a proprietary LabVIEW-based API, keeping the software stack agnostic to vendor-specific instrument changes",
@@ -53,8 +54,7 @@
       "url": "https://www.linkedin.com/company/17763",
       "summary": "Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.",
       "highlights": [
-        "Implemented ML models driving mobile temperature-control mechanisms, achieving temperature errors below 1°C",
-        "Worked with chip developers to cut power consumption by 20%, yielding a 14K Antutu score improvement in mobile performance"
+        "Implemented ML models driving mobile temperature-control mechanisms, achieving temperature errors below 1°C"
       ]
     },
     {
@@ -245,17 +245,6 @@
       ]
     },
     {
-      "name": "Application & Web Development",
-      "level": "Intermediate",
-      "keywords": [
-        "Vue.js / Electron",
-        "AngularJS",
-        "Streamlit",
-        "HTTP / CGI",
-        "Desktop & internal tooling"
-      ]
-    },
-    {
       "name": "Build, CI/CD & Delivery",
       "level": "Advanced",
       "keywords": [
@@ -277,6 +266,16 @@
         "Test design techniques",
         "Test planning",
         "Automated test suites"
+      ]
+    },
+    {
+      "name": "LLM & AI Application Development",
+      "level": "Intermediate",
+      "keywords": [
+        "LLM Application Development",
+        "Agentic RAG (in-progress)",
+        "LangChain / LangGraph (in-progress)",
+        "Chroma (vector DB)"
       ]
     }
   ],

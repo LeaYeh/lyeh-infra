@@ -1,6 +1,6 @@
 +++
 name = "Lea (Mei Ling) Yeh"
-label = "Senior Software Engineer | DevOps & MLOps"
+label = "Senior Software Engineer | DevOps & MLOps | AI/LLM Applied"
 image = "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156"
 email = "lea.yeh.ml@gmail.com"
 phone = ""
@@ -24,7 +24,7 @@ url = "https://github.com/LeaYeh"
 
 # Summary
 
-Senior Software Engineer with solution architecture responsibilities at c-sense GmbH — the sole engineer responsible for the full software stack. Background spans 9+ years in Data Engineering and Software Engineering — including PB-scale ETL pipelines and ML model monitoring at MediaTek. Continuously advancing expertise in DevOps at 42 Vienna.
+Senior Software Engineer with solution architecture responsibilities at c-sense GmbH — the sole engineer responsible for the full software stack and currently architecting an agentic RAG system (LangChain/LangGraph, Chroma, LLM cloud APIs). Background spans 9+ years in Data Engineering and Software Engineering — including PB-scale ETL pipelines and ML model monitoring at MediaTek. Continuously advancing expertise in DevOps at 42 Vienna.
 
 # Work
 
@@ -39,6 +39,7 @@ url = "https://www.c-sense.at/"
 
 c-sense develops nanoscale sensor technology and AFM/SPM instruments for scientific and industrial applications.
 
+- Currently architecting an agentic RAG system (LangChain/LangGraph, Chroma, LLM cloud APIs) to give the CEO cross-domain visibility into internal technical documentation, sales/CRM data, competitor product analysis, and prospective customer profiling <!-- src: csense-h2 @7679 -->
 - Built the GitOps delivery platform for the company's internal service pipeline — ArgoCD-driven continuous delivery across environments, with every architectural decision recorded as an ADR <!-- src: csense-h8 @ce2f -->
 - Defined cross-layer interface contracts and async command-routing patterns, isolating failure domains and enabling parallel HW/SW development while reducing integration risk during concurrent R&D cycles <!-- src: csense-h4 @d8ac -->
 - Architected a modular, layered SPM instrument-control framework, deliberately separating hardware-vendor, orchestration, and application layers for long-term extensibility and reuse across future instrument variants <!-- src: csense-h3 @d85d -->
@@ -57,7 +58,6 @@ url = "https://www.linkedin.com/company/17763"
 Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.
 
 - Built model-monitoring infrastructure (MLflow + Streamlit) for production ML systems, ensuring high availability and performance consistency <!-- src: mediatek-ds-h1 @72ec -->
-- Implemented ML models for mobile thermal control achieving temperature errors below 1°C, integrated into automated workflows <!-- src: mediatek-ds-h2 @11c6 -->
 - Collaborated with chip developers to reduce power consumption by 20%, yielding a 14K Antutu performance improvement <!-- src: mediatek-ds-h3 @4319 -->
 
 ## MediaTek — Data Engineer
@@ -276,22 +276,16 @@ level = "Master"
 - Shell scripting
 - Linux internals
 
-## Data Platform
+## LLM & AI Application Development
 <!--meta
-id = "skill-data-platform"
-level = "Master"
+id = "skill-llm-ai"
+level = "Intermediate"
 -->
 
-- Apache Airflow
-- NiFi
-- Dataflow
-- BigQuery
-- ETL
-- Data Warehouse
-- Google Cloud Platform (GCP)
-- Object storage (AWS S3, MinIO)
-- SQL
-
+- LLM Application Development
+- Agentic RAG (in-progress)
+- LangChain / LangGraph (in-progress)
+- Chroma (vector DB)
 # Awards
 
 ## IT Annual Award
