@@ -378,6 +378,7 @@ level = "Master"
 - ETL
 - Data Quality Monitoring
 - Google Cloud Platform (GCP)
+- Object storage (AWS S3, MinIO)
 - Apache Airflow
 - Data Governance
 - NiFi
