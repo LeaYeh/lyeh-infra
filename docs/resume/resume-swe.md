@@ -24,7 +24,7 @@ url = "https://github.com/LeaYeh"
 
 # Summary
 
-Senior Software Engineer owning the full software stack at c-sense GmbH: a layered SPM instrument-control framework built on explicit interface contracts, async command routing and a hardware-abstraction layer over a vendor API. 9+ years running from data pipelines through the analytics on them to applied AI. Systems craft from 42 Vienna — HTTP server, shell interpreter, Linux from scratch.
+Senior Software Engineer with solution architecture responsibilities at c-sense GmbH — the sole engineer responsible for the full software stack: layered SPM instrument-control framework (hardware abstraction, async command routing, interface contracts). Background spans 9+ years in Software Engineering. Continuously advancing expertise in Linux kernel internals and DevOps at 42 Vienna.
 
 # Work
 

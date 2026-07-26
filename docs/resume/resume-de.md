@@ -24,7 +24,7 @@ url = "https://github.com/LeaYeh"
 
 # Summary
 
-Senior Software Engineer with PB-scale ETL and data-quality depth: built MediaTek's first data-warehouse layer with Airflow/NiFi/Dataflow/BigQuery on GCP, cutting missing-data rates from 50% to under 1%. 9+ years from pipelines to the analytics on them to applied AI. Azure Databricks certified.
+Senior Software Engineer with solution architecture responsibilities at c-sense GmbH — the sole engineer responsible for the full software stack. Background spans 9+ years in Data Engineering and Software Engineering — including PB-scale ETL pipelines and ML model monitoring at MediaTek.
 
 # Work
 

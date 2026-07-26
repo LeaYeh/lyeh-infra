@@ -24,7 +24,7 @@ url = "https://github.com/LeaYeh"
 
 # Summary
 
-Senior Software Engineer building the delivery path and the monitoring that watches what runs on it: K3s + ArgoCD GitOps, GitHub Actions CI/CD, Prometheus/Grafana/ELK, and MLflow-based model monitoring with data-drift tracking for production ML at MediaTek. 9+ years spanning data pipelines, the analytics on top of them, and applied AI today. Runs a personal Hetzner K3s cluster live.
+Senior Software Engineer with solution architecture responsibilities at c-sense GmbH — the sole engineer responsible for the full software stack. Background spans 9+ years in Data Engineering and Software Engineering — including PB-scale ETL pipelines and ML model monitoring at MediaTek. Continuously advancing expertise in DevOps at 42 Vienna.
 
 # Work
 
