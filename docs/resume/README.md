@@ -28,7 +28,10 @@ This README is the practical "how to use it" guide.
 **Facets:** A = Platform / Infrastructure / SRE · B = Data Engineer · C = MLOps / AI Platform.
 
 A facet may not contain a fact the CV does not. Every curated facet bullet cites its
-CV source with `<!-- src: <cv-id> @<hash> -->`; the provenance gate enforces it.
+CV source with `<!-- src: <cv-id> @<hash> -->`, and must cite a bullet from **the same
+entry**; the provenance gate enforces both. A facet must also carry the same work
+entries as the CV, in the same order — the invariants gate compares the work lists
+positionally, so compressing to one page means shortening a role, not deleting one.
 
 ## File layout
 
@@ -48,17 +51,21 @@ scripts/
 ├── jsonresume_map.py    # Markdown document -> JSON Resume structure
 ├── jsonresume_schema.py # vendored JSON Resume v1.0.0 field spec
 ├── cv_build.py          # `make cv-build` — compile + schema gate
-├── cv_lint.py           # `make cv-lint`  — the five gates
+├── cv_lint.py           # `make cv-lint`  — the six gates
 ├── cv_render.py         # JSON Resume -> HTML (two modes)
 ├── tests/               # `make cv-test`
 └── cv-sync.env          # GIST_ID for publishing (git-ignored)
+apps/portal/src/data/resume.json   # the portal's published copy of cv.json —
+                                   # a third public surface, gated (gate 6)
+.github/workflows/resume-gates.yml # CI: test suite + `make cv-lint-strict`
 ```
 
 The `*.json` files are **generated and committed** — the Gist and the portal data
 copy (`apps/portal/src/data/resume.json`) read them, and committing them keeps the
 diff of a content change reviewable. They are still artifacts: never hand-edit one.
 The freshness gate fails if a `.json` disagrees with its `.md`, and the next
-`make cv-build` overwrites it.
+`make cv-build` overwrites it. The portal copy is likewise an artifact — it is
+written by `make cv-publish` and gated against `cv.json`.
 
 Local-only (git-ignored — see `.gitignore`):
 ```
@@ -86,9 +93,16 @@ docs/resume/
                         make cv-render │        │ make cv-publish
                                        ▼        ▼
                                      PDFs    Gist (public)
+                                                +
+                                     apps/portal/src/data/resume.json
+                                     (auto-deployed by portal-deploy.yml)
 ```
 
-In one line: `*.md ──make cv-build──▶ *.json ──▶ PDF / Gist`.
+In one line: `*.md ──make cv-build──▶ *.json ──▶ PDF / Gist / portal site`.
+
+There are **three public surfaces**: the rendered PDF, the Gist, and the portal
+copy. `make cv-render` and `make cv-publish` both depend on `make cv-lint-strict`,
+so none of them can ship while any gate is emitting even a warning.
 
 ### 1. Intake — `/cv-sync` (assisted)
 
@@ -137,61 +151,113 @@ exactly as it was, so a broken edit never propagates to the PDF or the public Gi
 The flip side: a render that "looks fine" after a failed build is showing stale
 output. Fix the Markdown at the reported line and build again.
 
-## The gates — `make cv-lint`
+## The gates — `make cv-lint` / `make cv-lint-strict`
 
 ```bash
 make cv-lint
-# ✗ resume-a.md:46 bullet has no src anchor — add the fact to cv.md first, then cite its ID
-# ✗ cv.md:44 RAG / LangGraph / agent work must be marked (in-progress)
-# ...
+# ✗ apps/portal/src/data/resume.json is out of date with docs/resume/cv.json — run `make cv-publish` to refresh it (never hand-edit the portal copy)
 # on a clean run, the only output is:
 # ✓ invariants consistent across cv.md + 3 resume(s)
 ```
 
-`✗` findings are fatal (exit 1); `⚠` findings are warnings and do not fail the run.
-Most findings name a source line; the invariants and freshness gates compare whole
-documents and so name a file only. The corpus is **not currently clean** — there are
-open findings that are content decisions for the repo owner, not tooling bugs.
+`✗` findings are fatal (exit 1); `⚠` findings are warnings and do not fail plain
+`make cv-lint`. Most findings name a source line; the invariants gate names the
+drifting **`.md`**, and the freshness and portal gates name a **`.json`** — those
+three compare whole documents and carry no line number.
 
-Five gates, in order:
+**Current state of the corpus:** the only finding is gate 6 — the committed portal
+copy is an older snapshot of `cv.json`, and refreshing it means publishing, which is
+the repo owner's call. Everything else is clean. Any other finding you see is new.
 
-1. **Invariants** — the fields that must never be tailored (`basics` name/email/phone/
-   location; each `work` entry's name/position/startDate/endDate/location, positionally;
-   the whole `education` and `languages` arrays) must match `cv.md` exactly in every
-   `resume-*.md`. Reported per drifting group, without a line number.
+### `--strict`
+
+```bash
+make cv-lint-strict     # = python3 scripts/cv_lint.py --strict
+# ✗ --strict: 3 warning(s) block a publishing path — resolve them, or run `make cv-lint` while you iterate
+```
+
+`--strict` promotes every warning to blocking. `make cv-render` and `make cv-publish`
+both depend on `cv-lint-strict`, so nothing that leaves the working copy may ship on a
+`⚠` — a stale anchor over a gutted CV bullet used to go out to the Gist under a plain
+warning. Plain `make cv-lint` stays lenient so ordinary editing is not blocked.
+[`.github/workflows/resume-gates.yml`](../../.github/workflows/resume-gates.yml) runs
+the test suite plus `make cv-lint-strict` on every push and PR touching
+`docs/resume/**`, `scripts/**`, `Makefile` or the portal copy.
+
+### What the gates read
+
+Bullets are not the document. Roughly half of what reaches the JSON is prose or
+frontmatter, and the gates read all of it: the frontmatter `label` and `summary`, the
+`# Summary` prose, each entry's prose, and each bullet.
+
+Six gates, in order:
+
+1. **Invariants** — the fields that must never be tailored must match `cv.md` exactly in
+   every `resume-*.md`: `basics` name/email/phone/location **plus profiles/url/image**
+   (attribution — a facet pointing its LinkedIn or avatar elsewhere is claiming someone
+   else's identity); each `work` entry's name/position/startDate/endDate/location/**url**,
+   compared **positionally as a whole list**; and the whole `education` and `languages`
+   arrays. `label`, `basics.summary` and `work[].summary` are deliberately *not*
+   invariant — they are the facet's pitch. Reported per drifting group, without a line
+   number, naming the `.md`.
+   *Because the work lists are compared positionally, a facet may not drop a job to fit
+   one page.* Shorten a role's prose and bullets instead.
 2. **Provenance** — every bullet in a facet's Work / Volunteer / Projects sections must
    carry `<!-- src: <cv-id> @<hash> -->` pointing at a bullet that exists in `cv.md`
-   (`bullet has no src anchor`, `src '<id>' does not exist in cv.md`, duplicate CV IDs).
+   (`bullet has no src anchor`, `src '<id>' does not exist in cv.md`, duplicate CV IDs),
+   **and that bullet must belong to the same entry** — citing another employer's bullet
+   is fatal, since a valid anchor proves the sentence exists, not that it belongs here.
    A hash that no longer matches the CV text is the `stale:` **warning** — re-read the
    source before updating it.
-3. **Numbers** — every standalone numeric token in a facet bullet must also appear in the
-   CV bullet it cites. A facet may drop a number; it may never introduce one. Digits
-   welded to letters (`k3s`, `CX23`) and digits inside URLs are not treated as claims.
+3. **Numbers** — a facet may drop a number; it may never introduce one. Each string is
+   grounded against a specific piece of `cv.md`: a bullet against the bullet its `src`
+   cites, an entry's prose against the CV entry with the same meta `id`, and section
+   prose / frontmatter against the whole of `cv.md`. Comparison is case-insensitive.
+   Unit-bearing metrics count (`200ms`, `30TB`, `3rd`, `14K`); digits *preceded* by a
+   letter or digit (`k3s`, `CX23`) and digits inside URLs do not. Spelled-out magnitudes
+   (`doubled`, `three million`) that are absent from the grounding text produce a
+   **non-fatal warning** naming the phrase to verify by eye.
 4. **Banned / qualified terms** — the patterns in [`rules.toml`](rules.toml), matched
-   case-insensitively against every bullet in every document including `cv.md`. `banned`
-   may not appear at all; `qualified` may appear only with its qualifier **in the same
-   bullet**. The error text is the rule's own `message`.
+   case-insensitively against **every published string** in every document including
+   `cv.md` — bullets, entry prose, section prose and the frontmatter `label`.
+   `banned` may not appear at all; `qualified` may appear only with its qualifier **in
+   the same string**. The error text is the rule's own `message`.
 5. **Freshness** — the committed `.json` must equal what the `.md` builds to right now;
    otherwise `resume-c.json is out of date with the Markdown — run make cv-build`. This
    is what stops a hand-edit of the JSON from surviving.
+6. **Portal copy** — `apps/portal/src/data/resume.json` must equal what `cv.md` builds
+   to. That file is a third public surface: it is tracked and
+   `.github/workflows/portal-deploy.yml` deploys on any push under
+   `apps/portal/src/**`. `make cv-publish` writes it as its last step. A stale copy is
+   fatal; a missing one (a clone without `apps/portal`) is a warning.
+
+A prose or frontmatter finding names where it came from and points at the prose's own
+line, not at the heading above it:
+
+```
+✗ resume-a.md:20 'Acme — Engineer' prose: number(s) 200ms do not appear in cv.md entry 'acme'
+⚠ resume-a.md:1 frontmatter 'label' (no line of its own; anchored to line 1): 'doubled' has no counterpart in cv.md — a spelled-out magnitude cannot be checked mechanically; verify by eye
+```
 
 The legitimate response to a gate is always to change the *claim*, never the check:
-do not edit `rules.toml` to silence a hit, do not edit the generated JSON, do not
-recompute a fingerprint without re-reading the source, and do not add a claim to
-`cv.md` on your own initiative so a facet can cite it. See
+do not edit `rules.toml` to silence a hit, do not edit the generated JSON or the portal
+copy, do not recompute a fingerprint without re-reading the source, do not move a claim
+into prose to dodge a rule (prose is scanned), and do not add a claim to `cv.md` on your
+own initiative so a facet can cite it. See
 `.claude/skills/cv-md/references/anti-drafting.md`.
 
-### Why `cv-lint` does not depend on `cv-build`
+### Why neither lint target depends on `cv-build`
 
 `cv-render` and `cv-publish` both run `cv-build` first — they consume the JSON, so
-they need it current. `cv-lint` deliberately does **not**: gate 5 exists to tell you
-that the committed JSON is stale, and a target that rebuilt the JSON before checking
-it could never report that. Building first would make the freshness gate
-unfalsifiable. Run `make cv-build && make cv-lint`, in that order, by hand.
+they need it current. `cv-lint` and `cv-lint-strict` deliberately do **not**: gates 5
+and 6 exist to tell you that the committed JSON is stale, and a target that rebuilt the
+JSON before checking it could never report that. Building first would make the freshness
+gate unfalsifiable. Run `make cv-build && make cv-lint`, in that order, by hand.
 
 ## Rendering to PDF — `make cv-render`
 
-Runs `cv-build` first, then renders every JSON in `docs/resume/` to PDF alongside it:
+Runs `cv-build` and `cv-lint-strict` first — a bullet that fails a gate no longer
+renders into the PDF — then renders every JSON in `docs/resume/` to PDF alongside it:
 
 ```bash
 make cv-render
@@ -241,9 +307,12 @@ Open `scripts/cv_render.py`:
 
 ## Publish — `make cv-publish`
 
-Runs `cv-build` and `cv-lint` first, then pushes `docs/resume/cv.json` to the public
-Gist (`GIST_ID` in `scripts/cv-sync.env`) via `gh api`, and refreshes the
+Runs `cv-build` and `cv-lint-strict` first, then pushes `docs/resume/cv.json` to the
+public Gist (`GIST_ID` in `scripts/cv-sync.env`) via `gh api`, and refreshes the
 `apps/portal/src/data/resume.json` copy. Requires the `gh` CLI authenticated.
+
+This is also the only supported way to update the portal copy — gate 6 checks it, and
+hand-editing it makes the next lint fail.
 
 ## Tests — `make cv-test`
 
@@ -273,13 +342,31 @@ best-fit facet and honest gap notes. Workflow:
 ## Truthfulness rules (hard constraints)
 
 Machine-checked by [`rules.toml`](rules.toml) via `make cv-lint`; the full human-facing
-"不可宣稱" lists live in `raw/resume_split_blueprint.md` (local-only). Highlights:
+"不可宣稱" lists live in `raw/resume_split_blueprint.md` (local-only). `rules.toml` is
+the authority — this list is a summary of it, not a second source of truth:
 
 - MediaTek used **Beam/Dataflow, never Spark/PySpark** — `banned`.
-- IaC is **Kustomize + ArgoCD, never Terraform** — `banned`.
-- RAG / LangGraph / agents must be marked **(in-progress)** — `qualified`.
+- IaC here is **Kustomize-organised manifests reconciled by ArgoCD** — `terraform`,
+  `opentofu` and `terragrunt` are all `banned` (a fork and a wrapper are the same
+  category). There is no `Chart.yaml` in this repo and nothing invokes `helm`, so do
+  not substitute "Helm" either: it has no rule, so a false Helm claim would pass every
+  gate.
+- **AWS was S3 only.** `ec2`, `eks`, `ecs`, `rds`, `vpc`, `redshift`, `athena`,
+  `sagemaker`, `dynamodb`, `cloudformation`, `fargate`, `cloudwatch`, `kinesis`,
+  `aws lambda`, `aws glue` are `banned` outright; a bare `aws` is `qualified` and needs
+  a `monitor…` word beside it (the work was model monitoring, not platform depth).
+- RAG / GraphRAG / LangGraph / agentic / retrieval-augmented generation / LangChain /
+  LlamaIndex / `agent`/`agents`/`multi-agent` are `qualified`: they need
+  **`(in-progress)`, `(learning)` or `(exploring)`**, *or* present-continuous framing
+  (`currently architecting …`, `evaluating …`) in the same string. The parenthesised
+  marker is the stricter choice — the widened forms match anywhere in the string, so
+  they can satisfy the rule for a term they do not actually qualify.
+- **Databricks** is `qualified`: it must appear with `certified` / `certificate` /
+  `certification`. It is a certification with no implementation behind it.
 - German must be marked **beginner** (or A1/A2) — `qualified`.
-- AWS = **model-monitoring only**, not platform depth — *not machine-checked; judgement.*
+
+All of these are checked against every bullet, every entry's prose, every section's
+prose and the frontmatter `label`, in every document including `cv.md`.
 
 `rules.toml` is the human's record of what they may not claim. Reword the claim; never
 relax the rule.

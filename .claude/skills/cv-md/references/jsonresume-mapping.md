@@ -27,17 +27,19 @@ empty list**, not a missing key. Deleting `# Interests` from a document is safe.
 
 `basics` is the frontmatter filtered to `BASICS_KEYS`, plus `summary` from the
 `# Summary` section. `# Summary` is handled before the `SECTIONS` lookup, so it
-has no spec row and takes no `## ` entries.
+has no spec row and only its prose is read — any `## ` entry under it is
+**silently dropped**, not rejected.
 
 ## The section table
 
 For each `# Section`: its JSON key, what the `## ` heading splits into (on the
 first `len(fields) - 1` em dashes), where the prose paragraph goes, where the
-bullets go, and whether a bullet may carry `{#id}`.
+bullets go, and whether a bullet may carry `{#id}` (`ids_allowed` in the
+`SectionSpec`).
 
 | `# Section` | JSON key | Heading splits into | Prose → | Bullets → | `{#id}` allowed? |
 |---|---|---|---|---|---|
-| `Summary` | `basics.summary` | *(no entries)* | `basics.summary` | — | — |
+| `Summary` | `basics.summary` | *(entries silently dropped)* | `basics.summary` | — | — |
 | `Work` | `work` | `name` — `position` | `summary` | `highlights` | **yes** |
 | `Volunteer` | `volunteer` | `organization` — `position` | `summary` | `highlights` | **yes** |
 | `Education` | `education` | `institution` — `area` | *(rejected)* | `courses` | no |
@@ -54,9 +56,11 @@ bullets go, and whether a bullet may carry `{#id}`.
 `'Certificates' entries take no prose paragraph` /
 `'Languages' entries take no bullet list`.
 
-Bullets always serialise as **plain strings** in a JSON array. The `{#id}`
-permission is the only difference the "highlights" sections get; the ID itself
-is consumed by the provenance gate and never appears in the JSON.
+Bullets always serialise as **plain strings** in a JSON array — in every section,
+including the three where `ids_allowed` is true. `ids_allowed` grants
+*permission* to write a `{#id}`; it does not change the serialised shape. The ID
+itself is stripped by the parser, consumed by the provenance gate, and never
+appears in the JSON.
 
 ## Meta keys
 

@@ -74,8 +74,8 @@ Awards   Certificates  Publications  Languages  Interests  References
 
 Anything else is an error: `unknown section '<title>'`.
 
-`# Summary` is special: it takes **no entries**, only prose, and that prose
-becomes `basics.summary`.
+`# Summary` is special: only its prose is used, and that prose becomes
+`basics.summary`.
 
 ```markdown
 # Summary
@@ -85,9 +85,15 @@ First paragraph of the professional summary.
 Second paragraph, joined to the first with a blank line.
 ```
 
+`## ` entries under `# Summary` are parsed without error but are **silently
+dropped** by the mapper — the section is handled before the section-spec lookup
+and only its prose is read. Do not put content there.
+
 Every other section takes only `## ` entries. Prose written directly under a
-non-`Summary` section heading is parsed without error but is **silently dropped**
-by the mapper — do not put content there.
+non-`Summary` section heading is likewise parsed without error but **silently
+dropped** by the mapper — do not put content there either. (`cv_lint.py` still
+reads every section's prose and applies the rules gate to it, so a dropped
+paragraph can still produce a finding. That is not a reason to keep it.)
 
 ---
 
@@ -245,8 +251,10 @@ Languages, References) reject bullets:
 
 ## 7. The two bullet annotations
 
-A bullet may carry **at most one of each**, at the end of the line, in either
-order. Both are stripped before the text is stored, fingerprinted, or rendered.
+A bullet may carry **at most one of each**, at the very end of the line, in
+either order. Both are stripped before the text is stored, fingerprinted, or
+rendered, and **neither ever appears in the JSON** — a bullet always serialises
+as a plain string.
 
 ### `{#id}` — declares a source bullet (CV only)
 
@@ -256,10 +264,12 @@ order. Both are stripped before the text is stored, fingerprinted, or rendered.
 
 Regex: `\s*\{#([A-Za-z0-9._-]+)\}$` — letters, digits, `.`, `_`, `-`.
 
-Allowed only in sections whose bullets become highlight objects: **Work**,
-**Volunteer**, **Projects**. An `{#id}` on an Education course or a Skills
-keyword is an error:
-`'Skills' bullets must not carry a {#id}`.
+Allowed only in the sections whose spec sets `ids_allowed`: **Work**,
+**Volunteer**, **Projects** — the three whose bullets become `highlights`. An
+`{#id}` on an Education course or a Skills keyword is an error:
+`'Skills' bullets must not carry a {#id}`. The flag controls **permission only**;
+it does not change how the bullet is serialised. Bullets in every section become
+plain strings in a JSON array, and the ID is consumed by the provenance gate.
 
 ### `<!-- src: id @hash -->` — cites a source bullet (facets only)
 
@@ -278,8 +288,23 @@ characters)`. That hard error exists so a typo'd anchor never survives into the
 PDF while the provenance gate reports "no source anchor" at a line that visibly
 has one.
 
-Both annotations on one bullet is legal (either order) — useful if a facet
-bullet is itself a source for something:
+**Both annotations must be at the end of the line, and an embedded one is
+rejected too** — not only a malformed trailing one. After the trailing
+annotations have been stripped, the remaining text is re-scanned for `{#` and for
+`<!-- src:`; a hit raises the same `malformed bullet annotation` error. So all of
+these fail:
+
+```markdown
+- text {#some-id} more words              <- annotation not at the end
+- some <!-- src: x @a1b2 --> more words   <- annotation not at the end
+- bad <!-- src x @a1b2 -->                <- missing colon; text ends in -->
+```
+
+A well-formed-looking annotation in the middle of a bullet used to survive into
+`Bullet.text`, get fingerprinted, and be rendered into the PDF verbatim.
+
+Both annotations on one bullet is legal (either order), as long as both are
+trailing — useful if a facet bullet is itself a source for something:
 
 ```markdown
 - Text {#some-id} <!-- src: other-id @a1b2 -->
@@ -373,7 +398,7 @@ Put editorial notes where they are inert:
 | `bullet in section '<title>' has no '## ' entry` | Bullet directly under a section heading |
 | `prose found before the first '# Section' heading` | Text between frontmatter and first section |
 | `prose must come before the bullet list in '<name>'` | Paragraph after bullets |
-| `malformed bullet annotation: …` | Annotation that does not match the regexes |
+| `malformed bullet annotation: …` | Annotation that does not match the regexes, or one embedded mid-bullet instead of trailing |
 | `'<Section>' heading must be: <a> — <b>` | Wrong number of em-dash-separated fields |
 | `'<Section>' entries take no prose paragraph` | Prose in a section with no prose field |
 | `'<Section>' entries take no bullet list` | Bullets in a section with no bullet field |

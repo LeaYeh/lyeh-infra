@@ -12,12 +12,14 @@ description: Edit the Markdown resume SSOT (docs/resume/*.md) — format rules, 
 ```
 docs/resume/*.md  --make cv-build-->  docs/resume/*.json  --make cv-render-->  *.pdf
                                                           --make cv-publish--> public Gist
+                                                                             + apps/portal/src/data/resume.json
 ```
 
-**Never hand-edit `docs/resume/*.json` or `docs/resume/*.pdf`.** The next
-`make cv-build` overwrites them, and `make cv-lint`'s freshness gate fails if
-they disagree with the Markdown. If a JSON field looks wrong, the fix is in the
-`.md` that produced it.
+**Never hand-edit `docs/resume/*.json`, `docs/resume/*.pdf`, or
+`apps/portal/src/data/resume.json`.** The next `make cv-build` / `make cv-publish`
+overwrites them, and `make cv-lint`'s freshness and portal gates fail if they
+disagree with the Markdown. If a JSON field looks wrong, the fix is in the `.md`
+that produced it.
 
 ## The loop
 
@@ -25,14 +27,20 @@ they disagree with the Markdown. If a JSON field looks wrong, the fix is in the
 # 1. edit the Markdown
 # 2. compile it (schema-gated; writes nothing on failure)
 make cv-build
-# 3. run the five gates
+# 3. run the six gates, leniently — warnings print but do not block
 make cv-lint
-# 4. optional — regenerate PDFs (runs cv-build first)
+# 4. optional — regenerate PDFs (runs cv-build + cv-lint-strict first)
 make cv-render
 ```
 
 `make cv-build` refuses to write any JSON whose schema validation fails, so a
 broken edit never reaches the PDF or the Gist. The previous JSON stays as it was.
+
+`make cv-lint-strict` runs the same gates with warnings promoted to blocking.
+`make cv-render` and `make cv-publish` both depend on it, so nothing leaves the
+working copy on a `⚠` — while plain `make cv-lint` stays lenient for iteration.
+CI (`.github/workflows/resume-gates.yml`) runs the test suite and
+`make cv-lint-strict` on every push and PR touching the resume set.
 
 ## Reading an error
 
@@ -40,13 +48,23 @@ Both tools anchor every problem to a source line:
 
 ```
 ✗ resume-a.md:46 bullet has no src anchor — add the fact to cv.md first, then cite its ID
-✗ cv.md:44 RAG / LangGraph / agent work must be marked (in-progress)
-⚠ resume-b.md:88 stale: cv.md 'csense-h3' changed since this was written (@d85d → @1f0a); ...
+✗ cv.md:212 RAG / LangGraph / agent work must be marked (in-progress) or framed as current activity
+⚠ resume-b.md:88 stale: cv.md 'csense-h3' changed since this was written (@d85d → @1f0a); re-check the wording, then update the anchor
 ```
 
 `✗` is fatal (exit 1); `⚠` is a warning (a stale anchor does not by itself fail
-lint). A few lint findings carry no line and name the `.json` instead — those
-come from the invariants and freshness gates, which compare whole documents.
+plain `make cv-lint`, but it does fail `make cv-lint-strict`, and therefore
+blocks `cv-render` and `cv-publish`).
+
+Findings that carry no line number name a whole file:
+
+- the **invariants** gate names the `.md` whose fields drifted;
+- the **freshness** gate names the stale `.json`;
+- the **portal** gate names `apps/portal/src/data/resume.json`.
+
+A finding on prose or frontmatter points at the prose's own line — not its
+heading — and prefixes the message with which paragraph or field it is. A
+frontmatter value has no line of its own, so it is anchored to line 1 and says so.
 
 **Go to that line in that `.md` and fix the Markdown.** Never edit the generated
 JSON, never edit a test expectation, never edit `rules.toml` to silence a hit.
@@ -65,9 +83,14 @@ Facets: **a** = Platform / Infrastructure / SRE · **b** = Data Engineer ·
 one-page pitches — a curated subset, reframed to one angle, and **nothing else**.
 A facet may not contain a fact the CV does not.
 
-Contact details, employer, position, dates, work location, the whole education
-list and the whole languages list are **invariants**: copied verbatim into every
-facet, never tailored. The invariants gate compares them field by field.
+Contact details, profiles, homepage and avatar, employer, position, dates, work
+location and URL, the whole education list and the whole languages list are
+**invariants**: copied verbatim into every facet, never tailored. The invariants
+gate compares them field by field.
+
+The work lists are compared **positionally**, so a facet must carry the *same
+number of work entries* as `cv.md`. To fit one page, shorten a role (its prose
+and bullets are tailorable) — never delete one.
 
 ## Before you write a bullet
 
@@ -76,6 +99,10 @@ skill: the gates exist because resume drafting is where an assistant is most
 tempted to smooth over a gap. The legitimate response to every gate is to change
 the *claim*, never the *check*.
 
+Note that the gates read more than bullets: entry prose, section prose and the
+frontmatter `label` all reach the JSON and are all checked. Moving a
+claim into a paragraph does not move it out of range.
+
 ## Bundled references
 
 - `references/md-format.md` — the complete grammar: frontmatter keys, headings,
@@ -83,8 +110,8 @@ the *claim*, never the *check*.
   bullet-ID convention, and how to compute a fingerprint.
 - `references/jsonresume-mapping.md` — which Markdown construct becomes which
   JSON Resume field, section by section.
-- `references/anti-drafting.md` — the five gates, their exact messages, and the
-  only acceptable fixes.
+- `references/anti-drafting.md` — the six gates, their exact messages, `--strict`,
+  and the only acceptable fixes.
 
 ## Bundled templates
 
@@ -101,7 +128,12 @@ content out of these templates — they are deliberately generic.
 make cv-build && make cv-lint
 ```
 
-Report the output verbatim, including any findings you did not fix. There are
-pre-existing findings in the real corpus that are content decisions for the
-repo owner — do not "fix" them by inventing anchors or rewording claims you
-cannot verify. Say what they are and stop.
+Report the output verbatim, including any findings you did not fix.
+
+`make cv-lint` currently exits 1 on exactly one finding — the portal copy
+(`apps/portal/src/data/resume.json`) is an older snapshot of `cv.json`, and
+refreshing it means publishing, which is the repo owner's decision. **That is the
+only known-and-accepted finding.** Treat every other finding as new and as yours
+to fix or to report; do not assume it was already known. Never "fix" a finding by
+inventing an anchor or rewording a claim you cannot verify — say what it is and
+stop.

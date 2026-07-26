@@ -19,8 +19,8 @@ rejects anything else. Before writing a single line, read:
 - `.claude/skills/cv-md/SKILL.md`
 - `.claude/skills/cv-md/references/md-format.md` — the grammar: frontmatter keys,
   `# Section` / `## Entry` headings, meta blocks, prose, bullets, `{#id}`
-- `.claude/skills/cv-md/references/anti-drafting.md` — the five gates and the only honest
-  ways past them
+- `.claude/skills/cv-md/references/anti-drafting.md` — the six gates, `--strict`, and the
+  only honest ways past them
 
 Use that vocabulary in your proposals.
 
@@ -82,10 +82,14 @@ Then **stop and wait** for the user's natural-language reply (e.g. 「接受 1�
 Based on the reply, edit `docs/resume/cv.md`:
 
 - **ADDITIVE ONLY** — never delete or reword existing content.
-- **Never touch invariant fields**: the frontmatter contact block (`name`, `email`,
-  `phone`, `location`), any `## <employer> — <position>` heading, any `start` / `end` /
-  `location` in a Work meta block, and the whole `# Education` and `# Languages` sections.
-  The invariants gate compares these field-by-field against every `resume-*.md`.
+- **Never touch invariant fields**: the frontmatter contact and attribution block
+  (`name`, `email`, `phone`, `location`, `profiles`, `url`, `image`), any
+  `## <employer> — <position>` heading, any `start` / `end` / `location` / `url` in a
+  Work meta block, and the whole `# Education` and `# Languages` sections. The invariants
+  gate compares these field-by-field against every `resume-*.md`, so changing one in
+  `cv.md` breaks all three facets at once. Adding or removing a whole Work entry does the
+  same — the work lists are compared positionally — so a new employer needs the same
+  entry added to every facet.
 - **Every new bullet under `# Work`, `# Volunteer` or `# Projects` gets a fresh, unique
   `{#<entry-id>-h<n>}` ID.** `<entry-id>` is the `id` from that entry's meta block;
   `<n>` is the next free number in that entry. IDs must be unique across `cv.md` — a
@@ -98,9 +102,16 @@ Based on the reply, edit `docs/resume/cv.md`:
   `'Skills' bullets must not carry a {#id}`.
 - Ground every addition in the portal source; **invent nothing**. If the portal text does
   not support a claim, do not write it — say what is missing and stop.
-- Mark in-progress work `(in-progress)` **inside the same bullet**. `docs/resume/rules.toml`
-  requires the qualifier in the bullet itself; a qualifier in the prose or a neighbouring
-  bullet does not satisfy the gate.
+- Mark in-progress work `(in-progress)` **inside the same string**. `docs/resume/rules.toml`
+  requires the qualifier in the very string that carries the term; a qualifier in a
+  neighbouring bullet, in the entry prose, or in the summary does not satisfy the gate.
+  (`rules.toml` also accepts present-continuous framing — `currently architecting …`,
+  `evaluating …` — but the parenthesised marker is the stricter and safer choice.)
+- **Prose and the frontmatter `label` are gated too**, not just bullets. The rules gate
+  reads the frontmatter `label`, the `# Summary` prose and every entry's prose,
+  so a claim you add to a paragraph is checked exactly like a bullet. Read
+  `docs/resume/rules.toml` before proposing anything that touches Spark, Terraform (or
+  OpenTofu/Terragrunt), AWS and its services, RAG/agent work, Databricks, or German.
 - Match the existing Markdown style: em dash `—` in headings, TOML in meta blocks,
   hard-wrapping is free (prose lines are joined, bullet fingerprints normalise whitespace).
 
@@ -115,9 +126,15 @@ Report **both** outputs to the user.
 - `make cv-build` is schema-gated and writes **nothing** for a file that fails, so a
   failure means the old JSON is still on disk — fix the reported line in the `.md` and
   build again, never edit the JSON.
-- `make cv-lint` runs the five gates. There are pre-existing findings in this corpus that
-  are content decisions for the repo owner; do not "fix" them by inventing anchors or
-  rewording claims you cannot verify. Report them and stop.
+- `make cv-lint` runs the six gates: invariants, provenance, numbers, banned/qualified
+  terms, generated-JSON freshness, and the portal copy. `✗` is fatal; `⚠` is a warning
+  that plain `cv-lint` tolerates but `make cv-lint-strict` — which `cv-render` and
+  `cv-publish` depend on — does not.
+- **One finding is currently open and accepted:** `apps/portal/src/data/resume.json is
+  out of date with docs/resume/cv.json`. The portal copy is an older snapshot and
+  refreshing it means publishing, which is the user's decision — so `make cv-lint` exits
+  1 on that one line today. **Treat every other finding as caused by your edit.** Do not
+  "fix" one by inventing anchors or rewording claims you cannot verify: report it and stop.
 
 Then remind the user that `/cv-tailor <facet>` re-derives the facet resumes (new CV
 bullets are not automatically pulled into them) and `make cv-publish` publishes the CV.

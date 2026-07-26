@@ -10,6 +10,12 @@
 # Frontmatter becomes JSON Resume `basics`. Allowed keys, and no others:
 #   name  label  image  email  phone  url  location  profiles
 # `summary` is NOT a frontmatter key — it comes from the `# Summary` section.
+#
+# `label` is published — it is the first line a reader sees — and the banned /
+# qualified rules in docs/resume/rules.toml are checked against it, against the
+# Summary prose, and against every entry's prose, not only against bullets. A
+# finding on `label` is anchored to line 1 because a TOML value has no line of
+# its own; the message says so.
 # ---------------------------------------------------------------------------
 name = "Example Name"
 label = "Example Title | Example Focus | Example Specialism"
@@ -43,6 +49,7 @@ with a single space, so hard-wrap freely.
 
 Second paragraph. Paragraphs are separated by a blank line and join with a
 blank line in the output; the one-page renderer shows only the first.
+`# Summary` takes prose only — a `## ` entry written here is silently dropped.
 
 # Work
 
