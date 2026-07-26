@@ -22,7 +22,7 @@ cv-tailor: ## Curate cv.md into a facet resume — assisted; use the /cv-tailor 
 cv-build: ## Compile docs/resume/*.md (SSOT) into JSON Resume — schema-gated
 	python3 scripts/cv_build.py
 
-cv-lint: ## Gates: invariants, provenance, numbers, banned terms, JSON freshness
+cv-lint: ## Gates: invariants, provenance, numbers, banned terms, JSON freshness, portal copy
 	python3 scripts/cv_lint.py
 
 # Same gates, warnings promoted to blocking. Nothing that leaves the working

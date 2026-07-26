@@ -400,7 +400,7 @@ def test_digits_before_non_magnitude_letter_are_not_flagged(tmp_path):
 import json
 
 from cv_build import build_file
-from cv_lint import check_freshness
+from cv_lint import check_freshness, check_portal_copy
 
 
 def test_matching_json_passes(tmp_path):
@@ -466,6 +466,56 @@ def test_json_drifting_in_a_contact_field_is_fatal(tmp_path):
 
     _rebuild_then_edit_json(tmp_path, md, repoint_email)
     assert [p.fatal for p in check_freshness([md])] == [True]
+
+
+# --- the portal copy is a third publishing surface -----------------------
+#
+# apps/portal/src/data/resume.json is tracked, and portal-deploy.yml deploys
+# on any push under apps/portal/src/** — which includes it. Nothing had ever
+# gated it, so an edit there shipped whatever it said with no check at all.
+
+def test_portal_copy_matching_cv_passes(tmp_path):
+    md = write(tmp_path, "cv", CV)
+    build_file(md)
+    portal = tmp_path / "portal.json"
+    portal.write_text((tmp_path / "cv.json").read_text())
+    assert check_portal_copy(md, portal) == []
+
+
+def test_portal_copy_diverging_from_cv_is_fatal(tmp_path):
+    md = write(tmp_path, "cv", CV)
+    build_file(md)
+    portal = tmp_path / "portal.json"
+    portal.write_text(json.dumps({"basics": {"name": "Someone Else"}}))
+    problems = check_portal_copy(md, portal)
+    assert len(problems) == 1
+    assert problems[0].fatal
+    assert problems[0].file == "apps/portal/src/data/resume.json"
+    assert "cv-publish" in problems[0].message
+
+
+def test_portal_copy_missing_is_reported_not_fatal(tmp_path):
+    # The repo can legitimately be cloned without apps/portal present; that
+    # is not the same defect as a stale copy, so it must not crash and must
+    # not be treated the same as a real divergence.
+    md = write(tmp_path, "cv", CV)
+    build_file(md)
+    portal = tmp_path / "does-not-exist.json"
+    problems = check_portal_copy(md, portal)
+    assert len(problems) == 1
+    assert not problems[0].fatal
+    assert "not found" in problems[0].message
+
+
+def test_portal_copy_uses_the_module_default_when_unspecified(tmp_path, monkeypatch):
+    # main() calls check_portal_copy(CV_MD) with no explicit path, so the
+    # module-level PORTAL_JSON has to be what actually gets read.
+    md = write(tmp_path, "cv", CV)
+    build_file(md)
+    portal = tmp_path / "portal.json"
+    portal.write_text((tmp_path / "cv.json").read_text())
+    monkeypatch.setattr(cv_lint, "PORTAL_JSON", portal)
+    assert check_portal_copy(md) == []
 
 
 # --- malformed documents are Problems, not exceptions -------------------
@@ -1086,6 +1136,13 @@ def corpus(tmp_path, monkeypatch, facet_text, cv_text=CV):
     monkeypatch.setattr(cv_lint, "RESUME_DIR", tmp_path)
     monkeypatch.setattr(cv_lint, "CV_MD", cv)
     monkeypatch.setattr(cv_lint, "RULES_FILE", tmp_path / "no-rules.toml")
+    # The portal-copy gate runs unconditionally in main(); give it a matching
+    # copy so a bare corpus() stays clean, the same way build_file() above
+    # keeps check_freshness clean. Tests of the portal gate itself overwrite
+    # this file to diverge on purpose.
+    portal = tmp_path / "portal.json"
+    portal.write_text(cv.with_suffix(".json").read_text())
+    monkeypatch.setattr(cv_lint, "PORTAL_JSON", portal)
     return cv, f
 
 
@@ -1199,6 +1256,17 @@ def test_a_clean_corpus_reaches_the_success_line(tmp_path, monkeypatch, capsys):
     rc, err = run_main(capsys)
     assert rc == 0
     assert err == ""
+
+
+def test_a_stale_portal_copy_alone_fails_main(tmp_path, monkeypatch, capsys):
+    # The sixth gate, pinned the same way as the other five: a corpus() that
+    # is otherwise clean must still fail once the portal copy diverges.
+    cv, _f = corpus(tmp_path, monkeypatch, facet(GOOD_ANCHOR))
+    cv_lint.PORTAL_JSON.write_text(json.dumps({"basics": {"name": "Someone Else"}}))
+    rc, err = run_main(capsys)
+    assert rc == 1
+    assert "apps/portal/src/data/resume.json" in err
+    assert "cv-publish" in err
 
 
 # --- the shipped rules.toml, not just the inline RULES fixture ------------

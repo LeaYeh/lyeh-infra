@@ -7,6 +7,9 @@ Checks, in order:
   3. numbers     — every number in facet text is grounded in the cv.md text it derives from
   4. banned terms— docs/resume/rules.toml patterns, over every published string
   5. freshness   — the committed JSON matches what the Markdown builds to
+  6. portal copy — apps/portal/src/data/resume.json (a third publishing surface,
+                   deployed by portal-deploy.yml on any push under
+                   apps/portal/src/**) matches what cv.md builds to
 
 Bullets are not the document. About half of what reaches the JSON is prose or
 frontmatter — ``# Summary`` prose becomes ``basics.summary``, entry prose
@@ -30,6 +33,11 @@ from resume_md import Bullet, Document, MdError, fingerprint, parse
 RESUME_DIR = Path(__file__).resolve().parent.parent / "docs" / "resume"
 CV_MD = RESUME_DIR / "cv.md"
 RULES_FILE = RESUME_DIR / "rules.toml"
+# `make cv-publish` ends by copying docs/resume/cv.json here. The file is
+# tracked, and .github/workflows/portal-deploy.yml deploys on any push under
+# apps/portal/src/** — which includes it. That makes it a third public
+# surface (alongside the PDF and the Gist) that nothing had ever gated.
+PORTAL_JSON = Path(__file__).resolve().parent.parent / "apps" / "portal" / "src" / "data" / "resume.json"
 NUMBER_RE = re.compile(
     r"(?<![A-Za-z0-9])\d+(?:[.,]\d+)*(?:[xX×]|[KkMmBb]|[A-Za-z]{2,3})?(?![A-Za-z0-9])"
 )
@@ -478,6 +486,39 @@ def check_freshness(mds: list[Path]) -> list[Problem]:
     return problems
 
 
+PORTAL_LABEL = "apps/portal/src/data/resume.json"
+
+
+def check_portal_copy(cv_md: Path, portal_json: Path | None = None) -> list[Problem]:
+    """The portal's published copy of the resume must equal what cv.md builds to.
+
+    Resolved at call time against the module-level ``PORTAL_JSON`` (like
+    ``load_rules`` does for ``RULES_FILE``), so tests can redirect it. A
+    missing file is reported, not raised: this repo can legitimately be
+    cloned without ``apps/portal`` present, and a missing file is not the
+    same defect as a stale one, so it is a warning rather than fatal — same
+    severity model as every other gate here, meaning plain ``cv-lint`` stays
+    quiet about it but ``--strict`` still blocks on it, like any warning.
+    """
+    portal_json = PORTAL_JSON if portal_json is None else portal_json
+    if not portal_json.exists():
+        return [Problem(
+            PORTAL_LABEL, None,
+            "not found — this clone has no portal copy to check", fatal=False,
+        )]
+    built, build_problems = _data_of(cv_md)
+    if built is None:
+        return build_problems
+    committed = json.loads(portal_json.read_text(encoding="utf-8"))
+    if built != committed:
+        return [Problem(
+            PORTAL_LABEL, None,
+            "is out of date with docs/resume/cv.json — run `make cv-publish` to "
+            "refresh it (never hand-edit the portal copy)",
+        )]
+    return []
+
+
 USAGE = "usage: cv_lint.py [--strict]"
 
 
@@ -508,6 +549,7 @@ def main(argv: list[str] | None = None) -> int:
         + check_numbers(CV_MD, facets)
         + check_rules([CV_MD] + facets, rules)
         + check_freshness([CV_MD] + facets)
+        + check_portal_copy(CV_MD)
     )
 
     for p in problems:

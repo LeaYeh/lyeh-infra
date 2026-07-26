@@ -1,0 +1,52 @@
+name: Resume gates
+
+# Nothing else runs scripts/cv_lint.py or scripts/cv_build.py: today the
+# gates only run when a human types `make cv-lint`, or as a side effect of
+# `make cv-publish` / `make cv-render`. This workflow is what actually
+# enforces them — on every push and PR that can touch the resume set,
+# including the portal copy (apps/portal/src/data/resume.json), which
+# check_portal_copy() now gates too.
+#
+# Deliberately no `make cv-build` before the strict gates: gate 5
+# (freshness, and now gate 6, the portal copy) checks the committed JSON
+# against what the Markdown builds to, and building first would make that
+# check unfalsifiable.
+
+on:
+  push:
+    paths:
+      - "docs/resume/**"
+      - "scripts/**"
+      - "Makefile"
+      - "apps/portal/src/data/resume.json"
+  pull_request:
+    paths:
+      - "docs/resume/**"
+      - "scripts/**"
+      - "Makefile"
+      - "apps/portal/src/data/resume.json"
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Run test suite
+        run: uvx pytest scripts/tests -q
+
+      - name: Run resume gates (strict)
+        run: make cv-lint-strict
