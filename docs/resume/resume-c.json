@@ -234,7 +234,7 @@
         "NiFi",
         "BigQuery",
         "Dataflow",
-        "Databricks"
+        "Azure Databricks (certified)"
       ]
     },
     {

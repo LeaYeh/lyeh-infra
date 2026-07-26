@@ -242,7 +242,7 @@ level = "Master"
 - NiFi
 - BigQuery
 - Dataflow
-- Databricks
+- Azure Databricks (certified)
 
 ## Programming
 <!--meta

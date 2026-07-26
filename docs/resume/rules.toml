@@ -31,6 +31,13 @@ pattern = '\b(graph)?rag\b|\blanggraph\b|\bagentic\b|retrieval[- ]augmented gene
 requires = '\((in-progress|learning|exploring)\)|currently \w+ing|\bevaluating\b'
 message = "RAG / LangGraph / agent work must be marked (in-progress) or framed as current activity"
 
+# Databricks is a certification with no implementation experience behind it yet,
+# so it may only appear alongside the word that says so.
+[[qualified]]
+pattern = '\bdatabricks\b'
+requires = '\bcertifi(ed|cate|cation)\b'
+message = "Databricks is certification only — no implementation experience yet"
+
 [[qualified]]
 pattern = '\bgerman\b'
 requires = '\b(beginner|a[12])\b'
