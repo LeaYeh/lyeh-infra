@@ -24,7 +24,7 @@
         "url": "https://github.com/LeaYeh"
       }
     ],
-    "summary": "Data Engineer with PB-scale ETL and data-quality depth: built MediaTek's first data-warehouse layer with Airflow/NiFi/Dataflow/BigQuery on GCP, cutting missing-data rates from 50% to under 1%. Azure Databricks certified; actively building Spark/Delta Lake hands-on."
+    "summary": "Data Engineer with PB-scale ETL and data-quality depth: built MediaTek's first data-warehouse layer with Airflow/NiFi/Dataflow/BigQuery on GCP, cutting missing-data rates from 50% to under 1%. Azure Databricks certified."
   },
   "work": [
     {
