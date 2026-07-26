@@ -1,4 +1,4 @@
-.PHONY: cv-sync cv-tailor cv-lint cv-publish cv-render cv-build cv-test
+.PHONY: cv-sync cv-tailor cv-lint cv-lint-strict cv-publish cv-render cv-build cv-test
 
 GIST_ID  := $(shell sed -n 's/^GIST_ID=//p' scripts/cv-sync.env 2>/dev/null | tr -d '"[:space:]')
 
@@ -25,7 +25,15 @@ cv-build: ## Compile docs/resume/*.md (SSOT) into JSON Resume — schema-gated
 cv-lint: ## Gates: invariants, provenance, numbers, banned terms, JSON freshness
 	python3 scripts/cv_lint.py
 
-cv-publish: cv-build cv-lint ## Push docs/resume/cv.json to the public Gist (decision #11)
+# Same gates, warnings promoted to blocking. Nothing that leaves the working
+# copy may ship on a ⚠. A prerequisite cannot carry arguments, so cv-render /
+# cv-publish depend on this target rather than on `cv-lint --strict`. Neither
+# lint target depends on cv-build: rebuilding the JSON first would make the
+# freshness gate check the Markdown against itself.
+cv-lint-strict: ## cv-lint with warnings treated as errors (used by cv-render / cv-publish)
+	python3 scripts/cv_lint.py --strict
+
+cv-publish: cv-build cv-lint-strict ## Push docs/resume/cv.json to the public Gist (decision #11)
 	@test -n "$(GIST_ID)" || { echo "GIST_ID missing in scripts/cv-sync.env"; exit 1; }
 	python3 -c "import json,sys; c=open('docs/resume/cv.json').read(); \
 sys.stdout.write(json.dumps({'files':{'resume.json':{'content':c}}}))" \
@@ -33,7 +41,7 @@ sys.stdout.write(json.dumps({'files':{'resume.json':{'content':c}}}))" \
 	@echo "✓ Gist $(GIST_ID) updated from docs/resume/cv.json"
 	@cp docs/resume/cv.json apps/portal/src/data/resume.json && echo "✓ portal data copy refreshed"
 
-cv-render: cv-build cv-lint ## Render cv.json (detailed) + resume-*.json (1-page) to PDF via scripts/cv_render.py + headless Chrome (decision #12)
+cv-render: cv-build cv-lint-strict ## Render cv.json (detailed) + resume-*.json (1-page) to PDF via scripts/cv_render.py + headless Chrome (decision #12)
 	@test -n "$(CHROME)" || { echo "No Chrome/Chromium found; set CHROME=/path/to/chrome"; exit 1; }
 	@set -e; cd docs/resume; \
 	for f in cv.json resume-*.json; do \

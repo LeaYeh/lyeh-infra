@@ -596,3 +596,262 @@ def test_multiword_spelled_magnitude_warns(tmp_path):
     assert len(problems) == 1
     assert not problems[0].fatal
     assert "order of magnitude" in problems[0].message.lower()
+
+
+# --- 6. a citation must point at the entry it sits in -------------------
+#
+# A valid, fresh anchor proves the cited bullet exists and is unchanged. It
+# proves nothing about *relevance*: a MediaTek achievement cited under the
+# c-sense entry used to pass every gate. Bullet IDs are '<entry-id>-h<n>', so
+# the cited bullet's owning entry must be the citing bullet's own entry.
+
+MT_SOURCE = "Built a monitoring & alerting stack for PB-scale data and ML systems"
+MT_BULLET = f"- {MT_SOURCE} {{#mediatek-de-h3}}"
+
+CV_TWO_ENTRIES = CV.replace("# Languages", f'''## MediaTek — Senior Engineer
+<!--meta
+id = "mediatek-de"
+start = "2019-01-01"
+end = "2024-07-31"
+location = "Hsinchu, Taiwan"
+-->
+
+{MT_BULLET}
+
+# Languages''')
+
+
+def facet2(csense_bullet: str) -> str:
+    """Two-entry facet: c-sense takes ``csense_bullet``, MediaTek keeps a valid anchor."""
+    return CV_TWO_ENTRIES.replace(
+        "- Drove the GitOps migration {#csense-h1}", csense_bullet,
+    ).replace(
+        MT_BULLET,
+        f"- Ran the monitoring stack <!-- src: mediatek-de-h3 @{fingerprint(MT_SOURCE)} -->",
+    )
+
+
+def test_same_entry_citations_pass(tmp_path):
+    cv = write(tmp_path, "cv", CV_TWO_ENTRIES)
+    f = write(tmp_path, "resume-a", facet2(
+        f"- Owned the GitOps delivery path <!-- src: csense-h1 @{fingerprint(SOURCE)} -->"))
+    assert check_provenance(cv, [f]) == []
+
+
+def test_cross_entry_citation_is_fatal(tmp_path):
+    # The measured probe: a MediaTek achievement re-filed under c-sense with a
+    # live, current anchor.
+    cv = write(tmp_path, "cv", CV_TWO_ENTRIES)
+    f = write(tmp_path, "resume-a", facet2(
+        f"- {MT_SOURCE} <!-- src: mediatek-de-h3 @{fingerprint(MT_SOURCE)} -->"))
+    problems = check_provenance(cv, [f])
+    assert len(problems) == 1
+    assert problems[0].fatal
+    assert "mediatek-de-h3" in problems[0].message
+    assert "'mediatek-de'" in problems[0].message
+    assert "'csense'" in problems[0].message
+
+
+def test_cross_entry_citation_is_caught_even_when_stale(tmp_path):
+    cv = write(tmp_path, "cv", CV_TWO_ENTRIES)
+    f = write(tmp_path, "resume-a", facet2(
+        "- Ran a monitoring stack <!-- src: mediatek-de-h3 @dead -->"))
+    problems = check_provenance(cv, [f])
+    assert len(problems) == 1
+    assert problems[0].fatal
+
+
+CV_HYPHENATED = CV.replace('id = "csense"', 'id = "42-vienna-tutor"').replace(
+    "{#csense-h1}", "{#42-vienna-tutor-h1}")
+
+
+def test_hyphenated_entry_id_is_not_split_on_hyphens(tmp_path):
+    # Splitting '42-vienna-tutor-h1' on '-' yields '42', not the entry id.
+    # The owning entry has to come from the cv.md tree, not from the string.
+    cv = write(tmp_path, "cv", CV_HYPHENATED)
+    f = write(tmp_path, "resume-a", CV_HYPHENATED.replace(
+        "- Drove the GitOps migration {#42-vienna-tutor-h1}",
+        f"- Owned the GitOps path <!-- src: 42-vienna-tutor-h1 @{fingerprint(SOURCE)} -->"))
+    assert check_provenance(cv, [f]) == []
+
+
+def test_citation_from_an_entry_without_an_id_is_fatal(tmp_path):
+    # An entry with no meta 'id' cannot own any bullet, so it cannot cite one.
+    cv = write(tmp_path, "cv", CV)
+    f = write(tmp_path, "resume-a", facet(GOOD_ANCHOR).replace('id = "csense"\n', ""))
+    problems = check_provenance(cv, [f])
+    assert problems and problems[0].fatal
+    assert "csense-h1" in problems[0].message
+
+
+# --- 7. contact and attribution fields are invariants -------------------
+
+CV_CONTACT = CV.replace('phone = ""', '''phone = ""
+url = "https://leayeh.example"
+image = "https://example.com/avatar.png"
+
+[[profiles]]
+network = "LinkedIn"
+username = "Lea Yeh"
+url = "https://www.linkedin.com/in/lea-yeh/"
+
+[[profiles]]
+network = "GitHub"
+username = "LeaYeh"
+url = "https://github.com/LeaYeh"
+''')
+
+
+def test_matching_contact_and_attribution_fields_pass(tmp_path):
+    cv = write(tmp_path, "cv", CV_CONTACT)
+    f = write(tmp_path, "resume-a", CV_CONTACT)
+    assert check_invariants(cv, [f]) == []
+
+
+def test_drifting_profile_url_is_reported(tmp_path):
+    # The probe: a facet's LinkedIn profile repointed at a stranger.
+    cv = write(tmp_path, "cv", CV_CONTACT)
+    f = write(tmp_path, "resume-a", CV_CONTACT.replace("in/lea-yeh/", "in/a-stranger/"))
+    problems = check_invariants(cv, [f])
+    assert any("basics" in p.message for p in problems)
+
+
+def test_dropping_a_profile_is_reported(tmp_path):
+    cv = write(tmp_path, "cv", CV_CONTACT)
+    f = write(tmp_path, "resume-a", CV_CONTACT.replace('''
+[[profiles]]
+network = "GitHub"
+username = "LeaYeh"
+url = "https://github.com/LeaYeh"
+''', "\n"))
+    assert any("basics" in p.message for p in check_invariants(cv, [f]))
+
+
+def test_drifting_basics_url_is_reported(tmp_path):
+    cv = write(tmp_path, "cv", CV_CONTACT)
+    f = write(tmp_path, "resume-a", CV_CONTACT.replace(
+        "https://leayeh.example", "https://www.google.com/"))
+    assert any("basics" in p.message for p in check_invariants(cv, [f]))
+
+
+def test_drifting_image_is_reported(tmp_path):
+    cv = write(tmp_path, "cv", CV_CONTACT)
+    f = write(tmp_path, "resume-a", CV_CONTACT.replace(
+        "https://example.com/avatar.png", "https://example.com/someone-else.png"))
+    assert any("basics" in p.message for p in check_invariants(cv, [f]))
+
+
+CV_WORK_URL = CV.replace(
+    'location = "Vienna, Austria"',
+    'location = "Vienna, Austria"\nurl = "https://www.c-sense.at/"')
+
+
+def test_drifting_work_url_is_reported(tmp_path):
+    # The probe: work[0].url repointed at an unrelated site.
+    cv = write(tmp_path, "cv", CV_WORK_URL)
+    f = write(tmp_path, "resume-a", CV_WORK_URL.replace(
+        "https://www.c-sense.at/", "https://www.google.com/"))
+    assert any("work" in p.message for p in check_invariants(cv, [f]))
+
+
+def test_label_stays_tailorable(tmp_path):
+    # basics.label is the facet's pitch, not an invariant — the rules and
+    # numbers gates cover it instead.
+    cv = write(tmp_path, "cv", with_label("Senior Software Engineer"))
+    f = write(tmp_path, "resume-a", with_label("Data Engineer"))
+    assert check_invariants(cv, [f]) == []
+
+
+def test_summaries_stay_tailorable(tmp_path):
+    cv = write(tmp_path, "cv", with_summary("A broad engineer."))
+    f = write(tmp_path, "resume-a", with_summary("A platform engineer."))
+    assert check_invariants(cv, [f]) == []
+
+
+def test_work_summary_stays_tailorable(tmp_path):
+    cv = write(tmp_path, "cv", with_entry_prose("Ran the platform team."))
+    f = write(tmp_path, "resume-a", with_entry_prose("Built the delivery path."))
+    assert check_invariants(cv, [f]) == []
+
+
+# --- 8. a prose finding says which line it is anchored to ---------------
+#
+# The parser records a line for the '# Summary' heading but not for the
+# paragraph beneath it, so a prose finding is reported two-or-more lines above
+# the text the operator has to edit. Until the tree carries a prose line, the
+# message has to say so.
+
+SUMMARY_HEADING_LINE = 7   # CV: '+++', name, email, phone, '+++', '', '# Summary'
+
+
+def test_section_prose_finding_names_the_heading_it_is_anchored_to(tmp_path):
+    cv = write(tmp_path, "cv", CV)
+    f = write(tmp_path, "resume-a", with_summary("Platform engineer with 15 years."))
+    problems = check_numbers(cv, [f])
+    assert problems[0].line == SUMMARY_HEADING_LINE
+    assert "heading" in problems[0].message
+    assert "Summary" in problems[0].message
+
+
+def test_entry_prose_finding_names_the_heading_it_is_anchored_to(tmp_path):
+    f = write(tmp_path, "resume-a", with_entry_prose("Managed the estate with Terraform."))
+    problems = check_rules([f], rules_file(tmp_path))
+    assert "heading" in problems[0].message
+    assert "c-sense GmbH" in problems[0].message
+
+
+def test_bullet_findings_carry_no_anchor_caveat(tmp_path):
+    # A bullet's line is the bullet's own line; nothing to disclaim.
+    f = write(tmp_path, "resume-a", facet("- Managed infra with Terraform"))
+    problems = check_rules([f], rules_file(tmp_path))
+    assert "heading" not in problems[0].message
+
+
+# --- 9. --strict makes warnings fatal on the publishing paths -----------
+
+import cv_lint
+
+
+def corpus(tmp_path, monkeypatch, facet_text, cv_text=CV):
+    """A self-contained resume set, wired up as cv_lint's RESUME_DIR."""
+    cv = write(tmp_path, "cv", cv_text)
+    f = write(tmp_path, "resume-a", facet_text)
+    build_file(cv)
+    build_file(f)
+    monkeypatch.setattr(cv_lint, "RESUME_DIR", tmp_path)
+    monkeypatch.setattr(cv_lint, "CV_MD", cv)
+    monkeypatch.setattr(cv_lint, "RULES_FILE", tmp_path / "no-rules.toml")
+    return cv, f
+
+
+def test_clean_corpus_passes_in_both_modes(tmp_path, monkeypatch):
+    corpus(tmp_path, monkeypatch, facet(GOOD_ANCHOR))
+    assert cv_lint.main([]) == 0
+    assert cv_lint.main(["--strict"]) == 0
+
+
+def test_stale_anchor_passes_by_default_but_blocks_under_strict(tmp_path, monkeypatch):
+    # The measured probe: a gutted cv.md bullet leaves the facet claim intact,
+    # cv-lint says rc=0, and `make cv-publish` ships it anyway.
+    corpus(tmp_path, monkeypatch, facet("- Owned the GitOps delivery path "
+                                        "<!-- src: csense-h1 @dead -->"))
+    assert cv_lint.main([]) == 0
+    assert cv_lint.main(["--strict"]) == 1
+
+
+def test_spelled_magnitude_warning_also_blocks_under_strict(tmp_path, monkeypatch):
+    corpus(tmp_path, monkeypatch,
+           facet(f"- Doubled throughput <!-- src: csense-h1 @{fingerprint(SOURCE)} -->"))
+    assert cv_lint.main([]) == 0
+    assert cv_lint.main(["--strict"]) == 1
+
+
+def test_a_fatal_problem_fails_in_both_modes(tmp_path, monkeypatch):
+    corpus(tmp_path, monkeypatch, facet("- Owned the GitOps delivery path"))
+    assert cv_lint.main([]) == 1
+    assert cv_lint.main(["--strict"]) == 1
+
+
+def test_unknown_flag_is_rejected(tmp_path, monkeypatch):
+    corpus(tmp_path, monkeypatch, facet(GOOD_ANCHOR))
+    assert cv_lint.main(["--publish"]) == 2

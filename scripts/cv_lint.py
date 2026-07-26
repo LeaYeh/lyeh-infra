@@ -48,8 +48,16 @@ MAGNITUDE_RE = re.compile(
     r"\b(?:" + "|".join(re.escape(w) for w in MAGNITUDE_WORDS) + r")\b", re.IGNORECASE
 )
 
-BASICS_KEYS = ("name", "email", "phone", "location")
-WORK_KEYS = ("name", "position", "startDate", "endDate", "location")
+# Fields a facet may never tailor. Contact is the obvious half — an email or a
+# phone number that drifts is a resume that cannot be answered. ``profiles``,
+# ``url`` and ``image`` are the other half: they are *attribution*, and a facet
+# that quietly points its LinkedIn, homepage or avatar somewhere else is
+# claiming a different person's identity just as effectively as a changed email.
+# ``label`` / ``summary`` / ``work[].summary`` deliberately stay out: they are
+# the facet's pitch and are meant to differ per audience. The rules and numbers
+# gates police those instead.
+BASICS_KEYS = ("name", "email", "phone", "location", "profiles", "url", "image")
+WORK_KEYS = ("name", "position", "startDate", "endDate", "location", "url")
 
 
 @dataclass
@@ -138,6 +146,14 @@ class Text:
     message of any non-bullet finding, because a prose or frontmatter finding
     is anchored to a heading line (or to line 1) rather than to the text
     itself, and the line alone would be ambiguous.
+
+    For prose that ambiguity is a real misdirection: ``resume_md.parse`` knows
+    the paragraph's own first line while it is flushing it, but neither
+    ``Section`` nor ``Entry`` records it, so the only line the tree can offer
+    is the heading's. In ``resume-b.md`` the ``# Summary`` heading is line 25
+    and the prose is line 27 — reporting 25 bare sends the operator two lines
+    above the text they must edit. Until the tree carries a prose line, the
+    ``where`` string says out loud that the line is the heading's.
     """
 
     kind: str
@@ -151,6 +167,11 @@ class Text:
     @property
     def prefix(self) -> str:
         return "" if self.kind == "bullet" else f"{self.where}: "
+
+
+def _prose_where(heading: str) -> str:
+    """Name a prose block *and* disclose that the line is its heading's."""
+    return f"'{heading}' prose (line is its heading; the prose follows below)"
 
 
 def _all_texts(md_path: Path) -> tuple[list[Text], Problem | None]:
@@ -177,14 +198,14 @@ def _all_texts(md_path: Path) -> tuple[list[Text], Problem | None]:
         if section.prose:
             texts.append(Text(
                 "section-prose", section.prose, section.line,
-                f"'{section.title}' prose", section=section.title,
+                _prose_where(section.title), section=section.title,
             ))
         for entry in section.entries:
             entry_id = entry.meta.get("id")
             if entry.prose:
                 texts.append(Text(
                     "entry-prose", entry.prose, entry.line,
-                    f"'{entry.heading}' prose", section.title, entry_id,
+                    _prose_where(entry.heading), section.title, entry_id,
                 ))
             for bullet in entry.bullets:
                 texts.append(Text(
@@ -194,36 +215,61 @@ def _all_texts(md_path: Path) -> tuple[list[Text], Problem | None]:
     return texts, None
 
 
-def _all_bullets(md_path: Path) -> tuple[list[tuple[str, Bullet]], Problem | None]:
-    """Return every bullet in the document, with its section title."""
+def _all_bullets(md_path: Path) -> tuple[list[Text], Problem | None]:
+    """Return every bullet in the document as a ``Text`` (section + entry + Bullet)."""
     texts, problem = _all_texts(md_path)
-    return [(t.section, t.bullet) for t in texts if t.kind == "bullet"], problem
+    return [t for t in texts if t.kind == "bullet"], problem
 
 
-def cv_index(cv_md: Path) -> tuple[dict[str, str], list[Problem]]:
-    """Map bullet ID -> text, reporting duplicates."""
+def _cv_bullets(cv_md: Path) -> tuple[dict[str, str], dict[str, str | None], list[Problem]]:
+    """(bullet ID -> text, bullet ID -> owning entry ID), reporting duplicates.
+
+    The owner map is read off the cv.md tree rather than derived from the ID.
+    Bullet IDs read ``<entry-id>-h<n>``, but an entry slug may itself contain
+    hyphens (``42-vienna-tutor-h1``), so ``id.split("-")[0]`` would name the
+    wrong entry — and would do it silently, on exactly the entries whose names
+    are least standard.
+    """
     index: dict[str, str] = {}
+    owners: dict[str, str | None] = {}
     bullets, problem = _all_bullets(cv_md)
     problems: list[Problem] = [problem] if problem is not None else []
-    for _, bullet in bullets:
+    for t in bullets:
+        bullet = t.bullet
         if bullet.id is None:
             continue
         if bullet.id in index:
             problems.append(Problem(cv_md.name, bullet.line, f"duplicate bullet ID '{bullet.id}'"))
             continue
         index[bullet.id] = bullet.text
+        owners[bullet.id] = t.entry_id
+    return index, owners, problems
+
+
+def cv_index(cv_md: Path) -> tuple[dict[str, str], list[Problem]]:
+    """Map bullet ID -> text, reporting duplicates."""
+    index, _owners, problems = _cv_bullets(cv_md)
     return index, problems
 
 
 def check_provenance(cv_md: Path, facet_mds: list[Path]) -> list[Problem]:
-    """Every facet highlight must cite a live cv.md bullet with a current fingerprint."""
-    index, problems = cv_index(cv_md)
+    """Every facet highlight must cite a live cv.md bullet with a current fingerprint.
+
+    "Live and current" is not enough on its own. A fresh anchor proves the
+    cited sentence still exists and still reads the way it did; it says nothing
+    about whether it belongs *here*. Moving a MediaTek achievement under the
+    c-sense entry, anchor and all, used to pass every gate — which is precisely
+    what an assistant reshuffling a facet does. So the cited bullet must also
+    be owned by the entry the citing bullet sits in.
+    """
+    index, owners, problems = _cv_bullets(cv_md)
     for md in facet_mds:
         bullets, problem = _all_bullets(md)
         if problem is not None:
             problems.append(problem)
             continue
-        for section, bullet in bullets:
+        for t in bullets:
+            section, bullet = t.section, t.bullet
             if section not in ("Work", "Volunteer", "Projects"):
                 continue                      # keywords/courses are not curated content
             if bullet.src is None:
@@ -237,6 +283,15 @@ def check_provenance(cv_md: Path, facet_mds: list[Path]) -> list[Problem]:
                 problems.append(Problem(
                     md.name, bullet.line, f"src '{bullet.src}' does not exist in cv.md"))
                 continue
+            owner = owners.get(bullet.src)
+            if owner != t.entry_id:
+                problems.append(Problem(
+                    md.name, bullet.line,
+                    f"src '{bullet.src}' belongs to entry '{owner}', not "
+                    f"'{t.entry_id}' — cite a bullet from this entry, or move the "
+                    f"claim to the entry that earned it",
+                ))
+                continue
             current = fingerprint(source)
             if bullet.src_hash != current:
                 problems.append(Problem(
@@ -248,7 +303,10 @@ def check_provenance(cv_md: Path, facet_mds: list[Path]) -> list[Problem]:
     return problems
 
 
-def load_rules(path: Path = RULES_FILE) -> dict:
+def load_rules(path: Path | None = None) -> dict:
+    # Resolved at call time, not at def time, so RESUME_DIR/RULES_FILE can be
+    # redirected (tests point the whole gate set at a throwaway corpus).
+    path = RULES_FILE if path is None else path
     if not path.exists():
         return {"banned": [], "qualified": []}
     rules = tomllib.loads(path.read_text(encoding="utf-8"))
@@ -409,7 +467,25 @@ def check_freshness(mds: list[Path]) -> list[Problem]:
     return problems
 
 
-def main() -> int:
+USAGE = "usage: cv_lint.py [--strict]"
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Run every gate. ``--strict`` promotes warnings to blocking findings.
+
+    Warnings are non-fatal on purpose: a reworded cv.md bullet leaves a stale
+    anchor behind, and blocking on that would make ordinary editing miserable.
+    But "non-fatal" was being read as "ignorable" by the two targets that ship
+    an artifact — a gutted cv.md bullet with the strong claim still standing in
+    the facet went out to the Gist under a plain ⚠. Anything that leaves the
+    working copy runs ``--strict``; ``make cv-lint`` stays lenient.
+    """
+    argv = sys.argv[1:] if argv is None else argv
+    strict = "--strict" in argv
+    unknown = [a for a in argv if a != "--strict"]
+    if unknown:
+        print(f"✗ unrecognised argument(s): {' '.join(unknown)}\n{USAGE}", file=sys.stderr)
+        return 2
     if not CV_MD.exists():
         print(f"✗ {CV_MD} not found", file=sys.stderr)
         return 2
@@ -426,6 +502,13 @@ def main() -> int:
     for p in problems:
         print(p.render(), file=sys.stderr)
     if any(p.fatal for p in problems):
+        return 1
+    if strict and problems:
+        print(
+            f"✗ --strict: {len(problems)} warning(s) block a publishing path — "
+            f"resolve them, or run `make cv-lint` while you iterate",
+            file=sys.stderr,
+        )
         return 1
     print(f"✓ invariants consistent across cv.md + {len(facets)} resume(s)")
     return 0
