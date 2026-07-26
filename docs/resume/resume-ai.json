@@ -147,6 +147,39 @@
         "Built a hyperparameter search and experiment tracking system in litetune, mirroring Ray Tune's trial management model",
         "Designed preprocessing pipelines and utility functions in sklite for educational clarity and extensibility"
       ]
+    },
+    {
+      "name": "lyeh-infra — Self-Hosted Kubernetes Infrastructure (GitOps)",
+      "startDate": "2026-04-01",
+      "endDate": "",
+      "url": "https://github.com/LeaYeh/lyeh-infra",
+      "roles": [
+        "Author"
+      ],
+      "description": "Personal cloud infrastructure on a single Hetzner CX23 VM running k3s, deployed via ArgoCD GitOps. Everything is declared in Git — adding a new service means creating a directory and pushing; ArgoCD handles the rest. This portfolio site is hosted on it.",
+      "highlights": [
+        "Designed a GitOps deployment model using an ArgoCD ApplicationSet with a Git directory generator — every subdirectory under apps/ is auto-discovered and deployed to its own namespace, with prune and self-heal enabled",
+        "Configured Traefik ingress (hostname-based routing) and cert-manager for automatic Let's Encrypt TLS certificate provisioning and renewal",
+        "Built a fully automated CI/CD pipeline (GitHub Actions): Hugo build → Docker image to GHCR pinned by content SHA → image tag written back into deployment.yaml → ArgoCD rolling update",
+        "Pinned deployments by immutable image SHA rather than mutable tags so Git remains an exact source of truth and ArgoCD reliably detects changes",
+        "Scripted the full zero-to-running bootstrap (provision → k3s → cert-manager → ArgoCD) so a fresh VM becomes self-managing in four steps"
+      ]
+    },
+    {
+      "name": "ft_transcendence — Full-Stack Platform with Observability Stack",
+      "startDate": "2025-10-01",
+      "endDate": "2026-03-01",
+      "url": "https://github.com/anastasiiap42/ft_transcendence/tree/main/devops",
+      "roles": [
+        "DevOps Engineer"
+      ],
+      "description": "Contributed the DevOps module for a full-stack multiplayer web platform (42 Vienna capstone project). Responsible for designing and deploying the complete observability infrastructure covering metrics, logging, and alerting.",
+      "highlights": [
+        "Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds",
+        "Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform",
+        "Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services",
+        "Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity"
+      ]
     }
   ],
   "skills": [

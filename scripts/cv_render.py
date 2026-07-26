@@ -22,9 +22,14 @@ import json
 import sys
 
 # ── tuning knobs (resume mode caps; cv mode shows everything) ────────────────
-RESUME_MAX_HIGHLIGHTS = 3      # bullets per job in resume mode
+# Curation belongs in the Markdown, not here. These used to be 3 and 3, which
+# silently dropped bullets that the .md and the published .json still carried —
+# the PDF and the Gist then described the same resume differently. They are now
+# high enough not to bite; `make cv-render` fails any facet that spills onto a
+# second page, so overflow is caught out loud and fixed by trimming the source.
+RESUME_MAX_HIGHLIGHTS = 99     # bullets per job in resume mode
 RESUME_MAX_JOBS = 5            # most-recent jobs shown in resume mode
-RESUME_MAX_PROJECTS = 3        # one-line projects in resume mode
+RESUME_MAX_PROJECTS = 99       # one-line projects in resume mode
 ACCENT = "#1b9e8a"            # teal accent (matches existing resume photo border)
 INK = "#1f2a30"              # primary text
 MUTE = "#5d6b72"             # secondary text

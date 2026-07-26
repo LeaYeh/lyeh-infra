@@ -1,6 +1,6 @@
 +++
 name = "Lea (Mei Ling) Yeh"
-label = "Senior Software Engineer | MLOps & DevOps | GitOps & Observability"
+label = "MLOps Engineer | DevOps & GitOps | Platform & Observability"
 image = "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156"
 email = "lea.yeh.ml@gmail.com"
 phone = ""
@@ -162,6 +162,8 @@ A personal production infrastructure running live on a Hetzner cloud server: a k
 
 - Runs a k3s cluster on a Hetzner CX23 instance with ArgoCD continuously reconciling application state from Git <!-- src: lyeh-infra-h1 @e59c -->
 - Operates the full deployment lifecycle (build, containerize, deploy, observe) for live self-hosted services <!-- src: lyeh-infra-h3 @6eb8 -->
+- Configured Traefik ingress (hostname-based routing) and cert-manager for automatic Let's Encrypt TLS certificate provisioning and renewal <!-- src: lyeh-infra-h2 @fed6 -->
+- Pinned deployments by immutable image SHA rather than mutable tags so Git remains an exact source of truth and ArgoCD reliably detects changes <!-- src: lyeh-infra-h4 @2b98 -->
 
 ## Inception-of-Things — K3s Kubernetes Cluster
 <!--meta

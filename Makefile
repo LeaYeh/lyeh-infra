@@ -60,6 +60,7 @@ cv-render: cv-build cv-lint-strict ## Render cv.json (detailed) + resume-*.json 
 	  rm -f "$$n.html"; \
 	  echo "  ✓ $$n.pdf ($$mode)"; \
 	done
+	@python3 scripts/cv_pagecheck.py
 	@echo "✓ PDFs rendered into docs/resume/"
 
 cv-test: ## Run the resume tooling test suite

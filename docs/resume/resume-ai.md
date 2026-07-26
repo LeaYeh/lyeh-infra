@@ -151,6 +151,39 @@ A trio of educational ML infrastructure projects: litetorch (neural network fram
 - Built a hyperparameter search and experiment tracking system in litetune, mirroring Ray Tune's trial management model <!-- src: litetorch-suite-h2 @379e -->
 - Designed preprocessing pipelines and utility functions in sklite for educational clarity and extensibility <!-- src: litetorch-suite-h3 @f737 -->
 
+## lyeh-infra — Self-Hosted Kubernetes Infrastructure (GitOps)
+<!--meta
+id = "lyeh-infra"
+start = "2026-04-01"
+end = ""
+url = "https://github.com/LeaYeh/lyeh-infra"
+roles = ["Author"]
+-->
+
+Personal cloud infrastructure on a single Hetzner CX23 VM running k3s, deployed via ArgoCD GitOps. Everything is declared in Git — adding a new service means creating a directory and pushing; ArgoCD handles the rest. This portfolio site is hosted on it.
+
+- Designed a GitOps deployment model using an ArgoCD ApplicationSet with a Git directory generator — every subdirectory under apps/ is auto-discovered and deployed to its own namespace, with prune and self-heal enabled <!-- src: lyeh-infra-h1 @e59c -->
+- Configured Traefik ingress (hostname-based routing) and cert-manager for automatic Let's Encrypt TLS certificate provisioning and renewal <!-- src: lyeh-infra-h2 @fed6 -->
+- Built a fully automated CI/CD pipeline (GitHub Actions): Hugo build → Docker image to GHCR pinned by content SHA → image tag written back into deployment.yaml → ArgoCD rolling update <!-- src: lyeh-infra-h3 @6eb8 -->
+- Pinned deployments by immutable image SHA rather than mutable tags so Git remains an exact source of truth and ArgoCD reliably detects changes <!-- src: lyeh-infra-h4 @2b98 -->
+- Scripted the full zero-to-running bootstrap (provision → k3s → cert-manager → ArgoCD) so a fresh VM becomes self-managing in four steps <!-- src: lyeh-infra-h5 @bad4 -->
+
+## ft_transcendence — Full-Stack Platform with Observability Stack
+<!--meta
+id = "ft-transcendence"
+start = "2025-10-01"
+end = "2026-03-01"
+url = "https://github.com/anastasiiap42/ft_transcendence/tree/main/devops"
+roles = ["DevOps Engineer"]
+-->
+
+Contributed the DevOps module for a full-stack multiplayer web platform (42 Vienna capstone project). Responsible for designing and deploying the complete observability infrastructure covering metrics, logging, and alerting.
+
+- Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds <!-- src: ft-transcendence-h1 @d4fc -->
+- Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform <!-- src: ft-transcendence-h2 @7adb -->
+- Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services <!-- src: ft-transcendence-h3 @0e32 -->
+- Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity <!-- src: ft-transcendence-h4 @ef5c -->
+
 # Skills
 
 ## MLOps & Model Operations

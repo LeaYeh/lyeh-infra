@@ -38,7 +38,8 @@
       "highlights": [
         "Architected a modular, layered software framework for SPM instrument control, applying interface contracts and SOLID principles for long-term extensibility",
         "Built automated measurement workflows that turn high-volume sensor measurement protocols into reliable, reproducible data-acquisition processes",
-        "Built the GitOps delivery platform carrying the company's internal data pipeline to its environments, with ArgoCD-driven continuous delivery and ADR-recorded architecture"
+        "Built the GitOps delivery platform carrying the company's internal data pipeline to its environments, with ArgoCD-driven continuous delivery and ADR-recorded architecture",
+        "Defined cross-layer interface contracts and async command routing patterns to enable parallel development by hardware and software teams, reducing integration risk during concurrent R&D cycles"
       ]
     },
     {
@@ -50,7 +51,8 @@
       "url": "https://www.linkedin.com/company/17763",
       "summary": "Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.",
       "highlights": [
-        "Deployed model-monitoring infrastructure (MLflow + Streamlit) to track production model performance and consistency, extending data-quality practices from pipelines to ML systems"
+        "Deployed model-monitoring infrastructure (MLflow + Streamlit) to track production model performance and consistency, extending data-quality practices from pipelines to ML systems",
+        "Collaborated with chip developers to reduce power consumption by 20%, resulting in a 14K Antutu score improvement in mobile performance"
       ]
     },
     {
@@ -66,7 +68,8 @@
         "Architected the company's first data-warehouse layer, introducing dimensional-modeling theory that improved data-table reuse during the company's early digital transformation",
         "Built real-time data-quality monitoring and alerting that cut missing-data rates from 50% to under 1% and saved 7.5 man-days per month",
         "Tracked ML model performance and data drift in production via MLflow and Grafana dashboards, bridging data engineering and DataOps/MLOps",
-        "Managed EDA license and computing-farm costs via interactive BI dashboards (Splunk + Grafana), informing procurement decisions and reducing costs by 25%"
+        "Managed EDA license and computing-farm costs via interactive BI dashboards (Splunk + Grafana), informing procurement decisions and reducing costs by 25%",
+        "Introduced dimensional-modeling and data-warehouse architecture, improving data table reuse rates during the company's early digital transformation"
       ]
     },
     {
@@ -155,6 +158,53 @@
         "Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup",
         "Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes",
         "Applied GitOps principles with ArgoCD for continuous deployment in the bonus track"
+      ]
+    },
+    {
+      "name": "CDNJS — Content Delivery Network for JavaScript",
+      "startDate": "2015-09-01",
+      "endDate": "2016-09-01",
+      "url": "https://cdnjs.com/",
+      "roles": [
+        "Contributor"
+      ],
+      "description": "Open-source CDN for JavaScript libraries used by over 3.5 million websites, serving 30+ billion requests per month.",
+      "highlights": [
+        "Contributed to a platform serving over 30 billion requests per month across 3.5 million websites",
+        "Assisted with library maintenance and automation tooling for the open-source CDN"
+      ]
+    },
+    {
+      "name": "lyeh-infra — Self-Hosted Kubernetes Infrastructure (GitOps)",
+      "startDate": "2026-04-01",
+      "endDate": "",
+      "url": "https://github.com/LeaYeh/lyeh-infra",
+      "roles": [
+        "Author"
+      ],
+      "description": "Personal cloud infrastructure on a single Hetzner CX23 VM running k3s, deployed via ArgoCD GitOps. Everything is declared in Git — adding a new service means creating a directory and pushing; ArgoCD handles the rest. This portfolio site is hosted on it.",
+      "highlights": [
+        "Designed a GitOps deployment model using an ArgoCD ApplicationSet with a Git directory generator — every subdirectory under apps/ is auto-discovered and deployed to its own namespace, with prune and self-heal enabled",
+        "Configured Traefik ingress (hostname-based routing) and cert-manager for automatic Let's Encrypt TLS certificate provisioning and renewal",
+        "Built a fully automated CI/CD pipeline (GitHub Actions): Hugo build → Docker image to GHCR pinned by content SHA → image tag written back into deployment.yaml → ArgoCD rolling update",
+        "Pinned deployments by immutable image SHA rather than mutable tags so Git remains an exact source of truth and ArgoCD reliably detects changes",
+        "Scripted the full zero-to-running bootstrap (provision → k3s → cert-manager → ArgoCD) so a fresh VM becomes self-managing in four steps"
+      ]
+    },
+    {
+      "name": "ft_transcendence — Full-Stack Platform with Observability Stack",
+      "startDate": "2025-10-01",
+      "endDate": "2026-03-01",
+      "url": "https://github.com/anastasiiap42/ft_transcendence/tree/main/devops",
+      "roles": [
+        "DevOps Engineer"
+      ],
+      "description": "Contributed the DevOps module for a full-stack multiplayer web platform (42 Vienna capstone project). Responsible for designing and deploying the complete observability infrastructure covering metrics, logging, and alerting.",
+      "highlights": [
+        "Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds",
+        "Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform",
+        "Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services",
+        "Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity"
       ]
     }
   ],

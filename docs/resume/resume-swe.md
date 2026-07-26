@@ -57,7 +57,6 @@ url = "https://www.linkedin.com/company/17763"
 
 Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.
 
-- Built internal model-monitoring applications with MLflow and Streamlit, keeping production ML services highly available and consistent in performance <!-- src: mediatek-ds-h1 @72ec -->
 - Implemented ML models driving mobile temperature-control mechanisms, achieving temperature errors below 1°C <!-- src: mediatek-ds-h2 @11c6 -->
 - Worked with chip developers to cut power consumption by 20%, yielding a 14K Antutu score improvement in mobile performance <!-- src: mediatek-ds-h3 @4319 -->
 
@@ -73,9 +72,7 @@ url = "https://www.linkedin.com/company/17763"
 Built data infrastructure and analytics platforms for one of the world's largest IC design companies.
 
 - Designed and built PB-level ETL processes on GCP (Airflow, NiFi, Dataflow, BigQuery), automating ingestion of structured and unstructured data <!-- src: mediatek-de-h1 @2a03 -->
-- Implemented real-time data-quality monitoring and alerting, cutting missing-data rates from 50% to <1% and saving 7.5 man-days of manual work per month <!-- src: mediatek-de-h3 @ef9e -->
 - Introduced dimensional modeling and a data-warehouse architecture, raising table reuse during the company's early digital transformation <!-- src: mediatek-de-h2 @c2f3 -->
-- Built model-monitoring infrastructure (MLflow, Grafana) tracking ML model performance and data drift in production <!-- src: mediatek-de-h4 @777d -->
 
 ## MediaTek — Software Engineer
 <!--meta
@@ -89,8 +86,8 @@ summary = ""
 
 - Developed debugging and analysis tooling for Modem Logs, giving firmware engineers a workable view of high-volume trace data <!-- src: mediatek-se-h1 @c6c7 -->
 - Automated an ICD document-management system with Python and Jenkins, enforcing documentation standards as part of the build pipeline <!-- src: mediatek-se-h2 @0f13 -->
-- Built a cross-platform World Wide Field Trial upload tool as a Vue.js + Electron desktop application <!-- src: mediatek-se-h3 @bc02 -->
 - Built an internal StackOverflow-style Q&A platform with AngularJS <!-- src: mediatek-se-h4 @b983 -->
+- Created a World Wide Field Trial Upload Tool using Vue.js with Electron <!-- src: mediatek-se-h3 @bc02 -->
 
 # Volunteer
 
@@ -197,6 +194,7 @@ A fully bootable Linux system built from scratch, covering every layer from cros
 - Built a two-phase cross-compilation toolchain (temporary + final) to produce a host-independent, self-contained Linux system <!-- src: ft-linux-h2 @efd1 -->
 - Compiled a custom Linux kernel (4.x) with hand-selected driver and filesystem configuration <!-- src: ft-linux-h1 @28e0 -->
 - Automated the full build pipeline (14 stages) via an ALFS-style bootstrap script with environment isolation and error recovery <!-- src: ft-linux-h3 @5370 -->
+- Designed partition layout, configured GRUB bootloader, SysV init, and udev for dynamic device management <!-- src: ft-linux-h4 @2e4a -->
 
 ## minishell — Bash-compatible Shell
 <!--meta
@@ -212,6 +210,20 @@ A reimplementation of core GNU Bash features — command parsing, process manage
 - Developed a syntax analyzer using the shift-reduce algorithm for Bash-like grammar interpretation <!-- src: minishell-h1 @abe2 -->
 - Optimized subprocess management and pipeline execution across multi-stage pipelines <!-- src: minishell-h2 @9541 -->
 - Employed Docker to ensure consistent development environments across the team <!-- src: minishell-h3 @f177 -->
+
+## CDNJS — Content Delivery Network for JavaScript
+<!--meta
+id = "cdnjs"
+start = "2015-09-01"
+end = "2016-09-01"
+url = "https://cdnjs.com/"
+roles = ["Contributor"]
+-->
+
+Open-source CDN for JavaScript libraries used by over 3.5 million websites, serving 30+ billion requests per month.
+
+- Contributed to a platform serving over 30 billion requests per month across 3.5 million websites <!-- src: cdnjs-h1 @bc24 -->
+- Assisted with library maintenance and automation tooling for the open-source CDN <!-- src: cdnjs-h2 @98e2 -->
 
 # Skills
 

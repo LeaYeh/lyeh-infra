@@ -295,15 +295,25 @@ python3 scripts/cv_render.py docs/resume/cv.json        --mode cv     --out cv.h
 
 Open `scripts/cv_render.py`:
 
-- **Layout knobs** (top of file): `RESUME_MAX_HIGHLIGHTS`, `RESUME_MAX_JOBS`,
-  `RESUME_MAX_PROJECTS` cap content in resume mode to keep it on one page.
 - **Colors:** `ACCENT`, `INK`, `MUTE`, `SIDEBAR_BG`.
 - **Styling:** the `CSS` block — `.mode-resume` rules tighten spacing for the
   one-page variant; `.mode-cv` inherits the relaxed base.
+- **Layout knobs** (top of file): `RESUME_MAX_HIGHLIGHTS` and `RESUME_MAX_PROJECTS`
+  are deliberately set high enough not to bite. They used to be 3 and 3, which
+  silently dropped bullets the Markdown and the published JSON still carried —
+  so the PDF and the Gist described the same resume differently, and the pages
+  came out half empty. Curation belongs in the Markdown.
 
-> If a resume mode file ever overflows to a 2nd page, lower a `RESUME_MAX_*` cap or
-> tighten the `.mode-resume` spacing — usually it's the longest sidebar (skills +
-> certs) running taller than the experience column.
+### One page per facet
+
+`make cv-render` runs `scripts/cv_pagecheck.py` afterwards and **fails if any
+`resume-*.pdf` is not exactly one page**. Fix an overflow by trimming the source
+`.md` — drop a bullet, a project, or a skills category. The left sidebar (skills
++ certificates) is usually what overruns, not the experience column.
+
+The reverse is worth doing too: if a facet renders with obvious whitespace, pull
+another relevant bullet or project across from `cv.md` and re-render. Add until
+the page check complains, then take the last one back out.
 
 ## Publish — `make cv-publish`
 

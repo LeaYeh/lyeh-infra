@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
   "basics": {
     "name": "Lea (Mei Ling) Yeh",
-    "label": "Senior Software Engineer | MLOps & DevOps | GitOps & Observability",
+    "label": "MLOps Engineer | DevOps & GitOps | Platform & Observability",
     "image": "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156",
     "email": "lea.yeh.ml@gmail.com",
     "phone": "",
@@ -155,7 +155,9 @@
       "description": "A personal production infrastructure running live on a Hetzner cloud server: a k3s Kubernetes cluster with ArgoCD-driven GitOps, deploying multiple self-hosted applications.",
       "highlights": [
         "Runs a k3s cluster on a Hetzner CX23 instance with ArgoCD continuously reconciling application state from Git",
-        "Operates the full deployment lifecycle (build, containerize, deploy, observe) for live self-hosted services"
+        "Operates the full deployment lifecycle (build, containerize, deploy, observe) for live self-hosted services",
+        "Configured Traefik ingress (hostname-based routing) and cert-manager for automatic Let's Encrypt TLS certificate provisioning and renewal",
+        "Pinned deployments by immutable image SHA rather than mutable tags so Git remains an exact source of truth and ArgoCD reliably detects changes"
       ]
     },
     {

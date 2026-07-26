@@ -42,6 +42,7 @@ c-sense develops nanoscale sensor technology and AFM/SPM instruments for scienti
 - Architected a modular, layered software framework for SPM instrument control, applying interface contracts and SOLID principles for long-term extensibility <!-- src: csense-h3 @d85d -->
 - Built automated measurement workflows that turn high-volume sensor measurement protocols into reliable, reproducible data-acquisition processes <!-- src: csense-h6 @a9d2 -->
 - Built the GitOps delivery platform carrying the company's internal data pipeline to its environments, with ArgoCD-driven continuous delivery and ADR-recorded architecture <!-- src: csense-h8 @ce2f -->
+- Defined cross-layer interface contracts and async command routing patterns to enable parallel development by hardware and software teams, reducing integration risk during concurrent R&D cycles <!-- src: csense-h4 @d8ac -->
 
 ## MediaTek — Data Scientist
 <!--meta
@@ -55,6 +56,7 @@ url = "https://www.linkedin.com/company/17763"
 Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.
 
 - Deployed model-monitoring infrastructure (MLflow + Streamlit) to track production model performance and consistency, extending data-quality practices from pipelines to ML systems <!-- src: mediatek-ds-h1 @72ec -->
+- Collaborated with chip developers to reduce power consumption by 20%, resulting in a 14K Antutu score improvement in mobile performance <!-- src: mediatek-ds-h3 @4319 -->
 
 ## MediaTek — Data Engineer
 <!--meta
@@ -72,6 +74,7 @@ Built data infrastructure and analytics platforms for one of the world's largest
 - Built real-time data-quality monitoring and alerting that cut missing-data rates from 50% to under 1% and saved 7.5 man-days per month <!-- src: mediatek-de-h3 @ef9e -->
 - Tracked ML model performance and data drift in production via MLflow and Grafana dashboards, bridging data engineering and DataOps/MLOps <!-- src: mediatek-de-h4 @777d -->
 - Managed EDA license and computing-farm costs via interactive BI dashboards (Splunk + Grafana), informing procurement decisions and reducing costs by 25% <!-- src: mediatek-de-h5 @345a -->
+- Introduced dimensional-modeling and data-warehouse architecture, improving data table reuse rates during the company's early digital transformation <!-- src: mediatek-de-h2 @c2f3 -->
 
 ## MediaTek — Software Engineer
 <!--meta
@@ -161,6 +164,53 @@ Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster usi
 - Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup <!-- src: inception-of-things-h1 @2eed -->
 - Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes <!-- src: inception-of-things-h2 @b8a4 -->
 - Applied GitOps principles with ArgoCD for continuous deployment in the bonus track <!-- src: inception-of-things-h3 @2291 -->
+
+## CDNJS — Content Delivery Network for JavaScript
+<!--meta
+id = "cdnjs"
+start = "2015-09-01"
+end = "2016-09-01"
+url = "https://cdnjs.com/"
+roles = ["Contributor"]
+-->
+
+Open-source CDN for JavaScript libraries used by over 3.5 million websites, serving 30+ billion requests per month.
+
+- Contributed to a platform serving over 30 billion requests per month across 3.5 million websites <!-- src: cdnjs-h1 @bc24 -->
+- Assisted with library maintenance and automation tooling for the open-source CDN <!-- src: cdnjs-h2 @98e2 -->
+
+## lyeh-infra — Self-Hosted Kubernetes Infrastructure (GitOps)
+<!--meta
+id = "lyeh-infra"
+start = "2026-04-01"
+end = ""
+url = "https://github.com/LeaYeh/lyeh-infra"
+roles = ["Author"]
+-->
+
+Personal cloud infrastructure on a single Hetzner CX23 VM running k3s, deployed via ArgoCD GitOps. Everything is declared in Git — adding a new service means creating a directory and pushing; ArgoCD handles the rest. This portfolio site is hosted on it.
+
+- Designed a GitOps deployment model using an ArgoCD ApplicationSet with a Git directory generator — every subdirectory under apps/ is auto-discovered and deployed to its own namespace, with prune and self-heal enabled <!-- src: lyeh-infra-h1 @e59c -->
+- Configured Traefik ingress (hostname-based routing) and cert-manager for automatic Let's Encrypt TLS certificate provisioning and renewal <!-- src: lyeh-infra-h2 @fed6 -->
+- Built a fully automated CI/CD pipeline (GitHub Actions): Hugo build → Docker image to GHCR pinned by content SHA → image tag written back into deployment.yaml → ArgoCD rolling update <!-- src: lyeh-infra-h3 @6eb8 -->
+- Pinned deployments by immutable image SHA rather than mutable tags so Git remains an exact source of truth and ArgoCD reliably detects changes <!-- src: lyeh-infra-h4 @2b98 -->
+- Scripted the full zero-to-running bootstrap (provision → k3s → cert-manager → ArgoCD) so a fresh VM becomes self-managing in four steps <!-- src: lyeh-infra-h5 @bad4 -->
+
+## ft_transcendence — Full-Stack Platform with Observability Stack
+<!--meta
+id = "ft-transcendence"
+start = "2025-10-01"
+end = "2026-03-01"
+url = "https://github.com/anastasiiap42/ft_transcendence/tree/main/devops"
+roles = ["DevOps Engineer"]
+-->
+
+Contributed the DevOps module for a full-stack multiplayer web platform (42 Vienna capstone project). Responsible for designing and deploying the complete observability infrastructure covering metrics, logging, and alerting.
+
+- Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds <!-- src: ft-transcendence-h1 @d4fc -->
+- Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform <!-- src: ft-transcendence-h2 @7adb -->
+- Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services <!-- src: ft-transcendence-h3 @0e32 -->
+- Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity <!-- src: ft-transcendence-h4 @ef5c -->
 
 # Skills
 

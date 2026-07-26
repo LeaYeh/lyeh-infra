@@ -53,7 +53,6 @@
       "url": "https://www.linkedin.com/company/17763",
       "summary": "Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.",
       "highlights": [
-        "Built internal model-monitoring applications with MLflow and Streamlit, keeping production ML services highly available and consistent in performance",
         "Implemented ML models driving mobile temperature-control mechanisms, achieving temperature errors below 1°C",
         "Worked with chip developers to cut power consumption by 20%, yielding a 14K Antutu score improvement in mobile performance"
       ]
@@ -68,9 +67,7 @@
       "summary": "Built data infrastructure and analytics platforms for one of the world's largest IC design companies.",
       "highlights": [
         "Designed and built PB-level ETL processes on GCP (Airflow, NiFi, Dataflow, BigQuery), automating ingestion of structured and unstructured data",
-        "Implemented real-time data-quality monitoring and alerting, cutting missing-data rates from 50% to <1% and saving 7.5 man-days of manual work per month",
-        "Introduced dimensional modeling and a data-warehouse architecture, raising table reuse during the company's early digital transformation",
-        "Built model-monitoring infrastructure (MLflow, Grafana) tracking ML model performance and data drift in production"
+        "Introduced dimensional modeling and a data-warehouse architecture, raising table reuse during the company's early digital transformation"
       ]
     },
     {
@@ -84,8 +81,8 @@
       "highlights": [
         "Developed debugging and analysis tooling for Modem Logs, giving firmware engineers a workable view of high-volume trace data",
         "Automated an ICD document-management system with Python and Jenkins, enforcing documentation standards as part of the build pipeline",
-        "Built a cross-platform World Wide Field Trial upload tool as a Vue.js + Electron desktop application",
-        "Built an internal StackOverflow-style Q&A platform with AngularJS"
+        "Built an internal StackOverflow-style Q&A platform with AngularJS",
+        "Created a World Wide Field Trial Upload Tool using Vue.js with Electron"
       ]
     }
   ],
@@ -190,7 +187,8 @@
       "highlights": [
         "Built a two-phase cross-compilation toolchain (temporary + final) to produce a host-independent, self-contained Linux system",
         "Compiled a custom Linux kernel (4.x) with hand-selected driver and filesystem configuration",
-        "Automated the full build pipeline (14 stages) via an ALFS-style bootstrap script with environment isolation and error recovery"
+        "Automated the full build pipeline (14 stages) via an ALFS-style bootstrap script with environment isolation and error recovery",
+        "Designed partition layout, configured GRUB bootloader, SysV init, and udev for dynamic device management"
       ]
     },
     {
@@ -206,6 +204,20 @@
         "Developed a syntax analyzer using the shift-reduce algorithm for Bash-like grammar interpretation",
         "Optimized subprocess management and pipeline execution across multi-stage pipelines",
         "Employed Docker to ensure consistent development environments across the team"
+      ]
+    },
+    {
+      "name": "CDNJS — Content Delivery Network for JavaScript",
+      "startDate": "2015-09-01",
+      "endDate": "2016-09-01",
+      "url": "https://cdnjs.com/",
+      "roles": [
+        "Contributor"
+      ],
+      "description": "Open-source CDN for JavaScript libraries used by over 3.5 million websites, serving 30+ billion requests per month.",
+      "highlights": [
+        "Contributed to a platform serving over 30 billion requests per month across 3.5 million websites",
+        "Assisted with library maintenance and automation tooling for the open-source CDN"
       ]
     }
   ],
