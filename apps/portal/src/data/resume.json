@@ -2,11 +2,10 @@
   "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
   "basics": {
     "name": "Lea (Mei Ling) Yeh",
-    "label": "Sr. Software Engineer | Data Engineer | MLOps | Systems Architecture",
+    "label": "Senior Software Engineer | Systems Architecture | DevOps & MLOps | Applied AI",
     "image": "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156",
     "email": "lea.yeh.ml@gmail.com",
-    "phone": "+4367761670726",
-    "summary": "I hold a Master's degree in Computer Science with 8+ years spanning Data Engineering, Data Science, and Software Engineering — most recently as a Software/Solution Architect at c-sense GmbH, where I design instrument control systems and collaborate with scientists and hardware engineers to integrate nanoscale measurement devices.\n\nAlongside my current role, I continue to deepen my foundation at 42 Vienna, focusing on Linux kernel internals and DevOps — building the system-level expertise to transition into AI platform and MLOps engineering roles.",
+    "phone": "",
     "location": {
       "countryCode": "AT",
       "address": "Austria, Vienna",
@@ -24,7 +23,8 @@
         "username": "LeaYeh",
         "url": "https://github.com/LeaYeh"
       }
-    ]
+    ],
+    "summary": "Senior Software Engineer with solution architecture responsibilities at c-sense GmbH — the sole engineer responsible for the full software stack: layered SPM instrument-control framework (hardware abstraction, async command routing, interface contracts) and currently architecting an agentic RAG system (LangChain/LangGraph, Chroma, LLM cloud APIs) to give the CEO cross-domain visibility into internal technical documentation, sales/CRM data, competitor products, and prospective customers.\n\nBackground spans 9+ years in Data Engineering, Data Science, and Software Engineering — including PB-scale ETL pipelines and ML model monitoring at MediaTek. Continuously advancing expertise in Linux kernel internals and DevOps at 42 Vienna, actively sharing knowledge and contributing to the technical community."
   },
   "work": [
     {
@@ -36,11 +36,13 @@
       "url": "https://www.c-sense.at/",
       "summary": "c-sense develops nanoscale sensor technology and AFM/SPM instruments for scientific and industrial applications.",
       "highlights": [
+        "Driving the company's AI integration initiative as sole technical decision-maker — evaluating LLM tooling and defining the end-to-end agentic architecture strategy",
+        "Currently architecting an agentic RAG system (LangChain/LangGraph, Chroma, LLM cloud APIs) to give the CEO cross-domain visibility into internal technical documentation, sales/CRM data, competitor product analysis, and prospective customer profiling",
         "Architected a modular, layered software framework for SPM instrument control — deliberately separating hardware vendor, orchestration, and application layers for long-term extensibility and reuse across future instrument variants",
         "Defined cross-layer interface contracts and async command routing patterns to enable parallel development by hardware and software teams, reducing integration risk during concurrent R&D cycles",
         "Led the design of a hardware abstraction strategy over a LabVIEW-based proprietary API, keeping the software stack agnostic to vendor-specific instrument changes",
-        "Collaborated with hardware engineers and research scientists to translate physics measurement protocols into reliable, automated software workflows",
-        "Delivered automated measurement capabilities (spatial sampling, real-time safety management) that allow researchers to focus on experimental outcomes rather than instrument operation"
+        "Delivered automated measurement capabilities (spatial sampling, real-time safety management) that allow researchers to focus on experimental outcomes rather than instrument operation",
+        "Collaborated with hardware engineers and research scientists to translate physics measurement protocols into reliable, automated software workflows"
       ]
     },
     {
@@ -48,45 +50,45 @@
       "position": "Data Scientist",
       "startDate": "2022-09-01",
       "endDate": "2023-09-01",
-      "highlights": [
-        "Implemented ML models to enhance mobile temperature control mechanisms, achieving temperature errors below 1°C",
-        "Collaborated with chip developers to reduce power consumption by 20%, resulting in a 14K Antutu score improvement in mobile performance",
-        "Implemented model monitoring solutions using AWS and Streamlit, ensuring high availability and performance consistency"
-      ],
-      "summary": "Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.",
+      "location": "Taipei, Taiwan",
       "url": "https://www.linkedin.com/company/17763",
-      "location": "Taipei, Taiwan"
+      "summary": "Devoted to data-related initiatives spanning cost control and chip development in the AI & Big Data department of a leading global semiconductor company.",
+      "highlights": [
+        "Implemented model monitoring solutions using MLflow and Streamlit, ensuring high availability and performance consistency for production ML models",
+        "Implemented ML models to enhance mobile temperature control mechanisms, achieving temperature errors below 1°C",
+        "Collaborated with chip developers to reduce power consumption by 20%, resulting in a 14K Antutu score improvement in mobile performance"
+      ]
     },
     {
       "name": "MediaTek",
       "position": "Data Engineer",
       "startDate": "2019-07-01",
       "endDate": "2022-09-01",
+      "location": "Taipei, Taiwan",
+      "url": "https://www.linkedin.com/company/17763",
+      "summary": "Built data infrastructure and analytics platforms for one of the world's largest IC design companies.",
       "highlights": [
         "Established automated data pipelines for structured and unstructured data; designed PB-level ETL processes using Airflow, NiFi, Dataflow, and BigQuery on GCP",
-        "Introduced Alibaba's Data Warehouse theory, enhancing data table reuse rates during the company's early digital transformation",
+        "Introduced dimensional-modeling and data-warehouse architecture, improving data table reuse rates during the company's early digital transformation",
         "Implemented real-time data quality monitoring and alerting, reducing data missing rates from 50% to <1% and lowering monthly labor costs by 7.5 man-days",
         "Built model monitoring infrastructure using MLflow and Grafana dashboards to track ML model performance and data drift in production",
         "Managed EDA License and Computing Farm costs via interactive BI Dashboard (Splunk + Grafana), aiding EO procurement decisions and reducing costs by 25%"
-      ],
-      "summary": "Built data infrastructure and analytics platforms for one of the world's largest IC design companies.",
-      "url": "https://www.linkedin.com/company/17763",
-      "location": "Taipei, Taiwan"
+      ]
     },
     {
       "name": "MediaTek",
       "position": "Software Engineer",
       "startDate": "2016-09-01",
       "endDate": "2019-06-01",
+      "location": "Taipei, Taiwan",
+      "url": "https://www.linkedin.com/company/17763",
+      "summary": "",
       "highlights": [
         "Developed debugging and analysis tools for Modem Logs",
         "Developed an automated ICD DMS using Python and Jenkins to enforce documentation standards",
         "Created a World Wide Field Trial Upload Tool using Vue.js with Electron",
         "Developed a StackOverflow-like QA platform using AngularJS"
-      ],
-      "summary": "",
-      "url": "https://www.linkedin.com/company/17763",
-      "location": "Taipei, Taiwan"
+      ]
     }
   ],
   "volunteer": [
@@ -95,21 +97,23 @@
       "position": "Peer Tutor & Workshop Host",
       "startDate": "2024-07-01",
       "endDate": "2024-10-01",
+      "url": "https://www.42vienna.com/",
       "summary": "Volunteered as a peer tutor at 42 Vienna, supporting fellow students in system programming and software engineering fundamentals. Designed and hosted a Git workshop for the student community.",
       "highlights": [
         "Hosted a Git Essentials workshop — 'Something You Should Know Before Git Branch' — covering branching strategy, rebase, conflict resolution, and collaborative workflows (slides: https://docs.google.com/presentation/d/13InmNDRSfkeUnGWHNXWFiTr3QCAz4ecFL_wFz-NFdoI/edit?usp=sharing)",
-        "Provided peer tutoring in C/C++ system programming, shell scripting, and software architecture concepts"
-      ],
-      "url": "https://www.42vienna.com/"
+        "Provided peer review and guidance in C/C++ system programming, shell scripting, and software architecture concepts"
+      ]
     },
     {
       "organization": "Taiwan in Data Science (TWiDS)",
-      "position": "Volunteer Organizer",
+      "position": "Event Ambassador & Volunteer Organizer",
       "startDate": "2023-10-01",
       "endDate": "2024-05-01",
-      "summary": "Served as one of the organizers at Taiwan in Data Science (TWiDS), a volunteer organization dedicated to promoting data-related fields in Taiwan.",
       "url": "https://www.facebook.com/TWiDataScience/",
+      "summary": "Served as one of the organizers at Taiwan in Data Science (TWiDS), a volunteer organization dedicated to promoting data-related fields in Taiwan.",
       "highlights": [
+        "Served as event ambassador: conducted interviews with data domain experts for the TWiDS podcast series",
+        "Co-organized the annual TWiDS conference, coordinating speakers, logistics, and community outreach",
         "Promoted awareness and understanding of data science across Taiwan",
         "Led preparations for workshops, podcasts, and conferences in 2024"
       ]
@@ -134,11 +138,11 @@
     },
     {
       "institution": "National Chiao Tung University",
-      "area": "Computer Science",
-      "studyType": "Master of Data Mining",
-      "url": "https://www.nycu.edu.tw/nycu/en/",
+      "area": "Computer Science — Data Mining",
+      "studyType": "Master of Science",
       "startDate": "2014-09-01",
       "endDate": "2016-06-01",
+      "url": "https://www.nycu.edu.tw/nycu/en/",
       "score": "",
       "courses": [
         "Data Mining",
@@ -147,11 +151,11 @@
     },
     {
       "institution": "Tatung University",
-      "area": "Computer Science",
+      "area": "Computer Science — Computer Vision & Algorithms",
       "studyType": "Bachelor",
-      "url": "https://ao.ttu.edu.tw/",
       "startDate": "2010-09-01",
       "endDate": "2014-06-01",
+      "url": "https://ao.ttu.edu.tw/",
       "score": "",
       "courses": [
         "Computer Vision",
@@ -159,33 +163,144 @@
       ]
     }
   ],
-  "awards": [
+  "projects": [
     {
-      "title": "IT Annual Award",
-      "date": "2020-12-01",
-      "awarder": "MediaTek",
-      "summary": "Recognized for impact on data infrastructure and cost reduction initiatives."
-    }
-  ],
-  "certificates": [
-    {
-      "name": "ISTQB Certified Tester Foundation Level (CTFL) v4.0",
-      "date": "2026-04-04",
-      "issuer": "ISTQB / GASQ",
-      "url": "https://app.skillsclub.com/credential/293353-28e36a6435ba059718f6ef53a2b8cf79f593a6d16221c0bd0d9483b06a51c5c3"
+      "name": "lyeh-infra — Self-Hosted Kubernetes Infrastructure (GitOps)",
+      "startDate": "2026-04-01",
+      "endDate": "",
+      "url": "https://github.com/LeaYeh/lyeh-infra",
+      "roles": [
+        "Author"
+      ],
+      "description": "Personal cloud infrastructure on a single Hetzner CX23 VM running k3s, deployed via ArgoCD GitOps. Everything is declared in Git — adding a new service means creating a directory and pushing; ArgoCD handles the rest. This portfolio site is hosted on it.",
+      "highlights": [
+        "Designed a GitOps deployment model using an ArgoCD ApplicationSet with a Git directory generator — every subdirectory under apps/ is auto-discovered and deployed to its own namespace, with prune and self-heal enabled",
+        "Configured Traefik ingress (hostname-based routing) and cert-manager for automatic Let's Encrypt TLS certificate provisioning and renewal",
+        "Built a fully automated CI/CD pipeline (GitHub Actions): Hugo build → Docker image to GHCR pinned by content SHA → image tag written back into deployment.yaml → ArgoCD rolling update",
+        "Pinned deployments by immutable image SHA rather than mutable tags so Git remains an exact source of truth and ArgoCD reliably detects changes",
+        "Scripted the full zero-to-running bootstrap (provision → k3s → cert-manager → ArgoCD) so a fresh VM becomes self-managing in four steps"
+      ]
     },
     {
-      "name": "Microsoft Azure Databricks for Data Engineering",
-      "date": "2024-04-01",
-      "issuer": "Microsoft",
-      "url": "https://www.coursera.org/account/accomplishments/verify/QCEEXZ8HWETC"
-    }
-  ],
-  "publications": [
+      "name": "ft_transcendence — Full-Stack Platform with Observability Stack",
+      "startDate": "2025-10-01",
+      "endDate": "2026-03-01",
+      "url": "https://github.com/anastasiiap42/ft_transcendence/tree/main/devops",
+      "roles": [
+        "DevOps Engineer"
+      ],
+      "description": "Contributed the DevOps module for a full-stack multiplayer web platform (42 Vienna capstone project). Responsible for designing and deploying the complete observability infrastructure covering metrics, logging, and alerting.",
+      "highlights": [
+        "Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds",
+        "Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform",
+        "Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services",
+        "Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity"
+      ]
+    },
     {
-      "name": "Clustering using Radius-Weighted Means and Analytical Radius-Preserved Formula",
-      "publisher": "NCTU",
-      "releaseDate": "2016-06-01"
+      "name": "ft_linux — Linux From Scratch",
+      "startDate": "2025-09-01",
+      "endDate": "2026-01-01",
+      "url": "https://github.com/42-CC-RNCP/ft_linux",
+      "roles": [
+        "Author"
+      ],
+      "description": "Built a fully bootable Linux system from scratch, covering every layer from cross-compilation toolchain to kernel configuration, filesystem hierarchy, init system, and bootloader. Follows LFS/BLFS/ALFS methodology with a custom automation layer.",
+      "highlights": [
+        "Compiled a custom Linux kernel (4.x) with hand-selected driver and filesystem configuration",
+        "Built a two-phase cross-compilation toolchain (temporary + final) to produce a host-independent, self-contained Linux system",
+        "Automated the full build pipeline (14 stages) via an ALFS-style bootstrap script with environment isolation and error recovery",
+        "Designed partition layout, configured GRUB bootloader, SysV init, and udev for dynamic device management"
+      ]
+    },
+    {
+      "name": "Inception-of-Things — K3s Kubernetes Cluster",
+      "startDate": "2025-06-01",
+      "endDate": "2025-10-01",
+      "url": "https://github.com/42-CC-RNCP/Inception-of-Things",
+      "roles": [
+        "Developer"
+      ],
+      "description": "Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster using Vagrant and VirtualBox, covering cluster networking, ingress, and GitOps-style deployment workflows.",
+      "highlights": [
+        "Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup",
+        "Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes",
+        "Applied GitOps principles with ArgoCD for continuous deployment in the bonus track"
+      ]
+    },
+    {
+      "name": "libftpp — C++ Architecture Library",
+      "startDate": "2025-10-01",
+      "endDate": "2026-01-01",
+      "url": "https://github.com/42-CC-RNCP/libftpp",
+      "roles": [
+        "Author"
+      ],
+      "description": "A modern C++20 library built through structured exercises practicing SOLID principles, hexagonal architecture, and design patterns. Includes Architectural Decision Records (ADRs) documenting trade-off reasoning.",
+      "highlights": [
+        "Implemented core data structures and utilities applying SOLID principles and hexagonal (ports & adapters) architecture",
+        "Documented architectural decisions via ADRs, treating design trade-offs as first-class engineering artifacts",
+        "Maintained CI pipeline with CMake, clang-format, and automated test suite"
+      ]
+    },
+    {
+      "name": "litetorch + litetune + sklite — AI Framework Toolkit",
+      "startDate": "2025-03-01",
+      "endDate": "2025-06-01",
+      "url": "https://github.com/42-CC-RNCP",
+      "roles": [
+        "Author"
+      ],
+      "description": "A trio of ML infrastructure projects — litetorch (neural network framework built from scratch, inspired by PyTorch), litetune (hyperparameter tuner inspired by Ray Tune), and sklite (ML preprocessing toolkit inspired by scikit-learn) — demonstrating ML internals depth beyond API usage.",
+      "highlights": [
+        "Implemented forward/backpropagation, autograd, and layer abstractions from scratch in litetorch",
+        "Built a hyperparameter search and experiment tracking system in litetune, mirroring Ray Tune's trial management model",
+        "Designed preprocessing pipelines and utility functions in sklite for educational clarity and extensibility"
+      ]
+    },
+    {
+      "name": "webserver — HTTP/1.1 Server in C++",
+      "startDate": "2024-06-01",
+      "endDate": "2024-09-01",
+      "url": "https://github.com/LeaYeh/webserver",
+      "roles": [
+        "Developer"
+      ],
+      "description": "Implemented a standards-compliant HTTP/1.1 web server in C++ from scratch, handling concurrent connections, request parsing, and static/dynamic content serving.",
+      "highlights": [
+        "Built non-blocking I/O event loop handling concurrent HTTP connections using poll/select",
+        "Implemented HTTP/1.1 request parsing, routing, and response generation",
+        "Supported CGI execution, static file serving, and configurable virtual hosts"
+      ]
+    },
+    {
+      "name": "minishell — Bash-compatible Shell",
+      "startDate": "2023-12-01",
+      "endDate": "2024-03-01",
+      "url": "https://github.com/LeaYeh/minishell",
+      "roles": [
+        "Developer"
+      ],
+      "description": "Reimplemented core GNU Bash shell features including command parsing, process management, and built-in execution.",
+      "highlights": [
+        "Developed a syntax analyzer using the shift-reduce algorithm for Bash-like grammar interpretation",
+        "Optimized subprocess management and pipeline execution across multi-stage pipelines",
+        "Employed Docker to ensure consistent development environments across the team"
+      ]
+    },
+    {
+      "name": "CDNJS — Content Delivery Network for JavaScript",
+      "startDate": "2015-09-01",
+      "endDate": "2016-09-01",
+      "url": "https://cdnjs.com/",
+      "roles": [
+        "Contributor"
+      ],
+      "description": "Open-source CDN for JavaScript libraries used by over 3.5 million websites, serving 30+ billion requests per month.",
+      "highlights": [
+        "Contributed to a platform serving over 30 billion requests per month across 3.5 million websites",
+        "Assisted with library maintenance and automation tooling for the open-source CDN"
+      ]
     }
   ],
   "skills": [
@@ -193,60 +308,82 @@
       "name": "Systems Architecture",
       "level": "Advanced",
       "keywords": [
-        "Event-driven architecture",
-        "Layered system design",
-        "SOLID principles",
-        "Hardware abstraction",
-        "Interface design",
-        "Design Patterns"
+        "Hexagonal Architecture (Ports & Adapters)",
+        "Microservices & layered system design",
+        "Event-driven / async architecture",
+        "Interface-first / contract-driven design",
+        "Hardware Abstraction Layer (HAL)",
+        "SDD (Specification-Driven Development)",
+        "Cross-functional stakeholder communication"
+      ]
+    },
+    {
+      "name": "Platform & Container Orchestration",
+      "level": "Advanced",
+      "keywords": [
+        "DevOps & MLOps",
+        "Kubernetes (K8s / K3s)",
+        "Docker",
+        "Kustomize",
+        "Vagrant / VM provisioning",
+        "ArgoCD",
+        "Traefik ingress",
+        "cert-manager",
+        "Self-hosted infrastructure"
+      ]
+    },
+    {
+      "name": "CI/CD & GitOps",
+      "level": "Advanced",
+      "keywords": [
+        "ArgoCD / GitOps",
+        "CI/CD pipelines"
+      ]
+    },
+    {
+      "name": "Observability & MLOps",
+      "level": "Advanced",
+      "keywords": [
+        "Prometheus",
+        "Grafana",
+        "ELK stack (Elasticsearch, Logstash, Kibana)",
+        "Splunk",
+        "MLflow",
+        "Model monitoring",
+        "Model deployment",
+        "Apache Airflow"
       ]
     },
     {
       "name": "Data Engineering",
       "level": "Master",
       "keywords": [
-        "Databricks",
+        "Azure Databricks (certified)",
         "Big data pipeline",
         "Data Warehouse",
         "ETL",
         "Data Quality Monitoring",
         "Google Cloud Platform (GCP)",
+        "Object storage (AWS S3, MinIO)",
         "Apache Airflow",
+        "Data Governance",
         "NiFi",
         "BigQuery",
         "Dataflow"
       ]
     },
     {
-      "name": "MLOps & DevOps",
-      "level": "Advanced",
-      "keywords": [
-        "Kubernetes (K3s)",
-        "Vagrant / VM provisioning",
-        "MLflow",
-        "Model monitoring",
-        "Model deployment",
-        "Prometheus",
-        "Grafana",
-        "ELK stack (Elasticsearch, Logstash, Kibana)",
-        "Splunk",
-        "CI/CD",
-        "Docker",
-        "GitHub Actions",
-        "Git Flow",
-        "Apache Airflow"
-      ]
-    },
-    {
       "name": "Data Science",
       "level": "Advanced",
       "keywords": [
-        "Machine Learning",
-        "Deep Learning",
-        "Explainable AI",
-        "Model Evaluation",
-        "PyTorch",
-        "Streamlit"
+        "Supervised learning (Random Forest, XGBoost)",
+        "Time series analysis & forecasting",
+        "Neural network design & deep learning",
+        "Explainable AI (SHAP)",
+        "Dimensionality reduction & feature engineering",
+        "Root Cause Analysis (RCA)",
+        "Model evaluation & validation",
+        "ML internals (autograd, backpropagation from scratch)"
       ]
     },
     {
@@ -284,9 +421,7 @@
       "keywords": [
         "ISTQB CTFL v4.0",
         "Test design techniques",
-        "Test planning",
-        "Defect management",
-        "SDLC quality assurance"
+        "Test planning"
       ]
     },
     {
@@ -298,6 +433,55 @@
         "Plotly",
         "Data Visualization"
       ]
+    },
+    {
+      "name": "LLM & AI Application Development",
+      "level": "Intermediate",
+      "keywords": [
+        "LLM Application Development",
+        "Agentic RAG (in-progress)",
+        "LangChain / LangGraph (in-progress)",
+        "Chroma (vector DB)"
+      ]
+    },
+    {
+      "name": "Systems & Low-Level Programming",
+      "level": "Intermediate",
+      "keywords": [
+        "Linux Kernel Internals",
+        "Socket Programming",
+        "High-performance Web Server",
+        "Non-blocking I/O event loops"
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "title": "IT Annual Award",
+      "date": "2020-12-01",
+      "awarder": "MediaTek",
+      "summary": "Recognized for impact on data infrastructure and cost reduction initiatives."
+    }
+  ],
+  "certificates": [
+    {
+      "name": "ISTQB Certified Tester Foundation Level (CTFL) v4.0",
+      "date": "2026-04-04",
+      "issuer": "ISTQB / GASQ",
+      "url": "https://app.skillsclub.com/credential/293353-28e36a6435ba059718f6ef53a2b8cf79f593a6d16221c0bd0d9483b06a51c5c3"
+    },
+    {
+      "name": "Microsoft Azure Databricks for Data Engineering",
+      "date": "2024-04-01",
+      "issuer": "Microsoft",
+      "url": "https://www.coursera.org/account/accomplishments/verify/QCEEXZ8HWETC"
+    }
+  ],
+  "publications": [
+    {
+      "name": "Clustering using Radius-Weighted Means and Analytical Radius-Preserved Formula",
+      "publisher": "National Chiao Tung University",
+      "releaseDate": "2016-06-01"
     }
   ],
   "languages": [
@@ -320,112 +504,6 @@
   ],
   "interests": [],
   "references": [],
-  "projects": [
-    {
-      "name": "ft_transcendence — Full-Stack Platform with Observability Stack",
-      "description": "Contributed the DevOps module for a full-stack multiplayer web platform (42 Vienna capstone project). Responsible for designing and deploying the complete observability infrastructure covering metrics, logging, and alerting.",
-      "startDate": "2025-10-01",
-      "endDate": "2026-03-01",
-      "highlights": [
-        "Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds",
-        "Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform",
-        "Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services",
-        "Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity"
-      ],
-      "url": "https://github.com/anastasiiap42/ft_transcendence/tree/main/devops",
-      "roles": ["DevOps Engineer"]
-    },
-    {
-      "name": "ft_linux — Linux From Scratch",
-      "description": "Built a fully bootable Linux system from scratch, covering every layer from cross-compilation toolchain to kernel configuration, filesystem hierarchy, init system, and bootloader. Follows LFS/BLFS/ALFS methodology with a custom automation layer.",
-      "startDate": "2025-09-01",
-      "endDate": "",
-      "highlights": [
-        "Compiled a custom Linux kernel (4.x) with hand-selected driver and filesystem configuration",
-        "Built a two-phase cross-compilation toolchain (temporary + final) to produce a host-independent, self-contained Linux system",
-        "Automated the full build pipeline (14 stages) via an ALFS-style bootstrap script with environment isolation and error recovery",
-        "Designed partition layout, configured GRUB bootloader, SysV init, and udev for dynamic device management"
-      ],
-      "url": "https://github.com/42-CC-RNCP/ft_linux",
-      "roles": ["Author"]
-    },
-    {
-      "name": "Inception-of-Things — K3s Kubernetes Cluster",
-      "description": "Provisioned and configured a multi-node K3s (lightweight Kubernetes) cluster using Vagrant and VirtualBox, covering cluster networking, ingress, and GitOps-style deployment workflows.",
-      "startDate": "2025-06-01",
-      "endDate": "2025-10-01",
-      "highlights": [
-        "Deployed a multi-node K3s cluster with Vagrant-provisioned VMs, including nested virtualization setup",
-        "Configured Kubernetes ingress, service routing, and workload deployment across cluster nodes",
-        "Applied GitOps principles with ArgoCD for continuous deployment in the bonus track"
-      ],
-      "url": "https://github.com/42-CC-RNCP/Inception-of-Things",
-      "roles": ["Developer"]
-    },
-    {
-      "name": "libftpp — C++ Architecture Library",
-      "description": "A modern C++20 library built through structured exercises practicing SOLID principles, hexagonal architecture, and design patterns. Includes Architectural Decision Records (ADRs) documenting trade-off reasoning.",
-      "startDate": "2025-10-01",
-      "endDate": "",
-      "highlights": [
-        "Implemented core data structures and utilities applying SOLID principles and hexagonal (ports & adapters) architecture",
-        "Documented architectural decisions via ADRs, treating design trade-offs as first-class engineering artifacts",
-        "Maintained CI pipeline with CMake, clang-format, and automated test suite"
-      ],
-      "url": "https://github.com/42-CC-RNCP/libftpp",
-      "roles": ["Author"]
-    },
-    {
-      "name": "litetorch + litetune + sklite — AI Framework Toolkit",
-      "description": "A trio of educational ML infrastructure projects: litetorch (neural network framework built from scratch inspired by PyTorch), litetune (hyperparameter tuner inspired by Ray Tune), and sklite (ML preprocessing toolkit inspired by scikit-learn).",
-      "startDate": "2025-03-01",
-      "endDate": "2025-06-01",
-      "highlights": [
-        "Implemented forward/backpropagation, autograd, and layer abstractions from scratch in litetorch",
-        "Built a hyperparameter search and experiment tracking system in litetune, mirroring Ray Tune's trial management model",
-        "Designed preprocessing pipelines and utility functions in sklite for educational clarity and extensibility"
-      ],
-      "url": "https://github.com/42-CC-RNCP",
-      "roles": ["Author"]
-    },
-    {
-      "name": "webserver — HTTP/1.1 Server in C++",
-      "description": "Implemented a standards-compliant HTTP/1.1 web server in C++ from scratch, handling concurrent connections, request parsing, and static/dynamic content serving.",
-      "startDate": "2024-06-01",
-      "endDate": "2024-09-01",
-      "highlights": [
-        "Built non-blocking I/O event loop handling concurrent HTTP connections using poll/select",
-        "Implemented HTTP/1.1 request parsing, routing, and response generation",
-        "Supported CGI execution, static file serving, and configurable virtual hosts"
-      ],
-      "url": "https://github.com/LeaYeh/webserver",
-      "roles": ["Developer"]
-    },
-    {
-      "name": "minishell — Bash-compatible Shell",
-      "description": "Reimplemented core GNU Bash shell features including command parsing, process management, and built-in execution.",
-      "startDate": "2023-12-01",
-      "endDate": "2024-03-01",
-      "highlights": [
-        "Developed a syntax analyzer using the shift-reduce algorithm for Bash-like grammar interpretation",
-        "Optimized subprocess management and pipeline execution across the full SDLC",
-        "Employed Docker to ensure consistent development environments across the team"
-      ],
-      "url": "https://github.com/LeaYeh/minishell",
-      "roles": ["Developer"]
-    },
-    {
-      "name": "CDNJS — Content Delivery Network for JavaScript",
-      "description": "Open-source CDN for JavaScript libraries used by over 3.5 million websites, serving 30+ billion requests per month.",
-      "startDate": "2015-09-01",
-      "endDate": "2016-09-01",
-      "highlights": [
-        "Contributed to a platform serving over 30 billion requests per month across 3.5 million websites"
-      ],
-      "url": "https://cdnjs.com/",
-      "roles": ["Contributor"]
-    }
-  ],
   "meta": {
     "version": "v1.0.0",
     "canonical": "https://github.com/jsonresume/resume-schema/blob/v1.0.0/schema.json"

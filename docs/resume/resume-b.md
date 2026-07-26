@@ -213,6 +213,7 @@ level = "Advanced"
 -->
 
 - Google Cloud Platform (GCP)
+- Object storage (AWS S3, MinIO)
 - Beam / Dataflow (distributed data)
 - Azure Databricks (certified)
 - Delta Lake (learning)

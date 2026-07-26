@@ -316,6 +316,7 @@ level = "Master"
 - ETL
 - Data Warehouse
 - Google Cloud Platform (GCP)
+- Object storage (AWS S3, MinIO)
 - SQL
 
 # Awards

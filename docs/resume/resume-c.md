@@ -238,6 +238,7 @@ level = "Master"
 - Data Warehouse
 - Data Quality Monitoring
 - Google Cloud Platform (GCP)
+- Object storage (AWS S3, MinIO)
 - Apache Airflow
 - NiFi
 - BigQuery

@@ -33,13 +33,19 @@ cv-lint: ## Gates: invariants, provenance, numbers, banned terms, JSON freshness
 cv-lint-strict: ## cv-lint with warnings treated as errors (used by cv-render / cv-publish)
 	python3 scripts/cv_lint.py --strict
 
-cv-publish: cv-build cv-lint-strict ## Push docs/resume/cv.json to the public Gist (decision #11)
+# The portal copy is refreshed BEFORE the gates run, not after. It is a derived
+# copy of cv.json, and the portal-copy gate exists to catch a hand-edit or a
+# forgotten publish — so leaving it stale here would deadlock the one command
+# that repairs it. Regenerating it first is not silencing the gate: every other
+# gate still has to pass before anything is pushed.
+cv-publish: cv-build ## Push docs/resume/cv.json to the public Gist (decision #11)
 	@test -n "$(GIST_ID)" || { echo "GIST_ID missing in scripts/cv-sync.env"; exit 1; }
+	@cp docs/resume/cv.json apps/portal/src/data/resume.json && echo "✓ portal data copy refreshed"
+	$(MAKE) cv-lint-strict
 	python3 -c "import json,sys; c=open('docs/resume/cv.json').read(); \
 sys.stdout.write(json.dumps({'files':{'resume.json':{'content':c}}}))" \
 	  | gh api -X PATCH /gists/$(GIST_ID) --input - >/dev/null
 	@echo "✓ Gist $(GIST_ID) updated from docs/resume/cv.json"
-	@cp docs/resume/cv.json apps/portal/src/data/resume.json && echo "✓ portal data copy refreshed"
 
 cv-render: cv-build cv-lint-strict ## Render cv.json (detailed) + resume-*.json (1-page) to PDF via scripts/cv_render.py + headless Chrome (decision #12)
 	@test -n "$(CHROME)" || { echo "No Chrome/Chromium found; set CHROME=/path/to/chrome"; exit 1; }
