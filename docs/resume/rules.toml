@@ -7,8 +7,10 @@ pattern = '\b(py)?spark\b'
 message = "MediaTek used Beam/Dataflow, never Spark/PySpark"
 
 [[banned]]
-pattern = '\bterraform\b'
-message = "IaC here is Kustomize + ArgoCD, never Terraform"
+# OpenTofu and Terragrunt are the same IaC category as Terraform (a fork and a
+# wrapper around it, respectively) — never used, same as Terraform itself.
+pattern = '\b(terraform|opentofu|terragrunt)\b'
+message = "IaC here is Kustomize + ArgoCD, never Terraform/OpenTofu/Terragrunt"
 
 # Terms that may appear only when qualified as not-yet-mastered.
 #
@@ -18,8 +20,14 @@ message = "IaC here is Kustomize + ArgoCD, never Terraform"
 # widened forms are matched anywhere in the bullet, so they can satisfy the rule
 # for a term they do not actually qualify; the marker is the stricter choice when
 # a bullet could read as a proficiency claim.
+#
+# Widened beyond "agentic" to bare agent/agents/multi-agent, plus the RAG
+# ecosystem terms (spelled-out "retrieval-augmented generation" in either
+# hyphenated or space-separated form, LangChain, LlamaIndex): the owner is
+# designing agentic RAG, not building or shipping agents, so any phrasing that
+# reads as delivered agent work is false unless it carries the same qualifier.
 [[qualified]]
-pattern = '\b(graph)?rag\b|\blanggraph\b|\bagentic\b'
+pattern = '\b(graph)?rag\b|\blanggraph\b|\bagentic\b|retrieval[- ]augmented generation|\blangchain\b|\bllamaindex\b|\bagents?\b'
 requires = '\((in-progress|learning|exploring)\)|currently \w+ing|\bevaluating\b'
 message = "RAG / LangGraph / agent work must be marked (in-progress) or framed as current activity"
 
@@ -27,3 +35,21 @@ message = "RAG / LangGraph / agent work must be marked (in-progress) or framed a
 pattern = '\bgerman\b'
 requires = '\b(beginner|a[12])\b'
 message = "German is beginner level"
+
+# AWS experience is model-monitoring only (a monitoring stack described as
+# "AWS + Streamlit"), never platform/production depth — so a bare "aws" must
+# sit next to a monitoring qualifier or it reads as broader ownership than
+# actually happened.
+[[qualified]]
+pattern  = '\baws\b'
+requires = '\bmonitor'
+message = "AWS is model-monitoring only, not platform depth"
+
+# The only AWS service ever used is S3. These names are banned outright
+# (no qualifier can rescue them) because they were never touched at all.
+# "lambda" and "glue" are ordinary English/Python words on their own (a
+# Python lambda, "glue code"), so they only count as AWS services when the
+# literal "aws" prefix is right there — do not loosen this to a bare match.
+[[banned]]
+pattern = '\b(ec2|eks|ecs|rds|vpc|redshift|athena|sagemaker|dynamodb|cloudformation|fargate|cloudwatch|kinesis)\b|\baws (lambda|glue)\b'
+message = "AWS use was S3 only; these services were never used"

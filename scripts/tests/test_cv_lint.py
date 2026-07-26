@@ -1199,3 +1199,90 @@ def test_a_clean_corpus_reaches_the_success_line(tmp_path, monkeypatch, capsys):
     rc, err = run_main(capsys)
     assert rc == 0
     assert err == ""
+
+
+# --- the shipped rules.toml, not just the inline RULES fixture ------------
+#
+# Every test above builds its own throwaway rules.toml, so nothing pins what
+# the *shipped* docs/resume/rules.toml actually catches or lets through. An
+# adversarial review found five phrasings that read as fatal claims but slid
+# past the rules as they stood (bare "agent"/"multi-agent", spelled-out
+# "retrieval-augmented generation", LangChain/LlamaIndex, OpenTofu/Terragrunt,
+# and named AWS services). These tests load the real file so a future edit
+# that reopens one of those gaps — or narrows a pattern to make a bullet pass
+# — fails here instead of shipping quietly.
+
+import pytest
+
+REAL_RULES_PATH = Path(__file__).parent.parent.parent / "docs" / "resume" / "rules.toml"
+
+
+def real_rules():
+    return load_rules(REAL_RULES_PATH)
+
+
+# (bypass text, substring expected in at least one fatal finding's message)
+BYPASSES = [
+    ("Built a production retrieval-augmented generation pipeline over internal docs",
+     "RAG / LangGraph / agent work must be marked (in-progress) or framed as current activity"),
+    ("Designed and shipped a multi-agent LLM orchestration system in production",
+     "RAG / LangGraph / agent work must be marked (in-progress) or framed as current activity"),
+    ("Built production LLM applications on LangChain and LlamaIndex",
+     "RAG / LangGraph / agent work must be marked (in-progress) or framed as current activity"),
+    ("Authored the OpenTofu and Terragrunt modules provisioning the whole estate",
+     "IaC here is Kustomize + ArgoCD, never Terraform/OpenTofu/Terragrunt"),
+    ("Owned AWS production estate: EKS, Lambda, RDS, VPC design and cost governance",
+     "AWS use was S3 only; these services were never used"),
+]
+
+
+@pytest.mark.parametrize("text,expected_message", BYPASSES, ids=[b[0] for b in BYPASSES])
+def test_shipped_rules_catch_the_adversarial_bypasses(tmp_path, text, expected_message):
+    f = write(tmp_path, "resume-a", with_summary(text))
+    problems = check_rules([f], real_rules())
+    fatal_messages = [p.message for p in problems if p.fatal]
+    assert any(expected_message in m for m in fatal_messages), (
+        f"expected a fatal finding containing {expected_message!r} for the "
+        f"bypass text {text!r}, but check_rules() against the shipped "
+        f"docs/resume/rules.toml returned {fatal_messages!r}"
+    )
+
+
+# (true statement, why it is true — see docs/resume/raw/resume_split_blueprint.md)
+TRUE_STATEMENTS = [
+    "model-monitoring infrastructure (AWS + Streamlit)",
+    "AWS (model monitoring)",
+    "Currently architecting an agentic RAG system",
+    "Agentic RAG (in-progress)",
+    "evaluating LLM tooling and defining the end-to-end agentic architecture strategy",
+]
+
+
+@pytest.mark.parametrize("text", TRUE_STATEMENTS)
+def test_shipped_rules_leave_the_honest_qualified_phrasing_alone(tmp_path, text):
+    f = write(tmp_path, "resume-a", with_summary(text))
+    problems = check_rules([f], real_rules())
+    assert problems == [], (
+        f"the shipped docs/resume/rules.toml flagged the honestly-qualified "
+        f"statement {text!r}, which the resume owner confirmed is true: {problems!r}"
+    )
+
+
+# (innocuous text that must not trip the new AWS service-name rule)
+FALSE_POSITIVES = [
+    "lambda x: x + 1",
+    "wrote the glue code stitching the two services together",
+    "Stored artifacts in Amazon S3",
+    "S3 versioning kept the old builds around",
+]
+
+
+@pytest.mark.parametrize("text", FALSE_POSITIVES)
+def test_shipped_rules_do_not_flag_lambda_glue_or_s3_out_of_aws_context(tmp_path, text):
+    f = write(tmp_path, "resume-a", with_summary(text))
+    problems = check_rules([f], real_rules())
+    assert problems == [], (
+        f"the shipped docs/resume/rules.toml flagged {text!r}, which is not "
+        f"an AWS claim at all (bare Python lambda / ordinary 'glue code' / "
+        f"S3, the one AWS service actually used): {problems!r}"
+    )
