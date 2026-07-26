@@ -1,6 +1,6 @@
 +++
 name = "Lea (Mei Ling) Yeh"
-label = "MLOps Engineer | DevOps & GitOps | Platform & Observability"
+label = "Senior Software Engineer | MLOps, DevOps & GitOps | Platform & Observability"
 image = "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156"
 email = "lea.yeh.ml@gmail.com"
 phone = ""
@@ -24,7 +24,7 @@ url = "https://github.com/LeaYeh"
 
 # Summary
 
-MLOps and DevOps engineer who builds the delivery path and the monitoring that watches what runs on it: K3s + ArgoCD GitOps, GitHub Actions CI/CD, Prometheus/Grafana/ELK, and MLflow-based model monitoring with data-drift tracking for production ML at MediaTek. Runs a personal Hetzner K3s cluster live.
+Senior Software Engineer building the delivery path and the monitoring that watches what runs on it: K3s + ArgoCD GitOps, GitHub Actions CI/CD, Prometheus/Grafana/ELK, and MLflow-based model monitoring with data-drift tracking for production ML at MediaTek. 9+ years spanning data pipelines, the analytics on top of them, and applied AI today. Runs a personal Hetzner K3s cluster live.
 
 # Work
 

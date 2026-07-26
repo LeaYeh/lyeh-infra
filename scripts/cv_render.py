@@ -73,14 +73,17 @@ def location_str(loc):
     return str(loc or "")
 
 
-def first_paragraph(text, limit=320):
-    """For resume mode: keep the summary punchy — first paragraph, capped."""
+def first_paragraph(text):
+    """For resume mode: the summary's first paragraph, whole.
+
+    This used to also cut the paragraph at 320 characters and append an ellipsis,
+    which silently rewrote the author's words — the PDF said something the .md and
+    the published .json did not. Length is the author's call now; cv_pagecheck.py
+    fails the render if the result no longer fits on one page.
+    """
     if not text:
         return ""
-    para = text.split("\n\n")[0].strip()
-    if len(para) > limit:
-        para = para[:limit].rsplit(" ", 1)[0] + "…"
-    return para
+    return text.split("\n\n")[0].strip()
 
 
 # ── section renderers ─────────────────────────────────────────────────────────
@@ -315,7 +318,7 @@ def build_html(resume, mode):
     right = []
     summary = basics.get("summary")
     if summary:
-        text = summary if mode == "cv" else first_paragraph(summary, limit=320)
+        text = summary if mode == "cv" else first_paragraph(summary)
         text_html = "".join(f"<p>{esc(par)}</p>" for par in text.split("\n\n"))
         right.append(f'<section class="sec summary">{text_html}</section>')
     right.append(render_work(resume.get("work"), mode))

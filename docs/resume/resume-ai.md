@@ -1,6 +1,6 @@
 +++
 name = "Lea (Mei Ling) Yeh"
-label = "AI Platform Engineer | Applied AI & LLM Systems | ML Internals"
+label = "Senior Software Engineer | Applied AI & LLM Systems | AI Platform"
 image = "https://gravatar.com/avatar/4b1c334c82a3cc63710620b6daa88880?size=256&cache=1713618229156"
 email = "lea.yeh.ml@gmail.com"
 phone = ""
@@ -24,7 +24,7 @@ url = "https://github.com/LeaYeh"
 
 # Summary
 
-AI platform engineer spanning model internals to delivery: sole technical decision-maker for a company's AI integration, currently architecting an agentic RAG system over internal documentation and business data. Built a neural-net framework, autograd and hyperparameter tuner from scratch; ships on a self-operated K3s/ArgoCD platform.
+Senior Software Engineer in applied AI: sole technical decision-maker for a company's AI integration, currently architecting an agentic RAG system over internal documentation and business data. Came by the engineering path — PB-scale pipelines, then the analysis and model monitoring on them — and writes the internals: neural-net framework, autograd and tuner from scratch.
 
 # Work
 
@@ -167,22 +167,6 @@ Personal cloud infrastructure on a single Hetzner CX23 VM running k3s, deployed 
 - Built a fully automated CI/CD pipeline (GitHub Actions): Hugo build → Docker image to GHCR pinned by content SHA → image tag written back into deployment.yaml → ArgoCD rolling update <!-- src: lyeh-infra-h3 @6eb8 -->
 - Pinned deployments by immutable image SHA rather than mutable tags so Git remains an exact source of truth and ArgoCD reliably detects changes <!-- src: lyeh-infra-h4 @2b98 -->
 - Scripted the full zero-to-running bootstrap (provision → k3s → cert-manager → ArgoCD) so a fresh VM becomes self-managing in four steps <!-- src: lyeh-infra-h5 @bad4 -->
-
-## ft_transcendence — Full-Stack Platform with Observability Stack
-<!--meta
-id = "ft-transcendence"
-start = "2025-10-01"
-end = "2026-03-01"
-url = "https://github.com/anastasiiap42/ft_transcendence/tree/main/devops"
-roles = ["DevOps Engineer"]
--->
-
-Contributed the DevOps module for a full-stack multiplayer web platform (42 Vienna capstone project). Responsible for designing and deploying the complete observability infrastructure covering metrics, logging, and alerting.
-
-- Deployed Prometheus for metrics collection and configured alerting rules for service health and performance thresholds <!-- src: ft-transcendence-h1 @d4fc -->
-- Built Grafana dashboards for real-time visibility into application and infrastructure metrics across the platform <!-- src: ft-transcendence-h2 @7adb -->
-- Set up ELK stack (Elasticsearch, Logstash, Kibana) for centralized log aggregation and search across distributed services <!-- src: ft-transcendence-h3 @0e32 -->
-- Containerized the full observability stack with Docker Compose, enabling reproducible deployment and local development parity <!-- src: ft-transcendence-h4 @ef5c -->
 
 # Skills
 

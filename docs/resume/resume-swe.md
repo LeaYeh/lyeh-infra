@@ -24,7 +24,7 @@ url = "https://github.com/LeaYeh"
 
 # Summary
 
-Senior Software Engineer owning the full software stack at c-sense GmbH: a layered SPM instrument-control framework built on explicit interface contracts, async command routing, and a hardware-abstraction layer over a proprietary vendor API. Systems craft from 42 Vienna — HTTP server, shell interpreter, C++ architecture library, Linux from scratch.
+Senior Software Engineer owning the full software stack at c-sense GmbH: a layered SPM instrument-control framework built on explicit interface contracts, async command routing and a hardware-abstraction layer over a vendor API. 9+ years running from data pipelines through the analytics on them to applied AI. Systems craft from 42 Vienna — HTTP server, shell interpreter, Linux from scratch.
 
 # Work
 
@@ -194,7 +194,6 @@ A fully bootable Linux system built from scratch, covering every layer from cros
 - Built a two-phase cross-compilation toolchain (temporary + final) to produce a host-independent, self-contained Linux system <!-- src: ft-linux-h2 @efd1 -->
 - Compiled a custom Linux kernel (4.x) with hand-selected driver and filesystem configuration <!-- src: ft-linux-h1 @28e0 -->
 - Automated the full build pipeline (14 stages) via an ALFS-style bootstrap script with environment isolation and error recovery <!-- src: ft-linux-h3 @5370 -->
-- Designed partition layout, configured GRUB bootloader, SysV init, and udev for dynamic device management <!-- src: ft-linux-h4 @2e4a -->
 
 ## minishell — Bash-compatible Shell
 <!--meta
@@ -210,20 +209,6 @@ A reimplementation of core GNU Bash features — command parsing, process manage
 - Developed a syntax analyzer using the shift-reduce algorithm for Bash-like grammar interpretation <!-- src: minishell-h1 @abe2 -->
 - Optimized subprocess management and pipeline execution across multi-stage pipelines <!-- src: minishell-h2 @9541 -->
 - Employed Docker to ensure consistent development environments across the team <!-- src: minishell-h3 @f177 -->
-
-## CDNJS — Content Delivery Network for JavaScript
-<!--meta
-id = "cdnjs"
-start = "2015-09-01"
-end = "2016-09-01"
-url = "https://cdnjs.com/"
-roles = ["Contributor"]
--->
-
-Open-source CDN for JavaScript libraries used by over 3.5 million websites, serving 30+ billion requests per month.
-
-- Contributed to a platform serving over 30 billion requests per month across 3.5 million websites <!-- src: cdnjs-h1 @bc24 -->
-- Assisted with library maintenance and automation tooling for the open-source CDN <!-- src: cdnjs-h2 @98e2 -->
 
 # Skills
 
