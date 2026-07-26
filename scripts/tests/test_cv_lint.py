@@ -62,6 +62,67 @@ def test_drifting_contact_is_reported(tmp_path):
     assert any("basics" in p.message for p in problems)
 
 
+def test_drifting_start_date_is_reported(tmp_path):
+    # Employment dates are the invariant a tailored facet is most tempted to
+    # round: each one is checked on its own, not just the employer name.
+    cv = write(tmp_path, "cv", CV)
+    facet = write(tmp_path, "resume-a",
+                  CV.replace('start = "2024-08-01"', 'start = "2023-08-01"'))
+    assert any("work" in p.message for p in check_invariants(cv, [facet]))
+
+
+def test_drifting_end_date_is_reported(tmp_path):
+    cv = write(tmp_path, "cv", CV)
+    facet = write(tmp_path, "resume-a", CV.replace('end = ""', 'end = "2026-01-01"'))
+    assert any("work" in p.message for p in check_invariants(cv, [facet]))
+
+
+def test_drifting_work_location_is_reported(tmp_path):
+    cv = write(tmp_path, "cv", CV)
+    facet = write(tmp_path, "resume-a",
+                  CV.replace('location = "Vienna, Austria"', 'location = "Berlin, Germany"'))
+    assert any("work" in p.message for p in check_invariants(cv, [facet]))
+
+
+CV_EDUCATION = CV.replace("# Languages", '''# Education
+
+## National Taiwan University — Computer Science
+
+- Operating Systems
+- Distributed Systems
+
+# Languages''')
+
+
+def test_matching_education_passes(tmp_path):
+    cv = write(tmp_path, "cv", CV_EDUCATION)
+    facet = write(tmp_path, "resume-a", CV_EDUCATION)
+    assert check_invariants(cv, [facet]) == []
+
+
+def test_drifting_education_area_is_reported(tmp_path):
+    # A degree is a fact about the world, not a facet's pitch — an 'area'
+    # reworded to match the JD is a fabricated credential.
+    cv = write(tmp_path, "cv", CV_EDUCATION)
+    facet = write(tmp_path, "resume-a",
+                  CV_EDUCATION.replace("Computer Science", "Electrical Engineering"))
+    assert any("education" in p.message for p in check_invariants(cv, [facet]))
+
+
+def test_drifting_education_institution_is_reported(tmp_path):
+    cv = write(tmp_path, "cv", CV_EDUCATION)
+    facet = write(tmp_path, "resume-a",
+                  CV_EDUCATION.replace("National Taiwan University", "Stanford University"))
+    assert any("education" in p.message for p in check_invariants(cv, [facet]))
+
+
+def test_invented_education_course_is_reported(tmp_path):
+    cv = write(tmp_path, "cv", CV_EDUCATION)
+    facet = write(tmp_path, "resume-a",
+                  CV_EDUCATION.replace("- Distributed Systems", "- Machine Learning"))
+    assert any("education" in p.message for p in check_invariants(cv, [facet]))
+
+
 def test_drifting_languages_is_reported(tmp_path):
     cv = write(tmp_path, "cv", CV)
     facet = write(tmp_path, "resume-a", CV.replace('fluency = "Beginner"', 'fluency = "Fluent"'))
@@ -156,6 +217,27 @@ def test_qualified_term_with_qualifier_passes(tmp_path):
     assert check_rules([f], rules_file(tmp_path)) == []
 
 
+def test_a_violation_below_a_clean_bullet_is_still_found(tmp_path):
+    # The gate has to read the whole bullet list, not the first bullet: an
+    # assistant appending a claim to an entry writes it at the bottom.
+    f = write(tmp_path, "resume-a", facet(
+        "- Owned the GitOps delivery path\n- Managed infra with Terraform"))
+    problems = check_rules([f], rules_file(tmp_path))
+    assert len(problems) == 1
+    assert problems[0].fatal
+    assert problems[0].line == 22          # the second bullet, not the first
+    assert "Terraform" in problems[0].message
+
+
+def test_every_bullet_after_the_first_is_read(tmp_path):
+    f = write(tmp_path, "resume-a", facet(
+        "- Owned the GitOps delivery path\n"
+        "- Managed infra with Terraform\n"
+        "- Built a RAG pipeline"))
+    problems = check_rules([f], rules_file(tmp_path))
+    assert [p.line for p in problems] == [22, 23]
+
+
 def test_number_absent_from_source_is_fatal(tmp_path):
     cv = write(tmp_path, "cv", CV)
     f = write(tmp_path, "resume-a", facet(f"- Migrated 12 services <!-- src: csense-h1 @{fingerprint(SOURCE)} -->"))
@@ -171,6 +253,44 @@ def test_number_present_in_source_passes(tmp_path):
     f = write(tmp_path, "resume-a",
               facet(f"- Migrated 12 services <!-- src: csense-h1 @{src_hash} -->"))
     assert check_numbers(cv, [f]) == []
+
+
+def test_a_number_in_the_source_does_not_license_a_different_number(tmp_path):
+    # Grounding is membership, not "the source has some number, so any number
+    # is fine". Every other failing-numbers case here uses a source with no
+    # digits at all, which cannot tell those two rules apart: with a source of
+    # '12 services' the facet's '30' must still be fatal.
+    cv_text = CV.replace(SOURCE, f"{SOURCE} for 12 services")
+    cv = write(tmp_path, "cv", cv_text)
+    src_hash = fingerprint(f"{SOURCE} for 12 services")
+    f = write(tmp_path, "resume-a",
+              facet(f"- Migrated 30 services <!-- src: csense-h1 @{src_hash} -->"))
+    problems = check_numbers(cv, [f])
+    assert len(problems) == 1
+    assert problems[0].fatal
+    assert "number(s) 30 do not appear" in problems[0].message
+
+
+def test_only_the_ungrounded_number_of_a_mixed_bullet_is_reported(tmp_path):
+    # The facet keeps the grounded '12' and invents '30'; only '30' is a finding.
+    cv_text = CV.replace(SOURCE, f"{SOURCE} for 12 services")
+    cv = write(tmp_path, "cv", cv_text)
+    src_hash = fingerprint(f"{SOURCE} for 12 services")
+    f = write(tmp_path, "resume-a",
+              facet(f"- Migrated 12 of 30 services <!-- src: csense-h1 @{src_hash} -->"))
+    problems = check_numbers(cv, [f])
+    assert len(problems) == 1
+    assert "number(s) 30 do not appear" in problems[0].message
+
+
+def test_a_number_in_the_cv_at_large_does_not_license_a_prose_number(tmp_path):
+    # Same rule for the whole-document grounding path used by section prose.
+    cv = write(tmp_path, "cv", CV.replace(SOURCE, f"{SOURCE} over 15 years"))
+    f = write(tmp_path, "resume-a", with_summary("Platform engineer with 20 years of practice."))
+    problems = check_numbers(cv, [f])
+    assert len(problems) == 1
+    assert problems[0].fatal
+    assert "number(s) 20 do not appear" in problems[0].message
 
 
 def test_digits_in_url_are_not_flagged(tmp_path):
@@ -277,6 +397,52 @@ def test_stale_json_is_fatal(tmp_path):
 def test_missing_json_is_fatal(tmp_path):
     md = write(tmp_path, "cv", CV)
     assert check_freshness([md])[0].fatal
+
+
+def _rebuild_then_edit_json(tmp_path, md, mutate):
+    """Build ``md``, then hand-edit the committed JSON so it no longer matches."""
+    build_file(md)
+    out = md.with_suffix(".json")
+    data = json.loads(out.read_text())
+    mutate(data)
+    out.write_text(json.dumps(data))
+    return out
+
+
+def test_json_drifting_outside_basics_name_is_fatal(tmp_path):
+    # Freshness is equality of the whole document. A committed JSON that keeps
+    # the name but has a hand-edited job title is exactly the drift that ships
+    # a lie — comparing any single field would wave it through.
+    md = write(tmp_path, "cv", CV)
+
+    def bump_title(data):
+        data["work"][0]["position"] = "Principal Software Engineer"
+
+    _rebuild_then_edit_json(tmp_path, md, bump_title)
+    problems = check_freshness([md])
+    assert len(problems) == 1
+    assert problems[0].fatal
+    assert "cv-build" in problems[0].message
+
+
+def test_json_drifting_in_a_bullet_is_fatal(tmp_path):
+    md = write(tmp_path, "cv", CV)
+
+    def inflate_highlight(data):
+        data["work"][0]["highlights"][0] = "Drove the GitOps migration for 40 teams"
+
+    _rebuild_then_edit_json(tmp_path, md, inflate_highlight)
+    assert [p.fatal for p in check_freshness([md])] == [True]
+
+
+def test_json_drifting_in_a_contact_field_is_fatal(tmp_path):
+    md = write(tmp_path, "cv", CV)
+
+    def repoint_email(data):
+        data["basics"]["email"] = "someone-else@example.com"
+
+    _rebuild_then_edit_json(tmp_path, md, repoint_email)
+    assert [p.fatal for p in check_freshness([md])] == [True]
 
 
 # --- malformed documents are Problems, not exceptions -------------------
