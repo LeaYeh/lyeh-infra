@@ -43,15 +43,23 @@
 #### Data Engineering
 
 1. 你有使用過哪些資料庫 (PostgreSQL, MySQL, MongoDB, Redis, ...)
+    
     BigQuery, PostgreSQL, MySQL, Redis, Elasticsearch, Splunk
+
 2. 你有使用過哪些資料倉儲
+    
     Built Datawarehouse on BigQuery (ODS, DWD, DWS, DM)
+
 3. 你知道 Databricks 是什麼嗎
+    
     我知道 Databricks 是 .... 但我沒有實務經驗
 
 4. 你有使用過哪些資料處理框架 
+
 5. 說明 Data pipeline 的設計流程
+
 6. 解釋 Data Lake, Lakehouse and Data Warehouse 說明
+    
     我們透過 GCP 的 GCS -> Airflow -> BigQuery 建立 Data Warehouse
     1. Data Lake: GCS, 存放原始資料，沒有 schema，資料格式不固定
     2. 透過 Airflow ETL 將資料轉成 BigQuery 的 DWD / DWS / ADS，建立 Data Warehouse
@@ -63,6 +71,7 @@
             - silver: BigQuery DWD, cleaned data
             - gold: BigQuery DWS/ADS, aggregated data
 7. 怎麼做 Data Quality Check (DQC) and how to handle DQC failure
+    
     難點在於 Completeness + Validity 很難做到每個欄位定義 validation rule，實務上我們只對關鍵指標設定 rules，其他欄位只做 schema check，並且在 ETL pipeline 裡面加上 DQC 檢查，當 DQC 失敗時，會發送 alert 給 on-call engineer，並且暫停 pipeline，直到問題被解決。
     Business rule check 則是透過 dashboard 監控關鍵指標。
 
@@ -91,6 +100,7 @@
     ```
 
 8. 怎麼做 Data Lineage
+
     我針對 DAG 中 table 之間的調用、依賴關係，建立一個 metadata graph，並且在 DAG 執行時，將每個 task 的 input/output table 記錄下來，形成完整的 lineage。這樣可以追蹤資料的來源、流向，以及在 pipeline 中的轉換過程。
     但這跳套法當時的缺點是只知道 table level lineage，無法追蹤到 row level lineage。
     Data Lineage 主要的應用是，當上游的 table 發生變化時，可以追蹤到下游受影響的 table，透過 lineage graph 可以快速定位問題，並且通知相關的 owner 決定是否需要重新跑 pipeline 或是修正資料。
@@ -99,7 +109,9 @@
 #### Databricks
 
 1. 說明對 Databricks 的理解
+
 2. 說明 儲存與事務層 - Delta Lake
+    
     Overview of Delta Lake:
     ```example
                                 Delta Table
@@ -133,7 +145,9 @@
     1. 先寫資料檔案(Parquet)到 storage: 這時候檔案已經存在,但對 reader 來說還不可見(因為還沒被 log 記錄)
     2. 再寫一筆 commit 到 _delta_log: 一個 JSON 檔案,記錄「這次 transaction 新增了哪些檔案、刪除了哪些檔案
     3. 這個 log commit 才是真正的「原子開關」，當 reader 看到這個 commit 時，才會把這次 transaction 的檔案視為可見，否則 reader 只會看到舊的檔案。
-2. 說明 Delta Log
+
+3. 說明 Delta Log
+
     Delta Log 的單位是「Table」,不是「資料檔案」。 一張 Delta Table(也就是一個 LOCATION 路徑)只有一個 _delta_log/ 資料夾,裡面按順序記錄這張 table從建立以來所有的 transaction。不管這張 table 底下累積了 10 個 Parquet 檔案還是 10 萬個,log 資料夾都只有一份,不會每個 Parquet 檔案各自配一個 log。
     ```example
     s3://bucket/sensor_readings/
@@ -147,7 +161,8 @@
     ├── part-00003-cccc.snappy.parquet   ← version 3 remove 的舊檔(邏輯刪除,物理還在)
     └── part-00004-dddd.snappy.parquet   ← version 3 產生的新檔
     ```
-3. 說明 Delta Table 中的 version and commit 關係
+4. 說明 Delta Table 中的 version and commit 關係
+    
     成功對 Delta Table 寫入資料後,會產生一個 commit, `SELECT` and `VACUUM` 則不會產生 commit。每個 commit 都會對應一個 version, version 只會增加,不會減少,也不會跳號。
     ```example
     對 Delta Table 的成功**寫入**
@@ -200,7 +215,8 @@
         
     → v6
     ```
-4. 說明 Checkpoint 機制
+5. 說明 Checkpoint 機制
+    
     如果一張 table 累積了幾萬次 transaction,每次查詢都要從 version 0 開始一路重播幾萬個 JSON 檔案才能知道「現在到底哪些檔案是有效的」,這樣太慢。所以 Delta Lake 有一個優化:
     ```example
     _delta_log/
@@ -213,7 +229,9 @@
     └── ...
     ```
     Checkpoint 是什麼: 每累積 10 個 commit(預設值,可調整),Delta Lake 會把「當下所有仍然有效的檔案清單」壓縮成一個 Parquet 格式的快照存下來。之後 reader 要讀這張 table,不用從 version 0 開始重播,直接讀最近的 checkpoint,再把 checkpoint 之後少數幾筆 JSON commit 疊加上去就好 —— 這是典型的「full snapshot + incremental delta」設計,你在 event sourcing 或任何 log-based 系統應該都遇過同樣的模式。
-5. 說明 Delta Table and Delta Live Table
+
+6. 說明 Delta Table and Delta Live Table
+    
     Delta Live Table (DLT) 是 Databricks 提供的一個 declarative 的資料 pipeline framework,讓使用者可以用 SQL 或 Python 來定義資料 pipeline,並且自動處理 schema enforcement, data validation, data cleaning, lineage tracking 等工作。
     不同於傳統 DQC 作法需要在不同層做 schema check, data validation, data cleaning, Delta Live Table (DLT) 提供了一個 declarative 的方式來定義資料 pipeline,讓使用者只需要描述「我想要的資料長什麼樣子」,DLT 會自動幫你做 schema enforcement, data validation, data cleaning, 並且自動產生 lineage graph。
     ```example
@@ -267,8 +285,11 @@
     )
     AS SELECT * FROM LIVE.accounts_raw;
     ```
-6. 說明 高效能運算引擎 - Photon & Spark
-7. 說明 資料治理與安全 - Unity Catalog (Workspace / Catalog / Schema / Table)
+7. 說明 高效能運算引擎 - Photon & Spark
+
+
+8. 說明 資料治理與安全 - Unity Catalog (Workspace / Catalog / Schema / Table)
+    
     Databricks: catalog.schema.table <-> GCP: project.dataset.table
 
     | 階層 / 結構 | 說明 | 存取與權限範圍 |
@@ -286,7 +307,8 @@
     | **1st Level (頂層目錄)** | Catalog | BigQuery Project | 資料的頂層隔離。在 SQL 語法中對應最前方的名稱。 |
     | **2nd Level (邏輯分組)** | Schema (或 Database) | BigQuery Dataset | 將相關表格依業務或階段（`bronze`/`raw`）分組的容器。 |
     | **3rd Level (實體資產)** | Table / View / Volume | Table / View / External Table | 最終存放資料的實體物件。 |
-8. 說明 三層架構 - Bronze / Silver / Gold
+
+9. 說明 三層架構 - Bronze / Silver / Gold
 
     | 比較維度 | 你的實際經驗 (MTK + GCP 演進架構) | Databricks Lakehouse 體系 |
     | :--- | :--- | :--- |
@@ -298,7 +320,8 @@
     | **儲存與格式 (Storage)** | **GCS** (Raw files) + **BigQuery Native Storage** | **Cloud Object Storage (GCS/S3)** + **Delta Lake** (開源 ACID 格式) |
     | **資料治理 (Governance)** | **GCP Cloud IAM + Data Catalog**<br>（搭配 GCP Project / Dataset 權限） | **Unity Catalog**<br>（3-Level Namespace: `catalog.schema.table` 跨雲治理） |
 
-9. 解釋 Data Lake, Lakehouse and Data Warehouse 說明
+10. 解釋 Data Lake, Lakehouse and Data Warehouse 說明
+    
     我們透過 GCP 的 GCS -> Airflow -> BigQuery 建立 Data Warehouse
     1. Data Lake: GCS, 存放原始資料，沒有 schema，資料格式不固定
     2. 透過 Airflow ETL 將資料轉成 BigQuery 的 DWD / DWS / ADS，建立 Data Warehouse
