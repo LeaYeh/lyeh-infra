@@ -62,7 +62,7 @@
     
     我們透過 GCP 的 GCS -> Airflow -> BigQuery 建立 Data Warehouse
     1. Data Lake: GCS, 存放原始資料，沒有 schema，資料格式不固定
-    2. 透過 Airflow ETL 將資料轉成 BigQuery 的 DWD / DWS / ADS，建立 Data Warehouse
+    2. 透過 Airflow **ELT** 將資料轉成 BigQuery 的 ODS / DWD / DWS / ADS，建立 **Data Warehouse**
         - DWD: Data Warehouse Detail, de-normalized, normalized field, de-duplicated, cleaned, structured, transformed
         - DWS: Data Warehouse Summary, aggregated data, for reporting and analysis
         - ADS: Data Warehouse Application, for specific business use case
@@ -72,7 +72,7 @@
             - gold: BigQuery DWS/ADS, aggregated data
 7. 怎麼做 Data Quality Check (DQC) and how to handle DQC failure
     
-    難點在於 Completeness + Validity 很難做到每個欄位定義 validation rule，實務上我們只對關鍵指標設定 rules，其他欄位只做 schema check，並且在 ETL pipeline 裡面加上 DQC 檢查，當 DQC 失敗時，會發送 alert 給 on-call engineer，並且暫停 pipeline，直到問題被解決。
+    難點在於 Completeness + Validity 很難做到每個欄位定義 validation rule，實務上我們只對關鍵指標設定 rules and owne by the data product，其他欄位只做 schema check，並且在 ETL pipeline 裡面加上 DQC 檢查，當 DQC 失敗時，會發送 alert 給 on-call engineer，並且暫停 pipeline，直到問題被解決。
     Business rule check 則是透過 dashboard 監控關鍵指標。
 
     ```flow
@@ -361,11 +361,23 @@ MLOps = CI/CD + Data + Model 的 DevOps
         Null hypothesis: no drift
         Alternative hypothesis: drift
 
-        KS = 0.03, PSI = 0.72
-        => 如果沒有 drift, 看到這個結果的機率 72% -> no drift
+        兩個 distribution 在某個 threshold 的 cumulative proportion 最大差距為 25%
+        KS statistic = 0.25
+        如果真的沒有 drift，出現這麼大的差異非常不尋常
+        KS p-value   = 0.001
 
-        KS = 0.25, PSI = 0.001
-        => 如果沒有 drift, 看到這個結果的機率 0.1% -> drift
+        整體 bin proportion structure 有相當明顯的變化
+        PSI          = 0.31
+
+        => 如果沒有 drift, 看到這個結果的機率 0.1% -> reject H0 + 整體 bin proportion structure 有相當明顯的變化 -> 很強的 drift signal
+
+        兩個 distribution 在某個 threshold 的 cumulative proportion 最大差距為 0.3%
+        KS = 0.003
+        如果沒有 drift，則機率有 72% 看到這麼小的差異
+        p-value = 0.72
+        整體 bin proportion structure 沒有明顯的變化
+        PSI = 0.02
+        => 如果沒有 drift, 看到這個結果的機率 0.72 -> fail to reject H0 + 整體 bin proportion structure 沒有明顯的變化 -> 沒有 drift signal
         ```
     2. log metrics into Prometheus
     3. Grafana alerting
